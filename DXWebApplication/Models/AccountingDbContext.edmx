@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="verbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="JOB_JOBS">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Name="JOB_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JOB_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="JOB_Name2" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="JOB_Shortcut" Type="nchar" MaxLength="50" />
+          <Property Name="JOB_Number" Type="int" Nullable="false" />
+          <Property Name="JOB_Gender" Type="int" Nullable="false" />
+          <Property Name="JOB_IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="JOB_EntryDate" Type="datetime2" Precision="7" />
+          <Property Name="JOB_UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="JOB_DeleteDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="verbModelStoreContainer">
+          <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="verbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="JOB_JOBS">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Name="JOB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JOB_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JOB_Name2" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="JOB_Shortcut" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="JOB_Number" Type="Int32" Nullable="false" />
+          <Property Name="JOB_Gender" Type="Int32" Nullable="false" />
+          <Property Name="JOB_IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="JOB_EntryDate" Type="DateTime" Precision="7" />
+          <Property Name="JOB_UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="JOB_DeleteDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="AccountingDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="verbModelStoreContainer" CdmEntityContainer="AccountingDbContext">
+          <EntitySetMapping Name="JOB_JOBS">
+            <EntityTypeMapping TypeName="verbModel.JOB_JOBS">
+              <MappingFragment StoreEntitySet="JOB_JOBS">
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+                <ScalarProperty Name="JOB_Name" ColumnName="JOB_Name" />
+                <ScalarProperty Name="JOB_Name2" ColumnName="JOB_Name2" />
+                <ScalarProperty Name="JOB_Shortcut" ColumnName="JOB_Shortcut" />
+                <ScalarProperty Name="JOB_Number" ColumnName="JOB_Number" />
+                <ScalarProperty Name="JOB_Gender" ColumnName="JOB_Gender" />
+                <ScalarProperty Name="JOB_IsDeleted" ColumnName="JOB_IsDeleted" />
+                <ScalarProperty Name="JOB_EntryDate" ColumnName="JOB_EntryDate" />
+                <ScalarProperty Name="JOB_UpdateDate" ColumnName="JOB_UpdateDate" />
+                <ScalarProperty Name="JOB_DeleteDate" ColumnName="JOB_DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
