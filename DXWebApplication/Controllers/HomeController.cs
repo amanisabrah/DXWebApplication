@@ -19,8 +19,13 @@ namespace DXWebApplication.Controllers
             _accountingDbContext = new AccountingDbContext();
         }
 
-        [HttpGet]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Jobs()
         {
             int currentYear = DateTime.Now.Year;
             var filter = new Job_Filter()
@@ -30,24 +35,20 @@ namespace DXWebApplication.Controllers
                 JOB_FilterGender = (int)Gender.Male
             };
             ViewBag.Filter = filter;
-            return View();
+            return View("Jobs");
         }
-
 
         [HttpGet]
         public ActionResult PartialJobsGridView(DateTime? entryDate, DateTime? deleteDate, int? Gender)
         {
-            List<JOB_JOBS> jobs = JOB_JOBS.Get(_accountingDbContext);
-            jobs = jobs.Where(x => (x.JOB_EntryDate >= entryDate || entryDate == null) &&
-                            (x.JOB_EntryDate < deleteDate || deleteDate == null) &&
-                            (x.JOB_Gender == Gender || Gender == null)).ToList();
-
+            List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, entryDate, deleteDate, Gender);
             return PartialView("_PartialJobsGridView", jobs);
         }
+
         [HttpPost]
         public ActionResult PartialJobsGridView(string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)//= null indicates that if no value is provided for JOB_ID, it will default to null.
         {
-            List<JOB_JOBS> jobs = JOB_JOBS.Get(_accountingDbContext);
+            List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender);
 
             switch (Command)
             {
@@ -56,9 +57,6 @@ namespace DXWebApplication.Controllers
                     ViewBag.job = job;
                     break;
             }
-            jobs = jobs.Where(x => (x.JOB_EntryDate >= FilterStartDate || FilterStartDate == null) &&
-                             (x.JOB_EntryDate < FilterEndDate || FilterEndDate == null) &&
-                             (x.JOB_Gender == FilterGender || FilterGender == null)).ToList();
 
             return PartialView("_PartialJobsGridView", jobs);
         }
@@ -66,7 +64,7 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialJobsGridViewAddNew(JOB_JOBS add, string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
         {
-            List<JOB_JOBS> jobs = JOB_JOBS.Get(_accountingDbContext);
+            List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender);
 
             if (string.IsNullOrEmpty(add.JOB_Name))
             {
@@ -86,9 +84,7 @@ namespace DXWebApplication.Controllers
             if (ModelState.IsValid)
             {
                 JOB_JOBS.AddNew(add, _accountingDbContext);
-                jobs = jobs.Where(x => (x.JOB_EntryDate >= FilterStartDate || FilterStartDate == null) &&
-                         (x.JOB_EntryDate < FilterEndDate || FilterEndDate == null) &&
-                         (x.JOB_Gender == FilterGender || FilterGender == null)).ToList();
+              
             }
 
             return PartialView("_PartialJobsGridView", jobs);
@@ -98,15 +94,11 @@ namespace DXWebApplication.Controllers
 
         public ActionResult PartialJobsGridViewEdit(JOB_JOBS edit, string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
         {
-            List<JOB_JOBS> jobs = JOB_JOBS.Get(_accountingDbContext);
+            List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender);
 
             if (ModelState.IsValid)
             {
                 JOB_JOBS.Edit(edit, _accountingDbContext);
-
-                jobs = jobs.Where(x => (x.JOB_EntryDate >= FilterStartDate || FilterStartDate == null) &&
-                          (x.JOB_EntryDate < FilterEndDate || FilterEndDate == null) &&
-                          (x.JOB_Gender == FilterGender || FilterGender == null)).ToList();
             }
 
             return PartialView("_PartialJobsGridView", jobs);
