@@ -1,0 +1,71 @@
+﻿@model DXWebApplication.Models.Job_Filter
+
+@using System.Web.UI.WebControls;
+
+@Html.DevExpress().FormLayout(flSettings =>
+{
+    flSettings.Name = "PopupFilter";
+    flSettings.ColCount = 4;
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_FilterEntryDate";
+        i.Caption = "Entry Date";
+        i.NestedExtension().DateEdit(s =>
+        {
+
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_FilterDeleteDate";
+        i.Caption = "Delete Date";
+        i.NestedExtension().DateEdit(s =>
+        {
+
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_FilterGender";
+        i.Caption = "Gender";
+        i.NestedExtension().ComboBox(combobox =>
+        {
+            combobox.Name = "JOB_FilterGender";
+            combobox.Properties.DropDownStyle = DropDownStyle.DropDownList;
+            combobox.Properties.Items.Add("Female", "1");
+            combobox.Properties.Items.Add("Male", "2");
+            combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            combobox.Properties.ValidationSettings.Display = Display.Dynamic;
+            combobox.ShowModelErrors = true;
+            combobox.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+
+        });
+    });
+
+
+
+    flSettings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+        i.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write("<div style='float:right'> ");
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "btnFilter";
+                btnSettings.Text = "Filter";
+                btnSettings.ClientSideEvents.Click = "FilterButtonOnclick";
+            }).Render();
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+
+
+}).Bind(Model).GetHtml()
+
+
+

@@ -1,16 +1,19 @@
-﻿@*@model List<WebApplication1.Models.JOB_JOBS>;*@
+﻿@model List<DXWebApplication.Models.JOB_JOBS>
 
 @using System.Web.UI.WebControls;
 
 @Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "gvFocusedRow";
+    settings.Name = "jobsGridView";
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialJobsGridView" };
+
     settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewAddNew" };
-    settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "EditModesUpdatePartial" };
-    settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "EditModesDeletePartial" };
+    settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewEdit" };
+    settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewDelete" };
+
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
+    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
     settings.SettingsPopup.EditForm.Width = 600;
     settings.Width = Unit.Percentage(100);
 
@@ -19,14 +22,18 @@
     settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
     settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
-    settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+
     settings.Settings.ShowFilterRow = true;
 
     settings.KeyFieldName = "JOB_ID";
     settings.CommandColumn.Visible = true;
-    settings.CommandColumn.ShowNewButton = true;
+    settings.CommandColumn.ShowNewButtonInHeader = true;
     settings.CommandColumn.ShowDeleteButton = true;
     settings.CommandColumn.ShowEditButton = true;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
 
     settings.Columns.Add(c =>
     {
@@ -59,13 +66,15 @@
     {
         c.FieldName = "JOB_Gender";
         c.Caption = "Gender";
+        c.EditorProperties().ComboBox(p => {
+            p.TextField = "key";
+            p.ValueField = "value";
+            p.ValueType = typeof(int);
+            p.DataSource = DXWebApplication.Models.GenderCollection.Gender;
+
+        });
     });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "JOB_IsDeleted";
-        c.Caption = "Is Deleted?";
-    });
 
     settings.Columns.Add(c =>
     {
@@ -79,139 +88,11 @@
         c.Caption = "Update Date";
     });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "JOB_DeleteDate";
-        c.Caption = "Delete Date";
-    });
-
 
     settings.SetEditFormTemplateContent(c =>
     {
-        Html.DevExpress().FormLayout(flSettings =>
-        {
-            flSettings.Name = "PopupEditFormLayout";
-            flSettings.ColCount = 2;
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_Name";
-                i.Caption = "Name1";
-                i.NestedExtension().TextBox(s =>
-                {
-                    s.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                });
-            });
+        Html.RenderPartial("_PartialjobsEditForm");
 
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_Name2";
-                i.Caption = "Name2";
-                i.NestedExtension().TextBox(s =>
-                {
-
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_ShortCut";
-                i.Caption = "Job Shortcut";
-                i.NestedExtension().TextBox(s =>
-                {
-
-                });
-            });
-
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_Number";
-                i.Caption = "Job Number";
-                i.NestedExtension().SpinEdit(s =>
-                {
-                    s.Properties.MinValue = 100;
-                    s.Properties.MaxValue = 130;
-                    s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
-                    s.Properties.ValidationSettings.Display = Display.Dynamic;
-                    s.ShowModelErrors = true;
-                    s.Width = Unit.Percentage(100);
-
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_Gender";
-                i.Caption = "Gender";
-                i.NestedExtension().ComboBox(s =>
-                {
-
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_Deleted";
-                i.Caption = "Is Deleted?";
-                i.NestedExtension().CheckBox(s =>
-                {
-                    s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
-                    s.Properties.ValidationSettings.Display = Display.Dynamic;
-                    s.ShowModelErrors = true;
-
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_EntryDate";
-                i.Caption = "Entry Date";
-                i.NestedExtension().DateEdit(s =>
-                {
-                    s.Properties.DisplayFormatString = "d";
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_UpdateDate";
-                i.Caption = "Update Date";
-                i.NestedExtension().DateEdit(s =>
-                {
-                    s.Properties.DisplayFormatString = "d";
-                });
-            });
-
-            flSettings.Items.Add(i =>
-            {
-                i.FieldName = "JOB_DeleteDate";
-                i.Caption = "Delete Date";
-                i.NestedExtension().DateEdit(s =>
-                {
-                    s.Properties.DisplayFormatString = "d";
-                });
-            });
-
-
-            Html.DevExpress().Button(btnSettings =>
-            {
-                btnSettings.Name = "btnUpdate";
-                btnSettings.Text = "ADD";
-                btnSettings.ClientSideEvents.Click = "function(s){ gvEditingWithTemplate.UpdateEdit(); }";
-            }).Render();
-
-            Html.DevExpress().Button(btnSettings =>
-            {
-                btnSettings.Name = "btnCancel";
-                btnSettings.Text = "Cancel";
-                btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
-                btnSettings.ClientSideEvents.Click = "function(s, e){ gvEditingWithTemplate.CancelEdit(); }";
-            }).Render();
-
-
-
-
-        }).Bind(c.Grid.GetRowValues(c.VisibleIndex, "JOB_ID")).Render(); // Bind with data from the row being edited
     });
 
 }).Bind(Model).GetHtml()

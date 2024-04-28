@@ -2,10 +2,36 @@
 @{
     ViewBag.Title = "Home Page";
 }
+<script>
+    function OnBeginCallback(s, e)
+    {
+        if (e.command === "STARTEDIT") {
+            var key = s.GetRowKey(s.GetFocusedRowIndex());
+            e.customArgs['JOB_ID'] = key;
+        }
+        e.customArgs['Command'] = e.command;
+        e.customArgs['FilterStartDate'] = JOB_FilterEntryDate.GetText();
+        e.customArgs['FilterEndDate'] = JOB_FilterDeleteDate.GetText();
+        e.customArgs['FilterGender'] = JOB_FilterGender.GetValue();
+        
+    }
+
+    function FilterButtonOnclick(s, e) {
+        jobsGridView.PerformCallback();
+
+    }
+    function PopupEditFormLayout_OnSave(s, e) {
+        jobsGridView.UpdateEdit(); 
+    }
+
+</script>
 
 <main>
+
+
     <section class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Jobs Title</h1>
-        @Html.Partial("_PartialJobsGridView")
+        <div>@Html.Partial("_PartialJobsFilter", (DXWebApplication.Models.Job_Filter)ViewBag.Filter)</div> 
+        @Html.Action("PartialJobsGridView", new { entryDate = ViewBag.Filter.JOB_FilterEntryDate, deleteDate = ViewBag.Filter.JOB_FilterDeleteDate, Gender = ViewBag.Filter.JOB_FilterGender })
     </section>
 </main>

@@ -1,0 +1,128 @@
+﻿
+@using System.Web.UI.WebControls;
+@{ 
+    var job = (DXWebApplication.Models.JOB_JOBS)ViewBag.job;
+}
+@Html.DevExpress().FormLayout(flSettings =>
+{
+    flSettings.Name = "PopupEditFormLayout";
+    flSettings.ColCount = 2;
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_Name";
+        i.Caption = "Name1";
+        i.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            s.Properties.ValidationSettings.Display = Display.Dynamic;
+            s.ShowModelErrors = true;
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_Name2";
+        i.Caption = "Name2";
+        i.NestedExtension().TextBox(s =>
+        {
+
+            s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            s.Properties.ValidationSettings.Display = Display.Dynamic;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_Shortcut";
+        i.Caption = "Job Shortcut";
+        i.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            s.Properties.ValidationSettings.Display = Display.Dynamic;
+            s.ShowModelErrors = true;
+        });
+    });
+
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_Number";
+        i.Caption = "Job Number";
+        i.NestedExtension().SpinEdit(s =>
+        {
+            s.Properties.MinValue = 1;
+            s.Properties.MaxValue = 100;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            s.Properties.ValidationSettings.Display = Display.Dynamic;
+            s.ShowModelErrors = true;
+            s.Width = Unit.Percentage(100);
+
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_Gender";
+        i.Caption = "Gender";
+        i.NestedExtension().ComboBox(combobox =>
+        {
+            combobox.Properties.TextField = "key";
+            combobox.Properties.ValueField = "value";
+            combobox.Properties.ValueType = typeof(int);
+            combobox.Properties.DataSource = DXWebApplication.Models.GenderCollection.Gender;
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_EntryDate";
+        i.Caption = "Entry Date";
+        i.NestedExtension().DateEdit(s =>
+        {
+            s.ReadOnly = true;
+        });
+    });
+
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "JOB_UpdateDate";
+        i.Caption = "Update Date";
+        i.NestedExtension().DateEdit(s =>
+        {
+            s.ReadOnly = true;
+        });
+    });
+
+
+    flSettings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+        i.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write("<div style='float:right'> ");
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "btnUpdate";
+                btnSettings.Text = "Save";
+                btnSettings.ClientSideEvents.Click = "function(s,e){ jobsGridView.UpdateEdit(); }";
+            }).Render();
+
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "btnCancel";
+                btnSettings.Text = "Cancel";
+                btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                btnSettings.ClientSideEvents.Click = "function(s, e){ jobsGridView.CancelEdit(); }";
+            }).Render();
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+
+
+}).Bind(job).GetHtml()
+

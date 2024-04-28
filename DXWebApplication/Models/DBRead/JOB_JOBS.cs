@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
 namespace DXWebApplication.Models
@@ -10,14 +11,10 @@ namespace DXWebApplication.Models
     {
         public static List<JOB_JOBS> Get(AccountingDbContext _dbContext)
         {
-            return _dbContext.JOB_JOBS.ToList();
+
+            return _dbContext.JOB_JOBS.Where(j => j.JOB_IsDeleted == false).ToList();
         }
 
-        public enum Gender
-        {
-            Female,
-            Male
-        }
 
     }
 }

@@ -181,6 +181,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\_PartialjobsEditForm.cshtml" />
+    <EmbeddedResource Include="Views\Home\_PartialJobsFilter.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -212,6 +214,9 @@
       <DependentUpon>AccountingDbContext.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DBRead\JOB_JOBS.cs" />
+    <Compile Include="Models\DBWrite\JOB_JOBS.cs" />
+    <Compile Include="Models\Enums\GenderCollection.cs" />
+    <Compile Include="Models\Filter\Job_Filter.cs" />
     <Compile Include="Models\JOB_JOBS.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
