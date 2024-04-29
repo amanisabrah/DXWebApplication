@@ -124,14 +124,15 @@ namespace DXWebApplication.Controllers
         [HttpGet]
         public ActionResult PartialWorkStatusGridView()
         {
-
-            List<WST_WorkStatus> workStatusList;
-            using (var context = new AccountingDbContext())
-            {
-                workStatusList = context.WST_WorkStatus.ToList();
-            }
-            return PartialView("_PartialWorkStatusGridView", workStatusList);
+            List<WST_WorkStatus> workStatus = WST_WorkStatus.Get(_accountingDbContext);
+            return PartialView("_PartialWorkStatusGridView", workStatus);
         }
 
+        [HttpPost]
+        public ActionResult PartialWorkStatusGridViewAddNew(WST_WorkStatus add)
+        {
+            List<WST_WorkStatus> workStatus = WST_WorkStatus.Get(_accountingDbContext);
+            return PartialView("_PartialWorkStatusGridView", workStatus);
+        }
     }
 }

@@ -27,9 +27,13 @@
 
 
     settings.CommandColumn.Visible = true;
-    settings.CommandColumn.ShowNewButtonInHeader = true;
+    settings.CommandColumn.ShowCancelButton = true;
     settings.CommandColumn.ShowDeleteButton = true;
+    settings.CommandColumn.ShowNewButtonInHeader = true;
+    settings.CommandColumn.ShowCancelButton = true;
     settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.CommandColumn.Width = Unit.Pixel(150);
+
 
     settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
 
