@@ -10,6 +10,18 @@
     settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewAddNew" };
     settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewEdit" };
     settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewDelete" };
+    settings.Toolbars.Add(tb =>
+    {
+        tb.Enabled = true;
+        tb.Position = GridToolbarPosition.Top;
+        tb.SettingsAdaptivity.Enabled = true;
+        tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+
+        tb.Items.Add(GridViewToolbarCommand.New);
+        tb.Items.Add(GridViewToolbarCommand.Edit);
+        tb.Items.Add(GridViewToolbarCommand.Delete);
+    });
+
 
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
@@ -28,9 +40,6 @@
 
     settings.KeyFieldName = "JOB_ID";
     settings.CommandColumn.Visible = true;
-    settings.CommandColumn.ShowNewButtonInHeader = true;
-    settings.CommandColumn.ShowDeleteButton = true;
-    settings.CommandColumn.ShowEditButton = true;
     settings.SettingsBehavior.AllowFocusedRow = true;
 
     settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
