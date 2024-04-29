@@ -11,9 +11,7 @@ namespace DXWebApplication.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel;
-
+    
     public partial class JOB_JOBS
     {
         public int JOB_ID { get; set; }
@@ -28,4 +26,3 @@ namespace DXWebApplication.Models
         public Nullable<System.DateTime> JOB_DeleteDate { get; set; }
     }
 }
-

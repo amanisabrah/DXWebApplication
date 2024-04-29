@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="bb7cc2b834714b8d93556df252221743" Name="Diagram1">
         <EntityTypeShape EntityType="verbModel.JOB_JOBS" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="verbModel.WST_WorkStatus" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

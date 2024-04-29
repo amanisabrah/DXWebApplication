@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="verbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="verbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="JOB_JOBS">
           <Key>
             <PropertyRef Name="JOB_ID" />
@@ -20,11 +20,25 @@
           <Property Name="JOB_UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="JOB_DeleteDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="WST_WorkStatus">
+          <Key>
+            <PropertyRef Name="WST_ID" />
+          </Key>
+          <Property Name="WST_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WST_Name" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="WST_Name2" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="WST_Number" Type="int" Nullable="false" />
+          <Property Name="WST_KindOfWorkStatus" Type="int" />
+          <Property Name="WST_Shortcut" Type="nchar" MaxLength="10" />
+          <Property Name="WST_EntryDate" Type="datetime2" Precision="7" />
+          <Property Name="WST_UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="WST_DeleteDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityContainer Name="verbModelStoreContainer">
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WST_WorkStatus" EntityType="Self.WST_WorkStatus" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="verbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -45,7 +59,22 @@
         </EntityType>
         <EntityContainer Name="AccountingDbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" />
+          <EntitySet Name="WST_WorkStatus" EntityType="verbModel.WST_WorkStatus" />
         </EntityContainer>
+        <EntityType Name="WST_WorkStatus">
+          <Key>
+            <PropertyRef Name="WST_ID" />
+          </Key>
+          <Property Name="WST_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WST_Name" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="WST_Name2" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="WST_Number" Type="Int32" Nullable="false" />
+          <Property Name="WST_KindOfWorkStatus" Type="Int32" />
+          <Property Name="WST_Shortcut" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="WST_EntryDate" Type="DateTime" Precision="7" />
+          <Property Name="WST_UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="WST_DeleteDate" Type="DateTime" Precision="7" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -65,6 +94,21 @@
                 <ScalarProperty Name="JOB_EntryDate" ColumnName="JOB_EntryDate" />
                 <ScalarProperty Name="JOB_UpdateDate" ColumnName="JOB_UpdateDate" />
                 <ScalarProperty Name="JOB_DeleteDate" ColumnName="JOB_DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WST_WorkStatus">
+            <EntityTypeMapping TypeName="verbModel.WST_WorkStatus">
+              <MappingFragment StoreEntitySet="WST_WorkStatus">
+                <ScalarProperty Name="WST_DeleteDate" ColumnName="WST_DeleteDate" />
+                <ScalarProperty Name="WST_UpdateDate" ColumnName="WST_UpdateDate" />
+                <ScalarProperty Name="WST_EntryDate" ColumnName="WST_EntryDate" />
+                <ScalarProperty Name="WST_Shortcut" ColumnName="WST_Shortcut" />
+                <ScalarProperty Name="WST_KindOfWorkStatus" ColumnName="WST_KindOfWorkStatus" />
+                <ScalarProperty Name="WST_Number" ColumnName="WST_Number" />
+                <ScalarProperty Name="WST_Name2" ColumnName="WST_Name2" />
+                <ScalarProperty Name="WST_Name" ColumnName="WST_Name" />
+                <ScalarProperty Name="WST_ID" ColumnName="WST_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -265,6 +265,9 @@
     <Compile Include="Models\JOB_JOBS.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\WST_WorkStatus.cs">
+      <DependentUpon>AccountingDbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
