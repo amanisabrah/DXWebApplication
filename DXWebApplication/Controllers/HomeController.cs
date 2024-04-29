@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace DXWebApplication.Controllers
 {
@@ -114,6 +115,43 @@ namespace DXWebApplication.Controllers
             }
             return PartialView("_PartialJobsGridView", JOB_JOBS.Get(_accountingDbContext));
         }
+
+        [HttpPost]
+        public ActionResult UploadControlUpload()
+        {
+            //string[] errors;
+            //UploadedFile[] files = UploadControlExtension.GetUploadedFiles("UploadControl",
+            //    MyUploadControlValidationSettings.Settings, out errors, (s, e) => { },
+            //    UploadControl_FilesUploadComplete);
+            return null;
+        }
+
+        public ActionResult MultiSelectionImageUpload()
+        {
+            UploadControlExtension.GetUploadedFiles("ucMultiSelection", null, FileUploadCompleteMultiSelect);
+            return null;
+        }
+        public void FileUploadCompleteMultiSelect(object sender, DevExpress.Web.FileUploadCompleteEventArgs e)
+        {
+            //string uploadDirectory = UploadControlHelper.UploadDirectory;
+            //string resultFileUrl = uploadDirectory + e.UploadedFile.FileName;
+            //string resultFilePath = Request.MapPath(resultFileUrl);
+
+            //e.UploadedFile.SaveAs(resultFilePath);
+
+            //UploadingUtils.RemoveFileWithDelay(e.UploadedFile.FileName, resultFilePath, 5);
+
+            //IUrlResolutionService urlResolver = sender as IUrlResolutionService;
+            //if (urlResolver != null)
+            //{
+            //    string url = urlResolver.ResolveClientUrl(resultFileUrl);
+            //    e.CallbackData = UploadControlHelper.GetCallbackData(e.UploadedFile, url);
+            //}
+        }
+
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
         [HttpGet]
         public ActionResult WorkStatus()

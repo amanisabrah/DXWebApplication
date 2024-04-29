@@ -1,4 +1,5 @@
-﻿using DXWebApplication.Models;
+﻿using DevExpress.Web;
+using DXWebApplication.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,20 @@ namespace DXWebApplication.Models
             return Get(_dbContext).Where(x => (x.JOB_EntryDate >= entryDate || entryDate == null) &&
                              (x.JOB_EntryDate < deleteDate || deleteDate == null) &&
                              (x.JOB_Gender == Gender || Gender == null)).ToList();
+        }
+
+        public static DevExpress.Web.UploadControlValidationSettings UploadValidationSettings = new DevExpress.Web.UploadControlValidationSettings()
+        {
+            AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png" },
+            MaxFileSize = 4194304
+        };
+        public static string GetCallbackData(UploadedFile uploadedFile, string fileUrl)
+        {
+            string name = uploadedFile.FileName;
+            long sizeInKilobytes = uploadedFile.ContentLength / 1024;
+            string sizeText = sizeInKilobytes.ToString() + " KB";
+
+            return name + "|" + fileUrl + "|" + sizeText;
         }
 
     }

@@ -80,23 +80,34 @@
 
     flSettings.Items.Add(i =>
     {
-        i.FieldName = "JOB_EntryDate";
-        i.Caption = "Entry Date";
-        i.NestedExtension().DateEdit(s =>
+        i.ShowCaption = DefaultBoolean.False;
+        i.SetNestedContent(() =>
         {
-            s.ReadOnly = true;
+            using (Html.BeginForm(new { @class = "upload" }))
+            {
+                Html.DevExpress().UploadControl(settings =>
+                {
+                    settings.Name = "ucMultiSelection";
+                    settings.CallbackRouteValues = new { Controller = "Home", Action = "MultiSelectionImageUpload" };
+
+                    settings.Width = Unit.Percentage(100);
+                    settings.ShowProgressPanel = true;
+                    settings.ShowUploadButton = true;
+                    settings.AdvancedModeSettings.EnableMultiSelect = true;
+                    settings.AdvancedModeSettings.EnableFileList = true;
+                    settings.AdvancedModeSettings.EnableDragAndDrop = true;
+                    settings.NullText = "Select multiple files...";
+
+                    settings.ValidationSettings.Assign(DXWebApplication.Models.JOB_JOBS.UploadValidationSettings);
+
+                    //settings.ClientSideEvents.FilesUploadStart = "function(s,e) { DXUploadedFilesContainer.Clear(); }";
+                    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(e); }";
+
+                }).GetHtml();
+            }
         });
     });
 
-    flSettings.Items.Add(i =>
-    {
-        i.FieldName = "JOB_UpdateDate";
-        i.Caption = "Update Date";
-        i.NestedExtension().DateEdit(s =>
-        {
-            s.ReadOnly = true;
-        });
-    });
 
 
     flSettings.Items.Add(i =>
