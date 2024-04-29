@@ -9,7 +9,7 @@
     settings.Width = Unit.Percentage(100);
 
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialWorkStatusGridView" };
-    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "PartialWorkStatusGridView" };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "BatchEditingUpdateModel" };
 
 
     settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
@@ -35,7 +35,6 @@
     settings.CommandColumn.Width = Unit.Pixel(150);
 
 
-    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
 
     settings.Columns.Add(c =>
     {
@@ -83,19 +82,14 @@
     {
         c.FieldName = "WST_EntryDate";
         c.Caption = "Entry Date";
+        c.ReadOnly = true;
     });
 
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_UpdateDate";
         c.Caption = "Update Date";
-    });
-
-
-    settings.SetEditFormTemplateContent(c =>
-    {
-        Html.RenderPartial("_PartialBatchEditing");
-
+        c.ReadOnly = true;
     });
 
 }).Bind(Model).GetHtml()

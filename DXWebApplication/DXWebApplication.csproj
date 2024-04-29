@@ -229,7 +229,6 @@
     <EmbeddedResource Include="Views\Home\_PartialJobsFilter.cshtml" />
     <Content Include="Views\Home\Jobs.cshtml" />
     <Content Include="Views\Home\_PartialWorkStatusGridView.cshtml" />
-    <Content Include="Views\Home\_PartialBatchEditing.cshtml" />
     <Content Include="Views\Home\WorkStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

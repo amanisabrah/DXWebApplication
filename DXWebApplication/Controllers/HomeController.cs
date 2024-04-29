@@ -85,7 +85,7 @@ namespace DXWebApplication.Controllers
             if (ModelState.IsValid)
             {
                 JOB_JOBS.AddNew(add, _accountingDbContext);
-              
+
             }
 
             return PartialView("_PartialJobsGridView", jobs);
@@ -129,10 +129,81 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialWorkStatusGridViewAddNew(WST_WorkStatus add)
+        public ActionResult PartialWorkStatusGridView(string Command)
         {
             List<WST_WorkStatus> workStatus = WST_WorkStatus.Get(_accountingDbContext);
             return PartialView("_PartialWorkStatusGridView", workStatus);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult BatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
+        {
+            foreach (var workStatus in updateValues.Insert)
+            {
+                if (updateValues.IsValid(workStatus))
+                    InsertWorkStatus(workStatus, updateValues);
+            }
+            foreach (var workStatus in updateValues.Update)
+            {
+                if (updateValues.IsValid(workStatus))
+                    UpdateWorkStatus(workStatus, updateValues);
+            }
+            foreach (var workStatusID in updateValues.DeleteKeys)
+            {
+                DeleteWorkStatus(workStatusID, updateValues);
+            }
+            return PartialView("_PartialWorkStatusGridView", WST_WorkStatus.Get(_accountingDbContext));
+        }
+
+
+        protected void InsertWorkStatus(WST_WorkStatus workStatus, MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    WST_WorkStatus.AddNew(workStatus, _accountingDbContext);
+
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(workStatus, e.Message);
+            }
+        }
+
+        protected void UpdateWorkStatus(WST_WorkStatus workStatus, MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    WST_WorkStatus.Edit(workStatus, _accountingDbContext);
+                }
+
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(workStatus, e.Message);
+            }
+        }
+
+        protected void DeleteWorkStatus(int workStatusID, MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    WST_WorkStatus.Delete(workStatusID, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(workStatusID, e.Message);
+
+            }
         }
     }
 }
