@@ -7,7 +7,7 @@ namespace DXWebApplication.Models
 {
     public class GenderCollection
     {
-        public static Dictionary<string, int> Gender //{ { "Female", 0 }, { "Male",1 } } to binding enum values to controls (comboBox)
+        public static Dictionary<string, int> Gender //{ { "Female", 1}, { "Male",2 } } to binding enum values to controls (comboBox)
         {
             get
             {

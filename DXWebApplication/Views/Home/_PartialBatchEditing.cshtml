@@ -1,0 +1,21 @@
+﻿@using System.Web.UI.WebControls;
+@{
+    var job = (DXWebApplication.Models.WST_WorkStatus)ViewBag.job;
+}
+@Html.DevExpress().FormLayout(settings =>
+{
+
+        settings.Name = "editFormLayout";
+        settings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+        settings.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+
+        settings.Items.Add(item =>
+        {
+            item.FieldName = "WST_Name";
+            item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+            item.Caption = "Name1";
+        });
+
+    }).GetHtml()
+}

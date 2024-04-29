@@ -228,6 +228,9 @@
     <Content Include="Views\Home\_PartialjobsEditForm.cshtml" />
     <EmbeddedResource Include="Views\Home\_PartialJobsFilter.cshtml" />
     <Content Include="Views\Home\Jobs.cshtml" />
+    <Content Include="Views\Home\_PartialWorkStatusGridView.cshtml" />
+    <Content Include="Views\Home\_PartialBatchEditing.cshtml" />
+    <Content Include="Views\Home\WorkStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -261,6 +264,7 @@
     <Compile Include="Models\DBRead\JOB_JOBS.cs" />
     <Compile Include="Models\DBWrite\JOB_JOBS.cs" />
     <Compile Include="Models\Enums\GenderCollection.cs" />
+    <Compile Include="Models\Enums\KindOfWorkStatus.cs" />
     <Compile Include="Models\Filter\Job_Filter.cs" />
     <Compile Include="Models\JOB_JOBS.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>

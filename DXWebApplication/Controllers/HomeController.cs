@@ -1,4 +1,5 @@
 ﻿using DevExpress.Web;
+using DevExpress.Web.Mvc;
 using DXWebApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -112,6 +113,24 @@ namespace DXWebApplication.Controllers
                 JOB_JOBS.Delete(delete, _accountingDbContext);
             }
             return PartialView("_PartialJobsGridView", JOB_JOBS.Get(_accountingDbContext));
+        }
+
+        [HttpGet]
+        public ActionResult WorkStatus()
+        {
+            return View("WorkStatus");
+        }
+
+        [HttpGet]
+        public ActionResult PartialWorkStatusGridView()
+        {
+
+            List<WST_WorkStatus> workStatusList;
+            using (var context = new AccountingDbContext())
+            {
+                workStatusList = context.WST_WorkStatus.ToList();
+            }
+            return PartialView("_PartialWorkStatusGridView", workStatusList);
         }
 
     }

@@ -1,0 +1,100 @@
+﻿@model List<DXWebApplication.Models.WST_WorkStatus>
+
+@using System.Web.UI.WebControls;
+
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "workStatusGridView";
+    settings.KeyFieldName = "WST_ID";
+    settings.Width = Unit.Percentage(100);
+
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialWorkStatusGridView" };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "PartialWorkStatusGridView" };
+
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+    settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+
+    settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+    settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
+    settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
+    settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+
+
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+
+
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowNewButtonInHeader = true;
+    settings.CommandColumn.ShowDeleteButton = true;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_Name";
+        c.Caption = "Name1";
+    });
+
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_Name2";
+        c.Caption = "Name2";
+    });
+
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_Number";
+        c.Caption = "Number";
+    });
+
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_Shortcut";
+        c.Caption = "Shortcut";
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_KindOfWorkStatus";
+        c.Caption = "Work Status";
+        c.EditorProperties().ComboBox(p =>
+        {
+            p.TextField = "key";
+            p.ValueField = "value";
+            p.ValueType = typeof(int);
+            p.DataSource = DXWebApplication.Models.KindOfWorkStatus.Gender;
+
+        });
+    });
+
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_EntryDate";
+        c.Caption = "Entry Date";
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "WST_UpdateDate";
+        c.Caption = "Update Date";
+    });
+
+
+    settings.SetEditFormTemplateContent(c =>
+    {
+        Html.RenderPartial("_PartialBatchEditing");
+
+    });
+
+}).Bind(Model).GetHtml()
+
+
+
