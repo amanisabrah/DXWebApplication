@@ -4,7 +4,7 @@
 
 @Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "workStatusGridView";
+    settings.Name = "WorkStatusGridView";
     settings.KeyFieldName = "WST_ID";
     settings.Width = Unit.Percentage(100);
 
@@ -19,12 +19,15 @@
     settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
     settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
     settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+    settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
+
 
 
     settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
     settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
 
+    settings.ClientSideEvents.BatchEditStartEditing = settings.Name+ "_OnBatchEditStartEditing";
 
     settings.CommandColumn.Visible = true;
     settings.CommandColumn.ShowCancelButton = true;
@@ -40,6 +43,13 @@
     {
         c.FieldName = "WST_Name";
         c.Caption = "Name1";
+        c.EditorProperties().TextBox(tb =>
+        {
+            tb.ClientSideEvents.ValueChanged = c.FieldName + "_OnValueChange";
+            tb.ValidationSettings.CausesValidation = false;
+            tb.ValidationSettings.RequiredField.IsRequired = false;
+            tb.ClientSideEvents.Validation = "onValidation";
+        });
     });
 
 
@@ -47,6 +57,14 @@
     {
         c.FieldName = "WST_Name2";
         c.Caption = "Name2";
+        c.EditorProperties().TextBox(tb =>
+        {
+            tb.ClientSideEvents.ValueChanged = c.FieldName + "_OnValueChange";
+            tb.ValidationSettings.CausesValidation = false;
+            tb.ValidationSettings.RequiredField.IsRequired = false;
+            tb.ClientSideEvents.Validation = "onValidation";
+
+        });
     });
 
 
@@ -54,6 +72,7 @@
     {
         c.FieldName = "WST_Number";
         c.Caption = "Number";
+        c.VisibleIndex = 0;
     });
 
 

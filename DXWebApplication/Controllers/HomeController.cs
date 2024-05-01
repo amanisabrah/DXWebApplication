@@ -1,14 +1,18 @@
 ﻿using DevExpress.Web;
+using DevExpress.Web.Internal.XmlProcessor;
 using DevExpress.Web.Mvc;
 using DXWebApplication.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+
 
 namespace DXWebApplication.Controllers
 {
@@ -37,6 +41,8 @@ namespace DXWebApplication.Controllers
                 JOB_FilterGender = (int)Gender.Male
             };
             ViewBag.Filter = filter;
+            Session["FileByte"] = null;
+            Session["FileName"] = null;
             return View("Jobs");
         }
 
@@ -57,6 +63,12 @@ namespace DXWebApplication.Controllers
                 case "STARTEDIT":
                     var job = jobs.Where(x => x.JOB_ID == JOB_ID).FirstOrDefault();
                     ViewBag.job = job;
+                    Session["FileByte"] = job.JOB_File;
+                    Session["FileName"] = job.JOB_FileName;
+                    break;
+                case "CANCELEDIT":
+                    Session["FileByte"] = null;
+                    Session["FileName"] = null;
                     break;
             }
 
@@ -85,6 +97,10 @@ namespace DXWebApplication.Controllers
 
             if (ModelState.IsValid)
             {
+                add.JOB_File = (byte[])Session["FileByte"];
+                add.JOB_FileName = (string)Session["FileName"];
+                Session["FileByte"] = null;
+                Session["FileName"] = null;
                 JOB_JOBS.AddNew(add, _accountingDbContext);
 
             }
@@ -100,6 +116,10 @@ namespace DXWebApplication.Controllers
 
             if (ModelState.IsValid)
             {
+                edit.JOB_File = (byte[])Session["FileByte"];
+                edit.JOB_FileName = (string)Session["FileName"];
+                Session["FileByte"] = null;
+                Session["FileName"] = null;
                 JOB_JOBS.Edit(edit, _accountingDbContext);
             }
 
@@ -116,40 +136,33 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialJobsGridView", JOB_JOBS.Get(_accountingDbContext));
         }
 
-        [HttpPost]
-        public ActionResult UploadControlUpload()
-        {
-            //string[] errors;
-            //UploadedFile[] files = UploadControlExtension.GetUploadedFiles("UploadControl",
-            //    MyUploadControlValidationSettings.Settings, out errors, (s, e) => { },
-            //    UploadControl_FilesUploadComplete);
-            return null;
-        }
-
         public ActionResult MultiSelectionImageUpload()
         {
             UploadControlExtension.GetUploadedFiles("ucMultiSelection", null, FileUploadCompleteMultiSelect);
             return null;
         }
-        public void FileUploadCompleteMultiSelect(object sender, DevExpress.Web.FileUploadCompleteEventArgs e)
+        public void FileUploadCompleteMultiSelect(object sender, DevExpress.Web.FileUploadCompleteEventArgs e)//It is called when a file upload is completed using the UploadControl.
         {
-            //string uploadDirectory = UploadControlHelper.UploadDirectory;
-            //string resultFileUrl = uploadDirectory + e.UploadedFile.FileName;
-            //string resultFilePath = Request.MapPath(resultFileUrl);
-
-            //e.UploadedFile.SaveAs(resultFilePath);
-
-            //UploadingUtils.RemoveFileWithDelay(e.UploadedFile.FileName, resultFilePath, 5);
-
-            //IUrlResolutionService urlResolver = sender as IUrlResolutionService;
-            //if (urlResolver != null)
-            //{
-            //    string url = urlResolver.ResolveClientUrl(resultFileUrl);
-            //    e.CallbackData = UploadControlHelper.GetCallbackData(e.UploadedFile, url);
-            //}
+            Session["FileByte"] = e.UploadedFile.FileBytes;
+            Session["FileName"] = e.UploadedFile.FileName;
+            e.CallbackData = e.UploadedFile.FileName;
         }
 
+        public ActionResult DownloadFile()
+        {
+            byte[] fileBytes = (byte[])Session["FileByte"];
+            string fileName = (string)Session["FileName"];
 
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+        public ActionResult DownloadFileWithID(int JOBID)
+        {
+            var job = _accountingDbContext.JOB_JOBS.Find(JOBID);
+            byte[] fileBytes = job.JOB_File;
+            string fileName = job.JOB_FileName;
+
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -200,6 +213,21 @@ namespace DXWebApplication.Controllers
         {
             try
             {
+
+                if (string.IsNullOrEmpty(workStatus.WST_Name))
+                {
+                    ModelState.AddModelError("JOB_Name", "First Name Is Required");
+                }
+                if (string.IsNullOrEmpty(workStatus.WST_Name2))
+                {
+                    ModelState.AddModelError("JOB_Name2", "Secound Namw Is Required");
+                }
+
+                if (workStatus.WST_Number == null)
+                {
+                    ModelState.AddModelError("JOB_Number", "number between 1 And 500");
+
+                }
                 if (ModelState.IsValid)
                 {
                     WST_WorkStatus.AddNew(workStatus, _accountingDbContext);

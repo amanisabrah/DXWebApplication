@@ -92,18 +92,25 @@
 
                     settings.Width = Unit.Percentage(100);
                     settings.ShowProgressPanel = true;
-                    settings.ShowUploadButton = true;
                     settings.AdvancedModeSettings.EnableMultiSelect = true;
                     settings.AdvancedModeSettings.EnableFileList = true;
                     settings.AdvancedModeSettings.EnableDragAndDrop = true;
                     settings.NullText = "Select multiple files...";
+                    settings.AutoStartUpload = true;
 
                     settings.ValidationSettings.Assign(DXWebApplication.Models.JOB_JOBS.UploadValidationSettings);
 
                     //settings.ClientSideEvents.FilesUploadStart = "function(s,e) { DXUploadedFilesContainer.Clear(); }";
-                    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(e); }";
+                    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { OnFileUploadComplete(e); }";
 
                 }).GetHtml();
+
+                ViewContext.Writer.Write("<div id='linkContainer'>");//container
+                if (job != null && job.JOB_FileName != null)
+                {
+                    ViewContext.Writer.Write("<a href='DownloadFile'>" + job.JOB_FileName + "</a>");
+                }
+                ViewContext.Writer.Write("</div>");
             }
         });
     });

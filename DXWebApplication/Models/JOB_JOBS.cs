@@ -24,5 +24,7 @@ namespace DXWebApplication.Models
         public Nullable<System.DateTime> JOB_EntryDate { get; set; }
         public Nullable<System.DateTime> JOB_UpdateDate { get; set; }
         public Nullable<System.DateTime> JOB_DeleteDate { get; set; }
+        public byte[] JOB_File { get; set; }
+        public string JOB_FileName { get; set; }
     }
 }

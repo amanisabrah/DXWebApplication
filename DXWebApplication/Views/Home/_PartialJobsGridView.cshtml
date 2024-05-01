@@ -98,6 +98,22 @@
     });
 
 
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "JOB_FileName";
+        c.Caption = "File Name";
+        c.SetDataItemTemplateContent(cell =>
+        {
+            Html.DevExpress().HyperLink(h =>
+            {
+                h.Properties.Text = (string)DataBinder.Eval(cell.DataItem, "JOB_FileName");
+                int ID = (int)DataBinder.Eval(cell.DataItem, "JOB_ID");
+                h.NavigateUrl = Url.Action("DownloadFileWithID", "Home", new {JOBID = ID });
+            }).Render();
+        });
+    });
+
+
     settings.SetEditFormTemplateContent(c =>
     {
         Html.RenderPartial("_PartialjobsEditForm");

@@ -19,6 +19,8 @@
           <Property Name="JOB_EntryDate" Type="datetime2" Precision="7" />
           <Property Name="JOB_UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="JOB_DeleteDate" Type="datetime2" Precision="7" />
+          <Property Name="JOB_File" Type="varbinary(max)" />
+          <Property Name="JOB_FileName" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="WST_WorkStatus">
           <Key>
@@ -56,6 +58,8 @@
           <Property Name="JOB_EntryDate" Type="DateTime" Precision="7" />
           <Property Name="JOB_UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="JOB_DeleteDate" Type="DateTime" Precision="7" />
+          <Property Name="JOB_File" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="JOB_FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="AccountingDbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" />
@@ -84,6 +88,8 @@
           <EntitySetMapping Name="JOB_JOBS">
             <EntityTypeMapping TypeName="verbModel.JOB_JOBS">
               <MappingFragment StoreEntitySet="JOB_JOBS">
+                <ScalarProperty Name="JOB_FileName" ColumnName="JOB_FileName" />
+                <ScalarProperty Name="JOB_File" ColumnName="JOB_File" />
                 <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="JOB_Name" ColumnName="JOB_Name" />
                 <ScalarProperty Name="JOB_Name2" ColumnName="JOB_Name2" />

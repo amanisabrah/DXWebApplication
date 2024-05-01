@@ -2,7 +2,80 @@
 @{
     ViewBag.Title = "WorkStatus";
 }
+<script>
+    var rowIndex = 0;
+    function WorkStatusGridView_OnBatchEditStartEditing(s, e) {
+        rowIndex = e.visibleIndex; 
+        //WorkStatusGridView.batchEditApi.SetCellValue(2, "WST_Shortcut", "yousef")
+        //s.batchEditApi.SetCellValue(e.visibleIndex, "WST_Shortcut", "yousef")
 
+        if (e.focusedColumn.fieldName == "WST_Number") {
+            var num = WorkStatusGridView.batchEditApi.GetCellValue(rowIndex, "WST_Number", false);
+            if (num == null || num <= 0) {
+                var arr = WorkStatusGridView.batchEditApi.GetRowVisibleIndices();
+                var max = WorkStatusGridView.batchEditApi.GetCellValue(arr[0], "WST_Number", false);
+                for (var i = 1; i < arr.length; i++) {
+                    var number = WorkStatusGridView.batchEditApi.GetCellValue(arr[i], "WST_Number", false);
+                    if (number > max) {
+                        max = number;
+                    }
+
+                }
+                WorkStatusGridView.batchEditApi.SetCellValue(rowIndex, "WST_Number", max + 1);
+            }
+            e.cancel = true;
+        }
+        var name = WorkStatusGridView.batchEditApi.GetCellValue(rowIndex, "WST_Name", false);
+        if (e.focusedColumn.fieldName == "WST_KindOfWorkStatus") {
+            if (name == null)
+                e.cancel = true;
+        }
+
+        if (e.focusedColumn.fieldName == "WST_EntryDate") {
+            e.cancel = true;
+        }
+
+        if (e.focusedColumn.fieldName == "WST_UpdateDate") {
+            e.cancel = true;
+        } 
+    }
+
+
+    function WST_Name_OnValueChange(s, e) {
+
+        var name = s.GetValue();
+        var name2 = WorkStatusGridView.batchEditApi.GetCellValue(rowIndex, "WST_Name2", false);
+
+        if (name2 == null || name2 == "") {
+            WorkStatusGridView.batchEditApi.SetCellValue(rowIndex, "WST_Name2", name);
+        }
+    }
+
+    function WST_Name2_OnValueChange(s, e) {
+        var name2 = s.GetValue();
+        var name = WorkStatusGridView.batchEditApi.GetCellValue(rowIndex, "WST_Name", false);
+
+        if (name == null || name == "") {
+            WorkStatusGridView.batchEditApi.SetCellValue(rowIndex, "WST_Name", name2);
+        }
+
+    }
+
+    //function GetMaxNumber() {
+    //    var arr = WorkStatusGridView.batchEditApi.GetRowVisibleIndices();
+    //    var max = WorkStatusGridView.batchEditApi.GetCellValue(arr[0], "WST_Number", false);
+    //    for (var i = 1; i < arr.length; i++) {
+    //        var number = WorkStatusGridView.batchEditApi.GetCellValue(arr[i], "WST_Number", false);
+    //        if (number > max) {
+    //            max = number;
+    //        }
+
+    //    }
+    //    console.log(max)
+    //}
+
+
+</script>
 <h2>Work Status</h2>
 @Html.Action("PartialWorkStatusGridView")
 

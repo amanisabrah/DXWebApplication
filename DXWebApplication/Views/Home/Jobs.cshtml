@@ -4,8 +4,7 @@
 }
 
 <script>
-    function OnBeginCallback(s, e)
-    {
+    function OnBeginCallback(s, e) {
         if (e.command === "STARTEDIT") {
             var key = s.GetRowKey(s.GetFocusedRowIndex());
             e.customArgs['JOB_ID'] = key;
@@ -25,25 +24,28 @@
         jobsGridView.UpdateEdit();
     }
 
-    function onFileUploadComplete(s, e) {
-        var data = e.callbackData.split('|');
-        for (var i = 0; i < data.length; i += 2) {
-            var file = data[i];
-            var url = data[i + 1];
-            var link = document.createElement('A');
-            link.innerHTML = file;
-            link.setAttribute('href', url);
-            link.setAttribute('target', '_blank');
-            var fileContainer = document.getElementById('fileContainer');
-            fileContainer.appendChild(link);
-            fileContainer.appendChild(document.createElement('BR'));
+    function OnFileUploadComplete(s, e) {
+        if (s.callbackData) {
+            var a = document.createElement('a');
+            var linkText = document.createTextNode(s.callbackData);
+            a.appendChild(linkText);
+            a.title = "Link";
+            a.href = "@Url.Action("DownloadFile", "Home"/*, new { id = "id" }*/)";
+            var div = document.getElementById('linkContainer');
+            div.appendChild(a);
         }
-    }  
+    }
+    function ssss_Click(s,e) {
+    }
+
+
+
+
+
 
 </script>
 
 <main>
-
     
     <section class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Jobs</h1>
