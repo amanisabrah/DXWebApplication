@@ -35,7 +35,13 @@
             div.appendChild(a);
         }
     }
-    function ssss_Click(s,e) {
+
+    function OnToolbarItemClick(s, e) {
+
+        if (e.item.name == "reportButton")
+
+        window.location.href ="@Url.Action("ViewReport", "Home"/*, new { id = "id" }*/)";
+
     }
 
 
@@ -47,9 +53,9 @@
 
 <main>
     
-    <section class="row" aria-labelledby="aspnetTitle">
+    <form class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Jobs</h1>
-        <div>@Html.Partial("_PartialJobsFilter", (DXWebApplication.Models.Job_Filter)ViewBag.Filter)</div>
+        <div>@Html.Partial("_PartialJobsFilter", (DXWebApplication.Models.Job_Filter)ViewBag.Filter)</div><!-- model mvc-->>
         @Html.Action("PartialJobsGridView", new { entryDate = ViewBag.Filter.JOB_FilterEntryDate, deleteDate = ViewBag.Filter.JOB_FilterDeleteDate, Gender = ViewBag.Filter.JOB_FilterGender })
-    </section>
+    </form>
 </main>

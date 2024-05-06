@@ -2,6 +2,7 @@
 using DevExpress.Web.Internal.XmlProcessor;
 using DevExpress.Web.Mvc;
 using DXWebApplication.Models;
+using DXWebApplication.Reports;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -57,11 +58,15 @@ namespace DXWebApplication.Controllers
         public ActionResult PartialJobsGridView(string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)//= null indicates that if no value is provided for JOB_ID, it will default to null.
         {
             List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender);
-
+            JOB_JOBS job = null;
             switch (Command)
             {
+                case "ADDNEWROW":
+                     job = new JOB_JOBS();
+                    ViewBag.job = job;
+                    break;
                 case "STARTEDIT":
-                    var job = jobs.Where(x => x.JOB_ID == JOB_ID).FirstOrDefault();
+                    job = jobs.Where(x => x.JOB_ID == JOB_ID).FirstOrDefault();
                     ViewBag.job = job;
                     Session["FileByte"] = job.JOB_File;
                     Session["FileName"] = job.JOB_FileName;
@@ -70,6 +75,7 @@ namespace DXWebApplication.Controllers
                     Session["FileByte"] = null;
                     Session["FileName"] = null;
                     break;
+
             }
 
             return PartialView("_PartialJobsGridView", jobs);
@@ -89,7 +95,11 @@ namespace DXWebApplication.Controllers
                 ModelState.AddModelError("JOB_Name2", "Secound Namw Is Required");
             }
 
-            if (add.JOB_Number > 100)
+            if (jobs.Any(j => j.JOB_Number == add.JOB_Number && j.JOB_ID != add.JOB_ID))
+            {
+                ModelState.AddModelError("JOB_Number", "Job number already exists.");
+            }
+            if (add.JOB_Number > 100 )
             {
                 ModelState.AddModelError("JOB_Number", "number between 1 And 500");
 
@@ -127,13 +137,13 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialJobsGridViewDelete(JOB_JOBS delete)
+        public ActionResult PartialJobsGridViewDelete(JOB_JOBS delete, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
         {
             if (ModelState.IsValid)
             {
                 JOB_JOBS.Delete(delete, _accountingDbContext);
             }
-            return PartialView("_PartialJobsGridView", JOB_JOBS.Get(_accountingDbContext));
+            return PartialView("_PartialJobsGridView", JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender));
         }
 
         public ActionResult MultiSelectionImageUpload()
@@ -162,6 +172,12 @@ namespace DXWebApplication.Controllers
             string fileName = job.JOB_FileName;
 
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+        
+        public ActionResult ViewReport()
+        {
+         
+            return View(new XtraReport1());
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -195,11 +211,15 @@ namespace DXWebApplication.Controllers
             {
                 if (updateValues.IsValid(workStatus))
                     InsertWorkStatus(workStatus, updateValues);
+                else
+                    updateValues.SetErrorText(workStatus, "Name1 validation errors");
             }
             foreach (var workStatus in updateValues.Update)
             {
                 if (updateValues.IsValid(workStatus))
                     UpdateWorkStatus(workStatus, updateValues);
+                else
+                    updateValues.SetErrorText(workStatus, "Name2 validation errors");
             }
             foreach (var workStatusID in updateValues.DeleteKeys)
             {
@@ -214,24 +234,9 @@ namespace DXWebApplication.Controllers
             try
             {
 
-                if (string.IsNullOrEmpty(workStatus.WST_Name))
-                {
-                    ModelState.AddModelError("JOB_Name", "First Name Is Required");
-                }
-                if (string.IsNullOrEmpty(workStatus.WST_Name2))
-                {
-                    ModelState.AddModelError("JOB_Name2", "Secound Namw Is Required");
-                }
-
-                if (workStatus.WST_Number == null)
-                {
-                    ModelState.AddModelError("JOB_Number", "number between 1 And 500");
-
-                }
                 if (ModelState.IsValid)
                 {
                     WST_WorkStatus.AddNew(workStatus, _accountingDbContext);
-
                 }
             }
             catch (Exception e)
@@ -244,6 +249,7 @@ namespace DXWebApplication.Controllers
         {
             try
             {
+
                 if (ModelState.IsValid)
                 {
                     WST_WorkStatus.Edit(workStatus, _accountingDbContext);
@@ -270,6 +276,12 @@ namespace DXWebApplication.Controllers
                 updateValues.SetErrorText(workStatusID, e.Message);
 
             }
+        }
+
+        public ActionResult ViewBatchReport()
+        {
+
+            return View(new XtraReport2());
         }
     }
 }

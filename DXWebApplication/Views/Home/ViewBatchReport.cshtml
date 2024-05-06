@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "ViewBatchReport";
+}
+
+@Html.DevExpress().ReportDesigner(settings =>
+{
+    settings.Name = "ReportDesigner";
+
+}).Bind(Model).GetHtml()
+
+

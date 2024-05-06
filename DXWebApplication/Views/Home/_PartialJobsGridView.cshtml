@@ -10,6 +10,9 @@
     settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewAddNew" };
     settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewEdit" };
     settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewDelete" };
+    settings.SettingsExport.EnableClientSideExportAPI = true;
+    settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
+    settings.ClientSideEvents.ToolbarItemClick = "OnToolbarItemClick";
     settings.Toolbars.Add(tb =>
     {
         tb.Enabled = true;
@@ -20,6 +23,48 @@
         tb.Items.Add(GridViewToolbarCommand.New);
         tb.Items.Add(GridViewToolbarCommand.Edit);
         tb.Items.Add(GridViewToolbarCommand.Delete);
+
+        tb.Items.Add(i =>
+        {
+            i.Command = GridViewToolbarCommand.Refresh;
+            i.BeginGroup = true;
+            i.AdaptivePriority = 1;
+        });
+        tb.Items.Add(i =>
+        {
+            i.Text = "Export to";
+            i.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsDownload16x16office2013;
+            i.BeginGroup = true;
+            i.AdaptivePriority = 2;
+            i.Items.Add(GridViewToolbarCommand.ExportToPdf);
+            i.Items.Add(GridViewToolbarCommand.ExportToDocx);
+            i.Items.Add(GridViewToolbarCommand.ExportToRtf);
+            i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
+            //i.Items.Add(exportitem =>
+            //{
+            //    exportitem.Name = "CustomExportToXLS";
+            //    exportitem.Text = "Export to XLS(WYSIWYG)";
+            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxls16x16office2013;
+            //});
+            //i.Items.Add(GridViewToolbarCommand.ExportToXlsx).Text = "Export to XLSX(DataAware)";
+            //i.Items.Add(exportitem =>
+            //{
+            //    exportitem.Name = "CustomExportToXLSX";
+            //    exportitem.Text = "Export to XLSX(WYSIWYG)";
+            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxlsx16x16office2013;
+            //});
+        });
+        tb.Items.Add(i =>
+        {
+
+            i.Text = "Report";
+            i.Name = "reportButton";
+            i.Command = GridViewToolbarCommand.Custom;
+
+
+            i.AdaptivePriority = 3;
+
+        });
     });
 
 
@@ -69,6 +114,8 @@
     {
         c.FieldName = "JOB_Number";
         c.Caption = "Job Number";
+        c.VisibleIndex = 0;
+
     });
 
     settings.Columns.Add(c =>

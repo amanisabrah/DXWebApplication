@@ -5,7 +5,7 @@
 <script>
     var rowIndex = 0;
     function WorkStatusGridView_OnBatchEditStartEditing(s, e) {
-        rowIndex = e.visibleIndex; 
+        rowIndex = e.visibleIndex;
         //WorkStatusGridView.batchEditApi.SetCellValue(2, "WST_Shortcut", "yousef")
         //s.batchEditApi.SetCellValue(e.visibleIndex, "WST_Shortcut", "yousef")
 
@@ -37,7 +37,7 @@
 
         if (e.focusedColumn.fieldName == "WST_UpdateDate") {
             e.cancel = true;
-        } 
+        }
     }
 
 
@@ -60,6 +60,21 @@
         }
 
     }
+
+
+    function OnToolbarItemClick(s, e) {
+
+        if (e.item.name == "reportButton")
+
+        window.location.href ="@Url.Action("ViewBatchReport", "Home"/*, new { id = "id" }*/)";
+
+    }
+
+    //function onValidation(s, e) {
+    //    if (!e.isValid) {
+    //        alert("Name1 and Name2 Required: " + e.errorText);
+    //    }
+    //}
 
     //function GetMaxNumber() {
     //    var arr = WorkStatusGridView.batchEditApi.GetRowVisibleIndices();

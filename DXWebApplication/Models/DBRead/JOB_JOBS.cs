@@ -10,8 +10,12 @@ namespace DXWebApplication.Models
 {
     public partial class JOB_JOBS
     {
-        public static List<JOB_JOBS> Get(AccountingDbContext _dbContext)
+        public static List<JOB_JOBS> Get(AccountingDbContext _dbContext = null)
         {
+            if (_dbContext == null) 
+            {
+                _dbContext = new AccountingDbContext();
+            }
             return _dbContext.JOB_JOBS.Where(j => j.JOB_IsDeleted == false).ToList();
         }
         public static List<JOB_JOBS> GetWithFilter(AccountingDbContext _dbContext, DateTime? entryDate, DateTime? deleteDate, int? Gender)
