@@ -283,5 +283,99 @@ namespace DXWebApplication.Controllers
 
             return View(new XtraReport2());
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+
+
+        [HttpGet]
+        public ActionResult Employee()
+        {
+            return View("Employee");
+        }
+
+        [HttpGet]
+        public ActionResult PartialEmpGridView()
+        {
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+            return PartialView("_PartialEmpGridView", emps);
+        }
+
+        [HttpPost]
+        public ActionResult PartialEmpGridView(string Command,int? ACC_EMP_ID = null)
+        {
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+            switch (Command)
+            {
+                case "ADDNEWROW":
+                   var emp = new ACC_EMP_Employee();
+                    ViewBag.emp = emp;
+                    break;
+                case "STARTEDIT":
+                    emp = emps.Where(x => x.ACC_EMP_ID == ACC_EMP_ID).FirstOrDefault();
+                    ViewBag.emp = emp;
+                    break;
+                case "CANCELEDIT":
+                    break;
+
+            }
+
+            return PartialView("_PartialEmpGridView", emps);
+        }
+
+        [HttpPost]
+        public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
+        {
+
+            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            {
+
+                ACC_EMP_Employee.AddNew(employee, _accountingDbContext);
+
+            }
+            else
+                ViewBag.emp = employee;
+
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+
+
+            return PartialView("_PartialEmpGridView", emps);
+        }
+
+        [HttpPost]
+
+        public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee, string Command, int? ACC_EMP_ID = null, DateTime? StartDate = null, DateTime? EndDate = null, int? Gender = null)
+        {
+
+            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            {
+
+                ACC_EMP_Employee.Edit(employee, _accountingDbContext);
+            }
+            else
+                ViewBag.emp = employee;
+
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+
+            return PartialView("_PartialEmpGridView", emps);
+        }
+
+        [HttpPost]
+        public ActionResult PartialEmpGridViewDelete(ACC_EMP_Employee employee, DateTime? StartDate = null, DateTime? EndDate = null, int? Gender = null)
+        {
+            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            {
+                ACC_EMP_Employee.Delete(employee, _accountingDbContext);
+            }
+
+            return PartialView("_PartialEmpGridView", ACC_EMP_Employee.Get(_accountingDbContext));
+        }
+        public ActionResult ViewEmpReport()
+        {
+
+            return View(new XtraReport3());
+        }
+
+
+
     }
 }

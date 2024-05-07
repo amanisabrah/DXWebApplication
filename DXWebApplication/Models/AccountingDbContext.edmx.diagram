@@ -5,9 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bb7cc2b834714b8d93556df252221743" Name="Diagram1">
-        <EntityTypeShape EntityType="verbModel.JOB_JOBS" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="verbModel.WST_WorkStatus" Width="1.5" PointX="3.375" PointY="0.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="verbModel.JOB_JOBS" Width="1.5" PointX="3.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="verbModel.WST_WorkStatus" Width="1.5" PointX="11.375" PointY="1.375" />
+        <EntityTypeShape EntityType="verbModel.ACC_EMP_Employee" Width="1.5" PointX="7.375" PointY="0.875" />
+        <AssociationConnector Association="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" />
+        <AssociationConnector Association="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

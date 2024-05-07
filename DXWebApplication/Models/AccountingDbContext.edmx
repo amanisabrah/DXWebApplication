@@ -5,6 +5,28 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="verbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACC_EMP_Employee">
+          <Key>
+            <PropertyRef Name="ACC_EMP_ID" />
+          </Key>
+          <Property Name="ACC_EMP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACC_EMP_Number" Type="int" Nullable="false" />
+          <Property Name="ACC_EMP_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ACC_EMP_Name2" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ACC_EMP_JOBID" Type="int" />
+          <Property Name="ACC_EMP_Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ACC_EMP_MartialStatus" Type="int" />
+          <Property Name="ACC_EMP_DateofBirth" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ACC_EMP_PlaceofBirth" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACC_EMP_documentNum" Type="int" />
+          <Property Name="ACC_EMP_Gender" Type="int" />
+          <Property Name="ACC_EMP_JoinDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ACC_EMP_WSTID" Type="int" />
+          <Property Name="ACC_EMP_EntryDate" Type="datetime2" Precision="7" />
+          <Property Name="ACC_EMP_UpdatedDate" Type="datetime2" Precision="7" />
+          <Property Name="ACC_EMP_DeleteDate" Type="datetime2" Precision="7" />
+          <Property Name="ACC_EMP_IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="JOB_JOBS">
           <Key>
             <PropertyRef Name="JOB_ID" />
@@ -36,9 +58,42 @@
           <Property Name="WST_UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="WST_DeleteDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <Association Name="FK_ACC_EMP_Employee_JOB_JOBS">
+          <End Role="JOB_JOBS" Type="Self.JOB_JOBS" Multiplicity="0..1" />
+          <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_JOBS">
+              <PropertyRef Name="JOB_ID" />
+            </Principal>
+            <Dependent Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACC_EMP_Employee_WST_WorkStatus">
+          <End Role="WST_WorkStatus" Type="Self.WST_WorkStatus" Multiplicity="0..1" />
+          <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WST_WorkStatus">
+              <PropertyRef Name="WST_ID" />
+            </Principal>
+            <Dependent Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_WSTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="verbModelStoreContainer">
+          <EntitySet Name="ACC_EMP_Employee" EntityType="Self.ACC_EMP_Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WST_WorkStatus" EntityType="Self.WST_WorkStatus" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ACC_EMP_Employee_JOB_JOBS" Association="Self.FK_ACC_EMP_Employee_JOB_JOBS">
+            <End Role="JOB_JOBS" EntitySet="JOB_JOBS" />
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACC_EMP_Employee_WST_WorkStatus" Association="Self.FK_ACC_EMP_Employee_WST_WorkStatus">
+            <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -60,11 +115,21 @@
           <Property Name="JOB_DeleteDate" Type="DateTime" Precision="7" />
           <Property Name="JOB_File" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="JOB_FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ACC_EMP_Employee" Relationship="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" FromRole="JOB_JOBS" ToRole="ACC_EMP_Employee" />
         </EntityType>
         <EntityContainer Name="AccountingDbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" />
           <EntitySet Name="WST_WorkStatus" EntityType="verbModel.WST_WorkStatus" />
-        </EntityContainer>
+          <EntitySet Name="ACC_EMP_Employee" EntityType="verbModel.ACC_EMP_Employee" />
+          <AssociationSet Name="FK_ACC_EMP_Employee_JOB_JOBS" Association="verbModel.FK_ACC_EMP_Employee_JOB_JOBS">
+            <End Role="JOB_JOBS" EntitySet="JOB_JOBS" />
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACC_EMP_Employee_WST_WorkStatus" Association="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus">
+            <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="WST_WorkStatus">
           <Key>
             <PropertyRef Name="WST_ID" />
@@ -78,8 +143,57 @@
           <Property Name="WST_EntryDate" Type="DateTime" Precision="7" />
           <Property Name="WST_UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="WST_DeleteDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="ACC_EMP_Employee" Relationship="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" FromRole="WST_WorkStatus" ToRole="ACC_EMP_Employee" />
         </EntityType>
-      </Schema>
+        <EntityType Name="ACC_EMP_Employee">
+          <Key>
+            <PropertyRef Name="ACC_EMP_ID" />
+          </Key>
+          <Property Name="ACC_EMP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACC_EMP_Number" Type="Int32" Nullable="false" />
+          <Property Name="ACC_EMP_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACC_EMP_Name2" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACC_EMP_JOBID" Type="Int32" />
+          <Property Name="ACC_EMP_Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACC_EMP_MartialStatus" Type="Int32" />
+          <Property Name="ACC_EMP_DateofBirth" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ACC_EMP_PlaceofBirth" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACC_EMP_documentNum" Type="Int32" />
+          <Property Name="ACC_EMP_Gender" Type="Int32" />
+          <Property Name="ACC_EMP_JoinDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ACC_EMP_WSTID" Type="Int32" />
+          <Property Name="ACC_EMP_EntryDate" Type="DateTime" Precision="7" />
+          <Property Name="ACC_EMP_UpdatedDate" Type="DateTime" Precision="7" />
+          <Property Name="ACC_EMP_DeleteDate" Type="DateTime" Precision="7" />
+          <Property Name="ACC_EMP_IsDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="JOB_JOBS" Relationship="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" FromRole="ACC_EMP_Employee" ToRole="JOB_JOBS" />
+          <NavigationProperty Name="WST_WorkStatus" Relationship="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" FromRole="ACC_EMP_Employee" ToRole="WST_WorkStatus" />
+        </EntityType>
+        <Association Name="FK_ACC_EMP_Employee_JOB_JOBS">
+          <End Type="verbModel.JOB_JOBS" Role="JOB_JOBS" Multiplicity="0..1" />
+          <End Type="verbModel.ACC_EMP_Employee" Role="ACC_EMP_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_JOBS">
+              <PropertyRef Name="JOB_ID" />
+            </Principal>
+            <Dependent Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_JOBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACC_EMP_Employee_WST_WorkStatus">
+          <End Type="verbModel.WST_WorkStatus" Role="WST_WorkStatus" Multiplicity="0..1" />
+          <End Type="verbModel.ACC_EMP_Employee" Role="ACC_EMP_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WST_WorkStatus">
+              <PropertyRef Name="WST_ID" />
+            </Principal>
+            <Dependent Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_WSTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -115,6 +229,29 @@
                 <ScalarProperty Name="WST_Name2" ColumnName="WST_Name2" />
                 <ScalarProperty Name="WST_Name" ColumnName="WST_Name" />
                 <ScalarProperty Name="WST_ID" ColumnName="WST_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ACC_EMP_Employee">
+            <EntityTypeMapping TypeName="verbModel.ACC_EMP_Employee">
+              <MappingFragment StoreEntitySet="ACC_EMP_Employee">
+                <ScalarProperty Name="ACC_EMP_IsDelete" ColumnName="ACC_EMP_IsDelete" />
+                <ScalarProperty Name="ACC_EMP_DeleteDate" ColumnName="ACC_EMP_DeleteDate" />
+                <ScalarProperty Name="ACC_EMP_UpdatedDate" ColumnName="ACC_EMP_UpdatedDate" />
+                <ScalarProperty Name="ACC_EMP_EntryDate" ColumnName="ACC_EMP_EntryDate" />
+                <ScalarProperty Name="ACC_EMP_WSTID" ColumnName="ACC_EMP_WSTID" />
+                <ScalarProperty Name="ACC_EMP_JoinDate" ColumnName="ACC_EMP_JoinDate" />
+                <ScalarProperty Name="ACC_EMP_Gender" ColumnName="ACC_EMP_Gender" />
+                <ScalarProperty Name="ACC_EMP_documentNum" ColumnName="ACC_EMP_documentNum" />
+                <ScalarProperty Name="ACC_EMP_PlaceofBirth" ColumnName="ACC_EMP_PlaceofBirth" />
+                <ScalarProperty Name="ACC_EMP_DateofBirth" ColumnName="ACC_EMP_DateofBirth" />
+                <ScalarProperty Name="ACC_EMP_MartialStatus" ColumnName="ACC_EMP_MartialStatus" />
+                <ScalarProperty Name="ACC_EMP_Address" ColumnName="ACC_EMP_Address" />
+                <ScalarProperty Name="ACC_EMP_JOBID" ColumnName="ACC_EMP_JOBID" />
+                <ScalarProperty Name="ACC_EMP_Name2" ColumnName="ACC_EMP_Name2" />
+                <ScalarProperty Name="ACC_EMP_Name" ColumnName="ACC_EMP_Name" />
+                <ScalarProperty Name="ACC_EMP_Number" ColumnName="ACC_EMP_Number" />
+                <ScalarProperty Name="ACC_EMP_ID" ColumnName="ACC_EMP_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

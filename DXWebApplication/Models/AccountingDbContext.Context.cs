@@ -27,5 +27,6 @@ namespace DXWebApplication.Models
     
         public virtual DbSet<JOB_JOBS> JOB_JOBS { get; set; }
         public virtual DbSet<WST_WorkStatus> WST_WorkStatus { get; set; }
+        public virtual DbSet<ACC_EMP_Employee> ACC_EMP_Employee { get; set; }
     }
 }

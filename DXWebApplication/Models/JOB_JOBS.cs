@@ -14,6 +14,12 @@ namespace DXWebApplication.Models
     
     public partial class JOB_JOBS
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public JOB_JOBS()
+        {
+            this.ACC_EMP_Employee = new HashSet<ACC_EMP_Employee>();
+        }
+    
         public int JOB_ID { get; set; }
         public string JOB_Name { get; set; }
         public string JOB_Name2 { get; set; }
@@ -26,5 +32,8 @@ namespace DXWebApplication.Models
         public Nullable<System.DateTime> JOB_DeleteDate { get; set; }
         public byte[] JOB_File { get; set; }
         public string JOB_FileName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ACC_EMP_Employee> ACC_EMP_Employee { get; set; }
     }
 }

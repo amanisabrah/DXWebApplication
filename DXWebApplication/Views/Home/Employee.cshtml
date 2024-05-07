@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Employee";
+}
+
+<script>
+
+    function OnBeginCallback(s, e) {
+        if (e.command === "STARTEDIT") {
+            var key = s.GetRowKey(s.GetFocusedRowIndex());
+            e.customArgs['ACC_EMP_ID'] = key;
+        }
+        e.customArgs['Command'] = e.command;
+    }
+
+     function OnToolbarItemClick(s, e) {
+
+     if (e.item.name == "reportButton")
+
+     window.location.href ="@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
+
+ }
+
+
+
+</script>
+
+<main>
+    <form class="row" aria-labelledby="aspnetTitle">
+        <h1 id="title">Employee</h1>
+        @Html.Action("PartialEmpGridView")
+    </form>
+</main>

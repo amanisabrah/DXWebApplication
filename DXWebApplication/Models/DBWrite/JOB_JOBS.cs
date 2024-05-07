@@ -27,7 +27,7 @@ namespace DXWebApplication.Models
                 existingEntity.JOB_Shortcut = edit.JOB_Shortcut;
                 existingEntity.JOB_Number = edit.JOB_Number;
                 existingEntity.JOB_Gender = edit.JOB_Gender;
-                existingEntity.JOB_UpdateDate = edit.JOB_UpdateDate;
+                existingEntity.JOB_EntryDate = edit.JOB_EntryDate;
                 existingEntity.JOB_UpdateDate = edit.JOB_UpdateDate;
                 existingEntity.JOB_File = edit.JOB_File;
                 existingEntity.JOB_FileName = edit.JOB_FileName;
