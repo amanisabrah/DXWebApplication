@@ -262,6 +262,7 @@
     <Content Include="Views\Home\_PartialEmpGridView.cshtml" />
     <Content Include="Views\Home\_PartialempsEditForm.cshtml" />
     <Content Include="Views\Home\ViewEmpReport.cshtml" />
+    <Content Include="Views\Home\_PartialSalGridView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -296,15 +297,20 @@
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBRead\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBRead\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBRead\JOB_JOBS.cs" />
     <Compile Include="Models\DBRead\WST_WorkStatus.cs" />
     <Compile Include="Models\DBWrite\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBWrite\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBWrite\JOB_JOBS.cs" />
     <Compile Include="Models\DBWrite\WST_WorkStatus.cs" />
     <Compile Include="Models\Enums\GenderCollection.cs" />
     <Compile Include="Models\Enums\KindOfWorkStatus.cs" />
     <Compile Include="Models\Enums\MartialStatus.cs" />
     <Compile Include="Models\Filter\Job_Filter.cs" />
+    <Compile Include="Models\HRS_SAL_Salaries.cs">
+      <DependentUpon>AccountingDbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\JOB_JOBS.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>

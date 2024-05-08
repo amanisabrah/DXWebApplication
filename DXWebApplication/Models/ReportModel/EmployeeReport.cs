@@ -7,30 +7,34 @@ namespace DXWebApplication.Models
 {
     public class EmployeeReport
     {
-        public string ACC_EMP_Name { get; set; }
-        public Nullable<int> ACC_EMP_JOBID { get; set; }
-        public Nullable<int> ACC_EMP_WSTID { get; set; }
+
+        public int ACC_EMR_EMPID { get; set; }
+        public string ACC_EMR_EmpName { get; set; }
+        public string ACC_EMR_JOBName { get; set; }
+        public string ACC_EMR_WSTName { get; set; }
         public Nullable<int> ACC_EMP_documentNum { get; set; }
 
-
-        public static List<EmployeeReport> Get() //It retrieves a list of WST_WorkStatus objects using Get
+        public static List<EmployeeReport> Get()
         {
+
             var model = new List<EmployeeReport>();
-            List<EmployeeReport> emp = EmployeeReport.Get();
+            List<ACC_EMP_Employee> emp = ACC_EMP_Employee.Get();
             foreach (var item in emp)
             {
-
                 var report = new EmployeeReport
                 {
-                    ACC_EMP_Name = item.ACC_EMP_Name,
-                    ACC_EMP_JOBID = item.ACC_EMP_JOBID,
-                    ACC_EMP_WSTID = item.ACC_EMP_WSTID,
-                    ACC_EMP_documentNum=item.ACC_EMP_documentNum
+                    ACC_EMR_EMPID= item.ACC_EMP_ID,
+                    ACC_EMR_EmpName = item.ACC_EMP_Name,
+                    ACC_EMR_JOBName = item.JOB_JOBS.JOB_Name,
+                    ACC_EMR_WSTName = item.WST_WorkStatus.WST_Name,
+                    ACC_EMP_documentNum = item.ACC_EMP_documentNum
                 };
                 model.Add(report);
             }
-
             return model;
         }
+
+
+
     }
 }

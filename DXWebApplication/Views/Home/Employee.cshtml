@@ -12,6 +12,11 @@
         e.customArgs['Command'] = e.command;
     }
 
+
+    function SalaryAmountGridView_OnBatchEditStartEditing(s, e) {
+       
+    }
+
      function OnToolbarItemClick(s, e) {
 
      if (e.item.name == "reportButton")
@@ -27,6 +32,8 @@
 <main>
     <form class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Employee</h1>
+
+
         @Html.Action("PartialEmpGridView")
     </form>
 </main>

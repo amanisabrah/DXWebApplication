@@ -3,12 +3,13 @@
 @using System.Web.UI.WebControls;
 @{
     var emp = (DXWebApplication.Models.ACC_EMP_Employee)ViewBag.emp;
+
 }
 @Html.DevExpress().FormLayout(flSettings =>
 {
 
     flSettings.Name = "PopupEditFormLayout";
-    flSettings.ColCount = 4;
+    flSettings.ColCount = 2;
 
     flSettings.Items.Add(i =>
     {
@@ -196,6 +197,20 @@
 
 
 
+    flSettings.Items.Add(i =>
+    {
+        i.ColSpan = 2;
+        i.ShowCaption = DefaultBoolean.False;
+        i.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write("<div>");
+            Html.RenderAction("PartialSalGridView", new { id = emp.ACC_EMP_ID });
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+
+
+
 
     flSettings.Items.Add(i =>
     {
@@ -220,6 +235,7 @@
             ViewContext.Writer.Write("</div>");
         });
     });
+
 
 
 }).Bind(emp).GetHtml()

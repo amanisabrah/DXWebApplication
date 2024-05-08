@@ -207,6 +207,7 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult BatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
         {
+
             foreach (var workStatus in updateValues.Insert)
             {
                 if (updateValues.IsValid(workStatus))
@@ -287,6 +288,8 @@ namespace DXWebApplication.Controllers
         ///////////////////////////////////////////////////////////////////////////
 
 
+        #region Employee
+        #region EmployeeGridView
         [HttpGet]
         public ActionResult Employee()
         {
@@ -301,13 +304,13 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialEmpGridView(string Command,int? ACC_EMP_ID = null)
+        public ActionResult PartialEmpGridView(string Command, int? ACC_EMP_ID = null)
         {
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
             switch (Command)
             {
                 case "ADDNEWROW":
-                   var emp = new ACC_EMP_Employee();
+                    var emp = new ACC_EMP_Employee();
                     ViewBag.emp = emp;
                     break;
                 case "STARTEDIT":
@@ -321,9 +324,10 @@ namespace DXWebApplication.Controllers
 
             return PartialView("_PartialEmpGridView", emps);
         }
-
+        #endregion
+        #region EmployeeEditForm
         [HttpPost]
-        public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command, int? JOB_ID = null, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
+        public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command)
         {
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState))
@@ -343,7 +347,7 @@ namespace DXWebApplication.Controllers
 
         [HttpPost]
 
-        public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee, string Command, int? ACC_EMP_ID = null, DateTime? StartDate = null, DateTime? EndDate = null, int? Gender = null)
+        public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee, string Command)
         {
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState))
@@ -360,11 +364,11 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialEmpGridViewDelete(ACC_EMP_Employee employee, DateTime? StartDate = null, DateTime? EndDate = null, int? Gender = null)
+        public ActionResult PartialEmpGridViewDelete(ACC_EMP_Employee delete)
         {
-            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            if (ModelState.IsValid)
             {
-                ACC_EMP_Employee.Delete(employee, _accountingDbContext);
+                ACC_EMP_Employee.Delete(delete, _accountingDbContext);
             }
 
             return PartialView("_PartialEmpGridView", ACC_EMP_Employee.Get(_accountingDbContext));
@@ -374,6 +378,100 @@ namespace DXWebApplication.Controllers
 
             return View(new XtraReport3());
         }
+        #endregion
+        #endregion
+
+
+        ////////////////////////////////////////////////////////////////////////////
+
+
+        public ActionResult PartialSalGridView(int? id)
+        {
+            
+            ViewBag.id = id;
+            List<HRS_SAL_Salaries> salary = HRS_SAL_Salaries.Get(_accountingDbContext);
+            return PartialView("_PartialSalGridView", salary);
+        }
+
+
+        [HttpPost]
+        public ActionResult SalaryBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
+        {
+       
+
+            foreach (var salary in updateValues.Insert)
+            {
+                if (updateValues.IsValid(salary))
+                    InsertSalary(salary, updateValues, id);
+                else
+                    updateValues.SetErrorText(salary, "salary ammount req");
+            }
+            foreach (var salary in updateValues.Update)
+            {
+                if (updateValues.IsValid(salary))
+                    UpdateSalary(salary, updateValues);
+                else
+                    updateValues.SetErrorText(salary, "salary ammount req");
+            }
+            foreach (var salaryID in updateValues.DeleteKeys)
+            {
+                DeleteSalary(salaryID, updateValues);
+            }
+            return PartialView("_PartialSalGridView", HRS_SAL_Salaries.Get(_accountingDbContext));
+        }
+
+        protected void InsertSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    salary.HRS_SAL_EMPID=id;
+                    HRS_SAL_Salaries.AddNew(salary, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(salary, e.Message);
+            }
+        }
+
+        protected void UpdateSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    HRS_SAL_Salaries.Edit(salary, _accountingDbContext);
+                }
+
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(salary, e.Message);
+            }
+        }
+
+        protected void DeleteSalary(int salaryID, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_SAL_Salaries.Delete(salaryID, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(salaryID, e.Message);
+
+            }
+        }
+
+
+
 
 
 

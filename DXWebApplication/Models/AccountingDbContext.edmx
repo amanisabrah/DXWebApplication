@@ -27,6 +27,20 @@
           <Property Name="ACC_EMP_DeleteDate" Type="datetime2" Precision="7" />
           <Property Name="ACC_EMP_IsDelete" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="HRS_SAL_Salaries">
+          <Key>
+            <PropertyRef Name="HRS_SAL_ID" />
+          </Key>
+          <Property Name="HRS_SAL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HRS_SAL_EMPID" Type="int" Nullable="false" />
+          <Property Name="HRS_SAL_SalaryAmount" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="HRS_SAL_StartDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_SAL_EndDate" Type="datetime2" Precision="7" />
+          <Property Name="HRS_SAL_EntryDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_SAL_UpdateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_SAL_DeleteDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_SAL_IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="JOB_JOBS">
           <Key>
             <PropertyRef Name="JOB_ID" />
@@ -82,8 +96,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee">
+          <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="1" />
+          <End Role="HRS_SAL_Salaries" Type="Self.HRS_SAL_Salaries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_ID" />
+            </Principal>
+            <Dependent Role="HRS_SAL_Salaries">
+              <PropertyRef Name="HRS_SAL_EMPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="verbModelStoreContainer">
           <EntitySet Name="ACC_EMP_Employee" EntityType="Self.ACC_EMP_Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HRS_SAL_Salaries" EntityType="Self.HRS_SAL_Salaries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WST_WorkStatus" EntityType="Self.WST_WorkStatus" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ACC_EMP_Employee_JOB_JOBS" Association="Self.FK_ACC_EMP_Employee_JOB_JOBS">
@@ -93,6 +120,10 @@
           <AssociationSet Name="FK_ACC_EMP_Employee_WST_WorkStatus" Association="Self.FK_ACC_EMP_Employee_WST_WorkStatus">
             <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee" Association="Self.FK_HRS_SAL_Salaries_ACC_EMP_Employee">
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+            <End Role="HRS_SAL_Salaries" EntitySet="HRS_SAL_Salaries" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -128,6 +159,11 @@
           <AssociationSet Name="FK_ACC_EMP_Employee_WST_WorkStatus" Association="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus">
             <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          <EntitySet Name="HRS_SAL_Salaries" EntityType="verbModel.HRS_SAL_Salaries" />
+          <AssociationSet Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee" Association="verbModel.FK_HRS_SAL_Salaries_ACC_EMP_Employee">
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+            <End Role="HRS_SAL_Salaries" EntitySet="HRS_SAL_Salaries" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="WST_WorkStatus">
@@ -168,6 +204,7 @@
           <Property Name="ACC_EMP_IsDelete" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="JOB_JOBS" Relationship="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" FromRole="ACC_EMP_Employee" ToRole="JOB_JOBS" />
           <NavigationProperty Name="WST_WorkStatus" Relationship="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" FromRole="ACC_EMP_Employee" ToRole="WST_WorkStatus" />
+          <NavigationProperty Name="HRS_SAL_Salaries" Relationship="verbModel.FK_HRS_SAL_Salaries_ACC_EMP_Employee" FromRole="ACC_EMP_Employee" ToRole="HRS_SAL_Salaries" />
         </EntityType>
         <Association Name="FK_ACC_EMP_Employee_JOB_JOBS">
           <End Type="verbModel.JOB_JOBS" Role="JOB_JOBS" Multiplicity="0..1" />
@@ -190,6 +227,33 @@
             </Principal>
             <Dependent Role="ACC_EMP_Employee">
               <PropertyRef Name="ACC_EMP_WSTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HRS_SAL_Salaries">
+          <Key>
+            <PropertyRef Name="HRS_SAL_ID" />
+          </Key>
+          <Property Name="HRS_SAL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HRS_SAL_EMPID" Type="Int32" Nullable="false" />
+          <Property Name="HRS_SAL_SalaryAmount" Type="Decimal" Nullable="false" Precision="18" Scale="6" />
+          <Property Name="HRS_SAL_StartDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_SAL_EndDate" Type="DateTime" Precision="7" />
+          <Property Name="HRS_SAL_EntryDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_SAL_UpdateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_SAL_DeleteDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_SAL_IsDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ACC_EMP_Employee" Relationship="verbModel.FK_HRS_SAL_Salaries_ACC_EMP_Employee" FromRole="HRS_SAL_Salaries" ToRole="ACC_EMP_Employee" />
+        </EntityType>
+        <Association Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee">
+          <End Type="verbModel.ACC_EMP_Employee" Role="ACC_EMP_Employee" Multiplicity="1" />
+          <End Type="verbModel.HRS_SAL_Salaries" Role="HRS_SAL_Salaries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_ID" />
+            </Principal>
+            <Dependent Role="HRS_SAL_Salaries">
+              <PropertyRef Name="HRS_SAL_EMPID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -252,6 +316,21 @@
                 <ScalarProperty Name="ACC_EMP_Name" ColumnName="ACC_EMP_Name" />
                 <ScalarProperty Name="ACC_EMP_Number" ColumnName="ACC_EMP_Number" />
                 <ScalarProperty Name="ACC_EMP_ID" ColumnName="ACC_EMP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HRS_SAL_Salaries">
+            <EntityTypeMapping TypeName="verbModel.HRS_SAL_Salaries">
+              <MappingFragment StoreEntitySet="HRS_SAL_Salaries">
+                <ScalarProperty Name="HRS_SAL_IsDelete" ColumnName="HRS_SAL_IsDelete" />
+                <ScalarProperty Name="HRS_SAL_DeleteDate" ColumnName="HRS_SAL_DeleteDate" />
+                <ScalarProperty Name="HRS_SAL_UpdateDate" ColumnName="HRS_SAL_UpdateDate" />
+                <ScalarProperty Name="HRS_SAL_EntryDate" ColumnName="HRS_SAL_EntryDate" />
+                <ScalarProperty Name="HRS_SAL_EndDate" ColumnName="HRS_SAL_EndDate" />
+                <ScalarProperty Name="HRS_SAL_StartDate" ColumnName="HRS_SAL_StartDate" />
+                <ScalarProperty Name="HRS_SAL_SalaryAmount" ColumnName="HRS_SAL_SalaryAmount" />
+                <ScalarProperty Name="HRS_SAL_EMPID" ColumnName="HRS_SAL_EMPID" />
+                <ScalarProperty Name="HRS_SAL_ID" ColumnName="HRS_SAL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
