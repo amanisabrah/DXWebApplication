@@ -8,14 +8,14 @@ namespace DXWebApplication.Models
 {
     public partial class ACC_EMP_Employee
     {
-        public static void AddNew(ACC_EMP_Employee add, AccountingDbContext db)
+        public static void AddNew(ACC_EMP_Employee add, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null)
         {
             add.ACC_EMP_EntryDate = DateTime.Now;
             db.ACC_EMP_Employee.Add(add);
             db.SaveChanges();
         }
 
-        public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db)
+        public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null)
         {
             edit.ACC_EMP_UpdatedDate = DateTime.Now;
             var existingEntity = db.ACC_EMP_Employee.Find(edit.ACC_EMP_ID);
@@ -38,6 +38,19 @@ namespace DXWebApplication.Models
 
                 db.SaveChanges();
             }
+
+            salaryList?.ForEach(salary => {
+
+                salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
+                if (salary.HRS_SAL_ID <= 10000000) {
+                    DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
+                }
+                else
+                    DXWebApplication.Models.HRS_SAL_Salaries.Edit(salary, db);
+
+            });
+
+
         }
         public static void Delete(ACC_EMP_Employee delete, AccountingDbContext db)
         {

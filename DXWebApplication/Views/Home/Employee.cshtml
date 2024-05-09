@@ -12,10 +12,23 @@
         e.customArgs['Command'] = e.command;
     }
 
-
     function SalaryAmountGridView_OnBatchEditStartEditing(s, e) {
+        rowIndex = e.visibleIndex;
+        var salary = SalaryAmountGridView.batchEditApi.GetCellValue(rowIndex, "HRS_SAL_SalaryAmount", false);
+        var startdate = SalaryAmountGridView.batchEditApi.GetCellValue(rowIndex, "HRS_SAL_StartDate", false);
+
+        if (salary === null && startdate === null) {
+            SalaryAmountGridView.batchEditApi.SetCellValue(rowIndex, "HRS_SAL_SalaryAmount", salary);
+            SalaryAmountGridView.batchEditApi.SetCellValue(rowIndex, "HRS_SAL_StartDate", startdate);
        
+        }
+
+
     }
+ 
+
+
+           
 
      function OnToolbarItemClick(s, e) {
 

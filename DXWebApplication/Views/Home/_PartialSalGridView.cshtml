@@ -20,8 +20,6 @@
     settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
     settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
 
-
-
     settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
     settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
@@ -62,7 +60,6 @@
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
         c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
     });
-
 
 
 }).Bind(Model).GetHtml()

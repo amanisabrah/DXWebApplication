@@ -204,7 +204,7 @@
         i.SetNestedContent(() =>
         {
             ViewContext.Writer.Write("<div>");
-            Html.RenderAction("PartialSalGridView", new { id = emp.ACC_EMP_ID });
+            Html.RenderAction("PartialSalGridView", new { empid = emp.ACC_EMP_ID });
             ViewContext.Writer.Write("</div>");
         });
     });

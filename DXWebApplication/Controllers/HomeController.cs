@@ -1,4 +1,5 @@
-﻿using DevExpress.Web;
+﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
+using DevExpress.Web;
 using DevExpress.Web.Internal.XmlProcessor;
 using DevExpress.Web.Mvc;
 using DXWebApplication.Models;
@@ -329,11 +330,12 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command)
         {
+            List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState))
             {
 
-                ACC_EMP_Employee.AddNew(employee, _accountingDbContext);
+                ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList);
 
             }
             else
@@ -349,11 +351,12 @@ namespace DXWebApplication.Controllers
 
         public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee, string Command)
         {
+            List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState))
             {
 
-                ACC_EMP_Employee.Edit(employee, _accountingDbContext);
+                ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList);
             }
             else
                 ViewBag.emp = employee;
@@ -385,39 +388,68 @@ namespace DXWebApplication.Controllers
         ////////////////////////////////////////////////////////////////////////////
 
 
-        public ActionResult PartialSalGridView(int? id)
+        public ActionResult PartialSalGridView(int empid)
         {
             
-            ViewBag.id = id;
-            List<HRS_SAL_Salaries> salary = HRS_SAL_Salaries.Get(_accountingDbContext);
+            ViewBag.id = empid;
+            List<HRS_SAL_Salaries> salary = HRS_SAL_Salaries.GetByEmpId(empid,_accountingDbContext);
+            Session["SalaryList"] = salary;//keep track of the original list of salaries before any modifications.
+
             return PartialView("_PartialSalGridView", salary);
         }
 
+        public List<HRS_SAL_Salaries> Salaries { get; set; }
 
         [HttpPost]
-        public ActionResult SalaryBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
+        public ActionResult SalaryBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues, int id)
         {
-       
+            var SALID = 10000000;
+            List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;// retrieves the list of salaries from the session
+      
+            foreach (var salary in salaryList)
+            {
+                if (salary.HRS_SAL_ID > SALID)
+                {
+                    SALID = salary.HRS_SAL_ID + 1;
+                }
+            }// increament id to unduplicate it 
 
             foreach (var salary in updateValues.Insert)
             {
                 if (updateValues.IsValid(salary))
-                    InsertSalary(salary, updateValues, id);
+                {
+                    salary.HRS_SAL_ID = SALID++;
+                    salaryList.Add(salary);
+                }
                 else
+                {
                     updateValues.SetErrorText(salary, "salary ammount req");
+                }
             }
+
             foreach (var salary in updateValues.Update)
             {
                 if (updateValues.IsValid(salary))
-                    UpdateSalary(salary, updateValues);
+                {
+                    var existingSalary = salaryList.FirstOrDefault(x => x.HRS_SAL_ID == salary.HRS_SAL_ID);
+                    if (existingSalary != null)
+                    {
+                        existingSalary.HRS_SAL_SalaryAmount = salary.HRS_SAL_SalaryAmount;
+                        existingSalary.HRS_SAL_StartDate = salary.HRS_SAL_StartDate;
+                        existingSalary.HRS_SAL_EndDate = salary.HRS_SAL_EndDate;
+                        existingSalary.HRS_SAL_UpdateDate = DateTime.Now; 
+                    }
+                }
                 else
                     updateValues.SetErrorText(salary, "salary ammount req");
             }
+
             foreach (var salaryID in updateValues.DeleteKeys)
             {
                 DeleteSalary(salaryID, updateValues);
             }
-            return PartialView("_PartialSalGridView", HRS_SAL_Salaries.Get(_accountingDbContext));
+
+            return PartialView("_PartialSalGridView", salaryList);
         }
 
         protected void InsertSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
@@ -437,13 +469,14 @@ namespace DXWebApplication.Controllers
             }
         }
 
-        protected void UpdateSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues)
+        protected void UpdateSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
+                    salary.HRS_SAL_EMPID = id;
                     HRS_SAL_Salaries.Edit(salary, _accountingDbContext);
                 }
 
@@ -469,9 +502,6 @@ namespace DXWebApplication.Controllers
 
             }
         }
-
-
-
 
 
 
