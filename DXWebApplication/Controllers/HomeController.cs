@@ -353,7 +353,7 @@ namespace DXWebApplication.Controllers
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState,salaryList))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
 
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList);
@@ -392,9 +392,14 @@ namespace DXWebApplication.Controllers
         {
             
             ViewBag.id = empid;
-            List<HRS_SAL_Salaries> salary = HRS_SAL_Salaries.GetByEmpId(empid,_accountingDbContext);
-            Session["SalaryList"] = salary;//keep track of the original list of salaries before any modifications.
-
+            List<HRS_SAL_Salaries> salary;
+            if (Session["SalaryList"] == null)
+            {
+                salary = HRS_SAL_Salaries.GetByEmpId(empid, _accountingDbContext);
+                Session["SalaryList"] = salary;//keep track of the original list of salaries before any modifications.
+            }
+            else
+                salary = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             return PartialView("_PartialSalGridView", salary);
         }
 
@@ -408,7 +413,7 @@ namespace DXWebApplication.Controllers
       
             foreach (var salary in salaryList)
             {
-                if (salary.HRS_SAL_ID > SALID)
+                if (salary.HRS_SAL_ID >= SALID)
                 {
                     SALID = salary.HRS_SAL_ID + 1;
                 }
@@ -434,17 +439,13 @@ namespace DXWebApplication.Controllers
                     var existingSalary = salaryList.FirstOrDefault(x => x.HRS_SAL_ID == salary.HRS_SAL_ID);
                     if (existingSalary != null)
                     {
-                        if (salary.HRS_SAL_StartDate <= existingSalary.HRS_SAL_StartDate)
-                        {
-                            updateValues.SetErrorText(salary, "Edit Start Date.");
-                            continue; 
-                        }
-
                         existingSalary.HRS_SAL_SalaryAmount = salary.HRS_SAL_SalaryAmount;
                         existingSalary.HRS_SAL_StartDate = salary.HRS_SAL_StartDate;
                         existingSalary.HRS_SAL_EndDate = salary.HRS_SAL_EndDate;
                         existingSalary.HRS_SAL_UpdateDate = DateTime.Now; 
                     }
+
+
                 }
                 else
                     updateValues.SetErrorText(salary, "salary ammount req");
@@ -454,8 +455,7 @@ namespace DXWebApplication.Controllers
             {
                 DeleteSalary(salaryID, updateValues);
             }
-
-
+     
             return PartialView("_PartialSalGridView", salaryList);
         }
 
@@ -466,7 +466,7 @@ namespace DXWebApplication.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    salary.HRS_SAL_EMPID = id;
+                    salary.HRS_SAL_EMPID=id;
                     HRS_SAL_Salaries.AddNew(salary, _accountingDbContext);
                 }
             }

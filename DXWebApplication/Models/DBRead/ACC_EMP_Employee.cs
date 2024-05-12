@@ -96,23 +96,19 @@ namespace DXWebApplication.Models
                 ModelState.AddModelError("ACC_EMP_JoinDate", "Join Year should be the current year or a future year.");
             }
 
+
             foreach (var salary in salaryList)
             {
+                var maxId = salaryList.Max(s => s.HRS_SAL_ID);
 
-                var previousSalary = salaryList.OrderByDescending(x => x.HRS_SAL_ID).FirstOrDefault();
-                if (previousSalary != null && salary.HRS_SAL_StartDate <= previousSalary.HRS_SAL_StartDate)
+                for (int i = 0; i < salaryList.Count; i++)
                 {
-                    ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than the previous start date.");
-                    continue;
+                    if (salary.HRS_SAL_ID != salaryList[i].HRS_SAL_ID && salary.HRS_SAL_StartDate <= salaryList[i].HRS_SAL_StartDate)
+                    {
+                        ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than all previous start dates.");
+                    
+                    }
                 }
-                if (previousSalary != null && previousSalary.HRS_SAL_EndDate.HasValue && salary.HRS_SAL_StartDate <= previousSalary.HRS_SAL_EndDate)
-                {
-
-                    previousSalary.HRS_SAL_EndDate = salary.HRS_SAL_StartDate.AddDays(-1);
-
-                }
-
-
             }
 
 

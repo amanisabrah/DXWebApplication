@@ -30,6 +30,11 @@
       
     }
 
+    function SalaryAmountGridView_OnBatchEditRowInserting(s, e) {
+        var arr = SalaryAmountGridView.batchEditApi.GetRowVisibleIndices();
+        if (e.visibleIndex < -1) 
+            e.cancel = true;
+    }
 
     function HRS_SAL_SalaryAmount_OnValueChange(s, e) {
 
@@ -53,10 +58,8 @@
 
      function OnToolbarItemClick(s, e) {
 
-     if (e.item.name == "reportButton")
-
-     window.location.href ="@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
-
+         if (e.item.name == "reportButton") 
+             window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
  }
 
 
