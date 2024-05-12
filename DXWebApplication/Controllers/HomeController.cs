@@ -332,7 +332,7 @@ namespace DXWebApplication.Controllers
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState,salaryList))
             {
 
                 ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList);
@@ -353,7 +353,7 @@ namespace DXWebApplication.Controllers
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState,salaryList))
             {
 
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList);
@@ -434,6 +434,12 @@ namespace DXWebApplication.Controllers
                     var existingSalary = salaryList.FirstOrDefault(x => x.HRS_SAL_ID == salary.HRS_SAL_ID);
                     if (existingSalary != null)
                     {
+                        if (salary.HRS_SAL_StartDate <= existingSalary.HRS_SAL_StartDate)
+                        {
+                            updateValues.SetErrorText(salary, "Edit Start Date.");
+                            continue; 
+                        }
+
                         existingSalary.HRS_SAL_SalaryAmount = salary.HRS_SAL_SalaryAmount;
                         existingSalary.HRS_SAL_StartDate = salary.HRS_SAL_StartDate;
                         existingSalary.HRS_SAL_EndDate = salary.HRS_SAL_EndDate;
@@ -449,6 +455,7 @@ namespace DXWebApplication.Controllers
                 DeleteSalary(salaryID, updateValues);
             }
 
+
             return PartialView("_PartialSalGridView", salaryList);
         }
 
@@ -459,7 +466,7 @@ namespace DXWebApplication.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    salary.HRS_SAL_EMPID=id;
+                    salary.HRS_SAL_EMPID = id;
                     HRS_SAL_Salaries.AddNew(salary, _accountingDbContext);
                 }
             }

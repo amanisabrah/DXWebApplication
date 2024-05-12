@@ -13,6 +13,7 @@ namespace DXWebApplication.Models
             add.HRS_SAL_EntryDate = DateTime.Now;
             db.HRS_SAL_Salaries.Add(add);
             db.SaveChanges();
+
         }
 
         public static void Edit(HRS_SAL_Salaries edit, AccountingDbContext db)

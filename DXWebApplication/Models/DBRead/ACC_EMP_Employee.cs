@@ -24,7 +24,7 @@ namespace DXWebApplication.Models
         //                     (x.JOB_Gender == Gender || Gender == null)).ToList();
         //}
 
-        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState)
+        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList)
         {
             ModelState.Clear();
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get();
@@ -37,7 +37,6 @@ namespace DXWebApplication.Models
             {
                 ModelState.AddModelError("ACC_EMP_Name2", " Name(another Languge) Is Required");
             }
-
             if (emps.Any(j => j.ACC_EMP_Number == employee.ACC_EMP_Number && 
                 j.ACC_EMP_ID != employee.ACC_EMP_ID) || employee.ACC_EMP_Number == 0)
             {
@@ -47,44 +46,35 @@ namespace DXWebApplication.Models
             {
                 ModelState.AddModelError("ACC_EMP_Number", "Number must be between 1 and 500");
             }
-
-
             if (emps.Any(j => j.ACC_EMP_documentNum == employee.ACC_EMP_documentNum && 
                 j.ACC_EMP_ID != employee.ACC_EMP_ID))
             {
                 ModelState.AddModelError("ACC_EMP_documentNum", " fill document number correct");
             }
-
             if (employee.ACC_EMP_Gender == null)
             {
                 ModelState.AddModelError("ACC_EMP_Gender", "Gender is required.");
             }
-
             if (employee.ACC_EMP_JOBID == null)
             {
                 ModelState.AddModelError("ACC_EMP_JOBID", "Job name is required.");
             }
-
             if (employee.ACC_EMP_WSTID == null)
             {
                 ModelState.AddModelError("ACC_EMP_WSTID", "work status is required.");
             }
-
             if (employee.ACC_EMP_MartialStatus == null)
             {
                 ModelState.AddModelError("ACC_EMP_MartialStatus", "Martial Status is required.");
             }
-
             if (string.IsNullOrEmpty(employee.ACC_EMP_Address))
             {
                 ModelState.AddModelError("ACC_EMP_Address", "Address Is Required");
             }
-
             if (string.IsNullOrEmpty(employee.ACC_EMP_PlaceofBirth))
             {
                 ModelState.AddModelError("ACC_EMP_PlaceofBirth", "Place of Birth Is Required");
             }
-
             DateTime now = DateTime.Now;
             if (employee.ACC_EMP_DateofBirth != DateTime.MinValue)
             {
@@ -101,13 +91,30 @@ namespace DXWebApplication.Models
             }
             else
                 ModelState.AddModelError("ACC_EMP_DateofBirth", "Date of birth req.");
-
-
-
             if (now.Year > employee.ACC_EMP_JoinDate.Year)
             {
                 ModelState.AddModelError("ACC_EMP_JoinDate", "Join Year should be the current year or a future year.");
             }
+
+            foreach (var salary in salaryList)
+            {
+
+                var previousSalary = salaryList.OrderByDescending(x => x.HRS_SAL_ID).FirstOrDefault();
+                if (previousSalary != null && salary.HRS_SAL_StartDate <= previousSalary.HRS_SAL_StartDate)
+                {
+                    ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than the previous start date.");
+                    continue;
+                }
+                if (previousSalary != null && previousSalary.HRS_SAL_EndDate.HasValue && salary.HRS_SAL_StartDate <= previousSalary.HRS_SAL_EndDate)
+                {
+
+                    previousSalary.HRS_SAL_EndDate = salary.HRS_SAL_StartDate.AddDays(-1);
+
+                }
+
+
+            }
+
 
 
             return ModelState.IsValid;
