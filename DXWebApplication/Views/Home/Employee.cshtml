@@ -31,8 +31,8 @@
     }
 
     function SalaryAmountGridView_OnBatchEditRowInserting(s, e) {
-        var arr = SalaryAmountGridView.batchEditApi.GetRowVisibleIndices();
-        if (e.visibleIndex < -1) 
+        var arr = SalaryAmountGridView.batchEditApi.GetInsertedRowIndices();
+        if (arr.length != 0) 
             e.cancel = true;
     }
 
