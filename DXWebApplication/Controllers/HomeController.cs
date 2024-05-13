@@ -349,11 +349,15 @@ namespace DXWebApplication.Controllers
             }
             else
             {
+
                 ViewBag.emp = employee;
+
                 var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
-.SelectMany(E => E.Errors)
-.Select(E => E.ErrorMessage)
-.ToList();
+                .SelectMany(E => E.Errors)
+                .Select(E => E.ErrorMessage)
+                .ToList();
+                ViewBag.ValidationErrors = validationErrors;
+
             }
 
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
@@ -372,8 +376,16 @@ namespace DXWebApplication.Controllers
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList);
             }
             else
+            {
                 ViewBag.emp = employee;
+                var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                .SelectMany(E => E.Errors)
+                .Select(E => E.ErrorMessage)
+                .ToList();
+               
+                ViewBag.ValidationErrors = validationErrors;
 
+            }
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
 
             return PartialView("_PartialEmpGridView", emps);

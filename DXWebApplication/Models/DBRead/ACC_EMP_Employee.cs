@@ -105,10 +105,12 @@ namespace DXWebApplication.Models
                 {
                     if (salary.HRS_SAL_ID != salaryList[i].HRS_SAL_ID && salary.HRS_SAL_StartDate <= salaryList[i].HRS_SAL_StartDate)
                     {
-                        ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than all previous start dates.");
-                    
+                            ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than all previous start dates.");
+                           
                     }
+                    break;
                 }
+
             }
 
 

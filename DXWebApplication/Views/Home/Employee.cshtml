@@ -14,6 +14,8 @@
         e.customArgs['Command'] = e.command;
     }
 
+
+
     var rowIndex = 0;
     function SalaryAmountGridView_OnBatchEditStartEditing(s, e) {
         rowIndex = e.visibleIndex;
@@ -27,12 +29,12 @@
             if (salaryamount == null || startDate == null)
                 e.cancel = true;
         }
-      
+
     }
 
     function SalaryAmountGridView_OnBatchEditRowInserting(s, e) {
         var arr = SalaryAmountGridView.batchEditApi.GetInsertedRowIndices();
-        if (arr.length != 0) 
+        if (arr.length != 0)
             e.cancel = true;
     }
 
@@ -46,6 +48,17 @@
         }
     }
 
+    function OnEndCallback (s,e) {
+        
+            if (s.cpViewError != null && s.cpViewError.length > 0) {
+                var errorMessage = "Validation errors:\n";
+                s.cpViewError.forEach(function (error) {
+                    errorMessage += error + "\n";
+                });
+                alert(errorMessage);
+            }
+        
+    }
 
 //    function employeeEditForm_SavebtnClick(s, e) {
 ////validation
@@ -54,11 +67,11 @@
 //        }
 //    }
 
-           
+
 
      function OnToolbarItemClick(s, e) {
 
-         if (e.item.name == "reportButton") 
+         if (e.item.name == "reportButton")
              window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
  }
 

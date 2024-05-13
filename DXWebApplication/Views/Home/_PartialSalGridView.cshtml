@@ -14,6 +14,7 @@
     settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
     settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
 
+    settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
     settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
     settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
     settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
@@ -31,7 +32,7 @@
     settings.ClientSideEvents.BatchEditRowInserting = settings.Name + "_OnBatchEditRowInserting";
 
     settings.CommandColumn.Visible = true;
-    settings.CommandColumn.ShowCancelButton = true;
+    //settings.CommandColumn.ShowCancelButton = false;
     settings.CommandColumn.ShowDeleteButton = true;
     settings.CommandColumn.ShowNewButtonInHeader = true;
     settings.CommandColumn.ShowCancelButton = true;
@@ -61,7 +62,7 @@
         c.FieldName = "HRS_SAL_StartDate";
         c.Caption = "StartDate";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
-        c.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
 
     });
 
@@ -70,7 +71,7 @@
         c.FieldName = "HRS_SAL_EndDate";
         c.Caption = "End Date";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
-        c.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
+        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
     });
 
 

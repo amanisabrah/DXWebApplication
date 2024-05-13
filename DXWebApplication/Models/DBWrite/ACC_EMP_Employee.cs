@@ -42,7 +42,7 @@ namespace DXWebApplication.Models
             salaryList?.ForEach(salary => {
 
                 salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
-                if (salary.HRS_SAL_ID <= 10000000) {
+                if (salary.HRS_SAL_ID >= 10000000) {
                     DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
                 }
                 else
