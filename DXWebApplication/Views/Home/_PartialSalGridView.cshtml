@@ -47,6 +47,13 @@
         c.Caption = "Salary Amount";
         c.ColumnType = MVCxGridViewColumnType.SpinEdit;
         c.PropertiesEdit.DisplayFormatString = "0";
+        c.EditorProperties().TextBox(tb =>
+        {
+            tb.ValidationSettings.RequiredField.IsRequired = true;
+            tb.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+            tb.ValidationSettings.RequiredField.ErrorText = "salary ammount req";
+            tb.ValidationSettings.Display = Display.Dynamic;
+        });
     });
 
     settings.Columns.Add(c =>
@@ -54,7 +61,7 @@
         c.FieldName = "HRS_SAL_StartDate";
         c.Caption = "StartDate";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
-        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+        c.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
 
     });
 
@@ -63,7 +70,7 @@
         c.FieldName = "HRS_SAL_EndDate";
         c.Caption = "End Date";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
-        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+        c.PropertiesEdit.DisplayFormatString = "dd/MM/yyyy";
     });
 
 

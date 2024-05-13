@@ -327,23 +327,36 @@ namespace DXWebApplication.Controllers
         }
         #endregion
         #region EmployeeEditForm
-        [HttpPost]
+
+        //foreach (var workStatus in updateValues.Insert)
+        //    {
+        //        if (updateValues.IsValid(workStatus))
+        //            InsertWorkStatus(workStatus, updateValues);
+        //        else
+        //            updateValues.SetErrorText(workStatus, "Name1 validation errors");
+        //    }
+
+    [HttpPost]
         public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command)
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState,salaryList))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
 
                 ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList);
 
             }
             else
+            {
                 ViewBag.emp = employee;
+                var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+.SelectMany(E => E.Errors)
+.Select(E => E.ErrorMessage)
+.ToList();
+            }
 
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
-
-
             return PartialView("_PartialEmpGridView", emps);
         }
 
