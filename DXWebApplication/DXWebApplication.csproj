@@ -241,6 +241,9 @@
     <EmbeddedResource Include="Reports\XtraReport3.resx">
       <DependentUpon>XtraReport3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReport4.resx">
+      <DependentUpon>XtraReport4.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Home\_PartialJobsGridView.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +266,7 @@
     <Content Include="Views\Home\_PartialempsEditForm.cshtml" />
     <Content Include="Views\Home\ViewEmpReport.cshtml" />
     <Content Include="Views\Home\_PartialSalGridView.cshtml" />
+    <Content Include="Views\Home\ViewSalReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -315,6 +319,7 @@
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReportModel\EmployeeReport.cs" />
+    <Compile Include="Models\ReportModel\SalaryReport.cs" />
     <Compile Include="Models\ReportModel\WorkstatusReport.cs" />
     <Compile Include="Models\WST_WorkStatus.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
@@ -337,6 +342,12 @@
     </Compile>
     <Compile Include="Reports\XtraReport3.Designer.cs">
       <DependentUpon>XtraReport3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\XtraReport4.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReport4.Designer.cs">
+      <DependentUpon>XtraReport4.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

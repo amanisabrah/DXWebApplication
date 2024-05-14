@@ -15,6 +15,7 @@
     settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
 
     settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
     settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
     settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
     settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
@@ -47,13 +48,12 @@
         c.FieldName = "HRS_SAL_SalaryAmount";
         c.Caption = "Salary Amount";
         c.ColumnType = MVCxGridViewColumnType.SpinEdit;
-        c.PropertiesEdit.DisplayFormatString = "0";
-        c.EditorProperties().TextBox(tb =>
+        c.EditorProperties().SpinEdit(tb =>
         {
             tb.ValidationSettings.RequiredField.IsRequired = true;
             tb.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
-            tb.ValidationSettings.RequiredField.ErrorText = "salary ammount req";
             tb.ValidationSettings.Display = Display.Dynamic;
+            tb.DisplayFormatString = "{0:G29}";
         });
     });
 

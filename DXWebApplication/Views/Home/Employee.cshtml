@@ -49,7 +49,7 @@
     }
 
     function OnEndCallback (s,e) {
-        
+
             if (s.cpViewError != null && s.cpViewError.length > 0) {
                 var errorMessage = "Validation errors:\n";
                 s.cpViewError.forEach(function (error) {
@@ -57,7 +57,7 @@
                 });
                 alert(errorMessage);
             }
-        
+
     }
 
 //    function employeeEditForm_SavebtnClick(s, e) {
@@ -73,8 +73,11 @@
 
          if (e.item.name == "reportButton")
              window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
- }
 
+         if (e.item.name == "reportSalButton")
+             window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
+
+ }
 
 
 </script>

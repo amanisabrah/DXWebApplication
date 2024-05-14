@@ -1,4 +1,5 @@
 ﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
+using DevExpress.Pdf.Native.BouncyCastle.Ocsp;
 using DevExpress.Web;
 using DevExpress.Web.Internal.XmlProcessor;
 using DevExpress.Web.Mvc;
@@ -26,7 +27,7 @@ namespace DXWebApplication.Controllers
         {
             _accountingDbContext = new AccountingDbContext();
         }
-
+        #region everything else
         public ActionResult Index()
         {
             return View();
@@ -285,9 +286,8 @@ namespace DXWebApplication.Controllers
 
             return View(new XtraReport2());
         }
-
+        #endregion
         ///////////////////////////////////////////////////////////////////////////
-
 
         #region Employee
         #region EmployeeGridView
@@ -312,15 +312,17 @@ namespace DXWebApplication.Controllers
             {
                 case "ADDNEWROW":
                     var emp = new ACC_EMP_Employee();
+                    Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     ViewBag.emp = emp;
                     break;
                 case "STARTEDIT":
                     emp = emps.Where(x => x.ACC_EMP_ID == ACC_EMP_ID).FirstOrDefault();
                     ViewBag.emp = emp;
+                    Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(ACC_EMP_ID??0, _accountingDbContext);
                     break;
                 case "CANCELEDIT":
+                    Session["SalaryList"] = null;
                     break;
-
             }
 
             return PartialView("_PartialEmpGridView", emps);
@@ -336,7 +338,7 @@ namespace DXWebApplication.Controllers
         //            updateValues.SetErrorText(workStatus, "Name1 validation errors");
         //    }
 
-    [HttpPost]
+        [HttpPost]
         public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command)
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
@@ -356,7 +358,7 @@ namespace DXWebApplication.Controllers
                 .SelectMany(E => E.Errors)
                 .Select(E => E.ErrorMessage)
                 .ToList();
-                ViewBag.ValidationErrors = validationErrors;
+                ViewBag.ValidationErrors = string.Join(", ", validationErrors);
 
             }
 
@@ -372,24 +374,22 @@ namespace DXWebApplication.Controllers
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
-
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList);
             }
             else
             {
                 ViewBag.emp = employee;
                 var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
-                .SelectMany(E => E.Errors)
-                .Select(E => E.ErrorMessage)
-                .ToList();
-               
-                ViewBag.ValidationErrors = validationErrors;
-
+                    .SelectMany(E => E.Errors)
+                    .Select(E => E.ErrorMessage)
+                    .ToList();
+                ViewBag.ValidationErrors = string.Join(", ", validationErrors); 
             }
-            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
 
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
             return PartialView("_PartialEmpGridView", emps);
         }
+
 
         [HttpPost]
         public ActionResult PartialEmpGridViewDelete(ACC_EMP_Employee delete)
@@ -424,7 +424,9 @@ namespace DXWebApplication.Controllers
                 Session["SalaryList"] = salary;//keep track of the original list of salaries before any modifications.
             }
             else
+            {
                 salary = Session["SalaryList"] as List<HRS_SAL_Salaries>;
+            }
             return PartialView("_PartialSalGridView", salary);
         }
 
@@ -535,6 +537,11 @@ namespace DXWebApplication.Controllers
             }
         }
 
+        public ActionResult ViewSalReport()
+        {
+
+            return View(new XtraReport4());
+        }
 
 
     }

@@ -13,6 +13,18 @@ namespace DXWebApplication.Models
             add.ACC_EMP_EntryDate = DateTime.Now;
             db.ACC_EMP_Employee.Add(add);
             db.SaveChanges();
+
+            var existingEntity = db.ACC_EMP_Employee.Find(add.ACC_EMP_ID);
+
+            salaryList?.ForEach(salary => {
+
+                salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
+                if (salary.HRS_SAL_ID >= 10000000)
+                {
+                    DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
+                }
+                
+            });
         }
 
         public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null)

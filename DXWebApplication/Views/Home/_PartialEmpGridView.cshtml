@@ -2,222 +2,235 @@
 
 @using System.Web.UI.WebControls;
 
-@Html.DevExpress().GridView(settings =>
-{
-    settings.Name = "employeeGridView";
-    settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpGridView" };
-
-    settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewAddNew" };
-    settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewEdit" };
-    settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewDelete" };
-    settings.SettingsExport.EnableClientSideExportAPI = true;
-    settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
-    settings.ClientSideEvents.ToolbarItemClick = "OnToolbarItemClick";
-    settings.Toolbars.Add(tb =>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
     {
-        tb.Enabled = true;
-        tb.Position = GridToolbarPosition.Top;
-        tb.SettingsAdaptivity.Enabled = true;
-        tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+        settings.Name = "employeeGridView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpGridView" };
 
-        tb.Items.Add(GridViewToolbarCommand.New);
-        tb.Items.Add(GridViewToolbarCommand.Edit);
-        tb.Items.Add(GridViewToolbarCommand.Delete);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewEdit" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewDelete" };
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+        settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
+        settings.ClientSideEvents.ToolbarItemClick = "OnToolbarItemClick";
 
-        tb.Items.Add(i =>
+        settings.Toolbars.Add(tb =>
         {
-            i.Command = GridViewToolbarCommand.Refresh;
-            i.BeginGroup = true;
-            i.AdaptivePriority = 1;
-        });
-        tb.Items.Add(i =>
-        {
-            i.Text = "Export to";
-            i.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsDownload16x16office2013;
-            i.BeginGroup = true;
-            i.AdaptivePriority = 2;
-            i.Items.Add(GridViewToolbarCommand.ExportToPdf);
-            i.Items.Add(GridViewToolbarCommand.ExportToDocx);
-            i.Items.Add(GridViewToolbarCommand.ExportToRtf);
-            i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
-        });
-        tb.Items.Add(i =>
-        {
+            tb.Enabled = true;
+            tb.Position = GridToolbarPosition.Top;
+            tb.SettingsAdaptivity.Enabled = true;
+            tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
 
-            i.Text = "Report";
-            i.Name = "reportButton";
-            i.Command = GridViewToolbarCommand.Custom;
+            tb.Items.Add(GridViewToolbarCommand.New);
+            tb.Items.Add(GridViewToolbarCommand.Edit);
+            tb.Items.Add(GridViewToolbarCommand.Delete);
 
+            tb.Items.Add(i =>
+            {
+                i.Command = GridViewToolbarCommand.Refresh;
+                i.BeginGroup = true;
+                i.AdaptivePriority = 1;
+            });
+            tb.Items.Add(i =>
+            {
+                i.Text = "Export to";
+                i.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsDownload16x16office2013;
+                i.BeginGroup = true;
+                i.AdaptivePriority = 2;
+                i.Items.Add(GridViewToolbarCommand.ExportToPdf);
+                i.Items.Add(GridViewToolbarCommand.ExportToDocx);
+                i.Items.Add(GridViewToolbarCommand.ExportToRtf);
+                i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
+            });
+            tb.Items.Add(i =>
+            {
 
-            i.AdaptivePriority = 3;
-
-        });
-    });
-
-
-    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-    settings.SettingsBehavior.ConfirmDelete = true;
-    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
-    settings.SettingsPopup.EditForm.Width = 600;
-    settings.Width = Unit.Percentage(100);
-
-    settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
-    settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
-    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
-    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
-    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                i.Text = "Report";
+                i.Name = "reportButton";
+                i.Command = GridViewToolbarCommand.Custom;
 
 
-    settings.Settings.ShowFilterRow = true;
+                i.AdaptivePriority = 3;
 
-    settings.KeyFieldName = "ACC_EMP_ID";
-    settings.CommandColumn.Visible = true;
-    settings.SettingsBehavior.AllowFocusedRow = true;
+            });
+            tb.Items.Add(i =>
+            {
 
-    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
-    settings.ClientSideEvents.EndCallback = "OnEndCallback";
+                i.Text = "Report";
+                i.Name = "reportSalButton";
+                i.Command = GridViewToolbarCommand.Custom;
+                i.AdaptivePriority = 4;
 
-    settings.CustomJSProperties = (s, e) =>
-    {
-        if (ViewBag.ValidationErrors != null)
-        {
-            e.Properties["cpViewError"] = ViewBag.ValidationErrors;
-        }
-    };
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_Number";
-        c.Caption = "Number";
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_JOBID";
-        c.Caption = "JOB";
-        c.EditorProperties().ComboBox(p =>
-        {
-            p.TextField = "JOB_Name";
-            p.ValueField = "JOB_ID";
-            p.ValueType = typeof(int);
-            p.DataSource = DXWebApplication.Models.JOB_JOBS.Get();
-
+            });
         });
 
-    });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_WSTID";
-        c.Caption = "Work Status";
-        c.EditorProperties().ComboBox(p =>
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
+        settings.SettingsPopup.EditForm.Width = 600;
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+        settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+
+
+        settings.Settings.ShowFilterRow = true;
+
+        settings.KeyFieldName = "ACC_EMP_ID";
+        settings.CommandColumn.Visible = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+        settings.ClientSideEvents.EndCallback = "OnEndCallback";
+
+        //settings.CustomJSProperties = (s, e) =>
+        //{
+        //    e.Properties["cpViewError"] = ViewBag.ValidationErrors;
+        //};
+
+        settings.Columns.Add(c =>
         {
-            p.TextField = "WST_Name";
-            p.ValueField = "WST_ID";
-            p.ValueType = typeof(int);
-            p.DataSource = DXWebApplication.Models.WST_WorkStatus.Get();
+            c.FieldName = "ACC_EMP_Number";
+            c.Caption = "Number";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_JOBID";
+            c.Caption = "JOB";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "JOB_Name";
+                p.ValueField = "JOB_ID";
+                p.ValueType = typeof(int);
+                p.DataSource = DXWebApplication.Models.JOB_JOBS.Get();
+
+            });
 
         });
-    });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_Name";
-        c.Caption = "Name";
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_Name2";
-        c.Caption = "Name(another Languge)";
-    });
-
-
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_Address";
-        c.Caption = "Adress";
-    });
-
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_MartialStatus";
-        c.Caption = "Martial Status";
-        c.EditorProperties().ComboBox(p =>
+        settings.Columns.Add(c =>
         {
-            p.TextField = "key";
-            p.ValueField = "value";
-            p.ValueType = typeof(int);
-            p.DataSource = DXWebApplication.Models.MartialStatus.Status;
+            c.FieldName = "ACC_EMP_WSTID";
+            c.Caption = "Work Status";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "WST_Name";
+                p.ValueField = "WST_ID";
+                p.ValueType = typeof(int);
+                p.DataSource = DXWebApplication.Models.WST_WorkStatus.Get();
+
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_Name";
+            c.Caption = "Name";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_Name2";
+            c.Caption = "Name(another Languge)";
+        });
+
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_Address";
+            c.Caption = "Adress";
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_MartialStatus";
+            c.Caption = "Martial Status";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "key";
+                p.ValueField = "value";
+                p.ValueType = typeof(int);
+                p.DataSource = DXWebApplication.Models.MartialStatus.Status;
+
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_DateofBirth";
+            c.Caption = "Birthday Date";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_PlaceofBirth";
+            c.Caption = "Place of Birth";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_documentNum";
+            c.Caption = "Document Number";
 
         });
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_DateofBirth";
-        c.Caption = "Birthday Date";
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_PlaceofBirth";
-        c.Caption = "Place of Birth";
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_documentNum";
-        c.Caption = "Document Number";
-
-    });
 
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_Gender";
-        c.Caption = "Gender";
-        c.EditorProperties().ComboBox(p =>
+        settings.Columns.Add(c =>
         {
-            p.TextField = "key";
-            p.ValueField = "value";
-            p.ValueType = typeof(int);
-            p.DataSource = DXWebApplication.Models.GenderCollection.Gender;
+            c.FieldName = "ACC_EMP_Gender";
+            c.Caption = "Gender";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "key";
+                p.ValueField = "value";
+                p.ValueType = typeof(int);
+                p.DataSource = DXWebApplication.Models.GenderCollection.Gender;
+
+            });
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_JoinDate";
+            c.Caption = "Join  Date";
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_EntryDate";
+            c.Caption = "Entry Date";
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_UpdatedDate";
+            c.Caption = "Update Date";
+        });
+
+
+
+        settings.SetEditFormTemplateContent(c =>
+        {
+            Html.RenderPartial("_PartialempsEditForm");
 
         });
-    });
-
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_JoinDate";
-        c.Caption = "Join  Date";
-    });
-
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_EntryDate";
-        c.Caption = "Entry Date";
-    });
-
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "ACC_EMP_UpdatedDate";
-        c.Caption = "Update Date";
-    });
-
-
-
-    settings.SetEditFormTemplateContent(c =>
-    {
-        Html.RenderPartial("_PartialempsEditForm");
 
     });
 
-}).Bind(Model).GetHtml()
+    grid.SetEditErrorText((string)ViewBag.ValidationErrors);
+
+    grid.Bind(Model).GetHtml();
+}
 
 
 
