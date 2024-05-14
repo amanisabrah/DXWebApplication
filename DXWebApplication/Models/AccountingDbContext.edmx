@@ -27,6 +27,24 @@
           <Property Name="ACC_EMP_DeleteDate" Type="datetime2" Precision="7" />
           <Property Name="ACC_EMP_IsDelete" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="HRS_EMC_EmpContract">
+          <Key>
+            <PropertyRef Name="HRS_EMC__ID" />
+          </Key>
+          <Property Name="HRS_EMC__ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HRS_EMC_Number" Type="int" Nullable="false" />
+          <Property Name="HRS_EMC_Startdate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_EMC_Enddate" Type="datetime2" Precision="7" />
+          <Property Name="HRS_EMC_EmpID" Type="int" Nullable="false" />
+          <Property Name="HRS_EMC_Action" Type="int" Nullable="false" />
+          <Property Name="HRS_EMC_IssueNum" Type="int" />
+          <Property Name="HRS_EMC_Issuedate" Type="datetime2" Precision="7" />
+          <Property Name="HRS_EMC_Desc" Type="nvarchar" MaxLength="100" />
+          <Property Name="HRS_EMC_Entrydate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HRS_EMC_Updatedate" Type="datetime2" Precision="7" />
+          <Property Name="HRS_EMC_DeleteDate" Type="datetime2" Precision="7" />
+          <Property Name="HRS_EMC_IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="HRS_SAL_Salaries">
           <Key>
             <PropertyRef Name="HRS_SAL_ID" />
@@ -96,6 +114,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
+          <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="1" />
+          <End Role="HRS_EMC_EmpContract" Type="Self.HRS_EMC_EmpContract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_ID" />
+            </Principal>
+            <Dependent Role="HRS_EMC_EmpContract">
+              <PropertyRef Name="HRS_EMC_EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee">
           <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="1" />
           <End Role="HRS_SAL_Salaries" Type="Self.HRS_SAL_Salaries" Multiplicity="*" />
@@ -110,6 +140,7 @@
         </Association>
         <EntityContainer Name="verbModelStoreContainer">
           <EntitySet Name="ACC_EMP_Employee" EntityType="Self.ACC_EMP_Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HRS_EMC_EmpContract" EntityType="Self.HRS_EMC_EmpContract" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HRS_SAL_Salaries" EntityType="Self.HRS_SAL_Salaries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WST_WorkStatus" EntityType="Self.WST_WorkStatus" Schema="dbo" store:Type="Tables" />
@@ -120,6 +151,10 @@
           <AssociationSet Name="FK_ACC_EMP_Employee_WST_WorkStatus" Association="Self.FK_ACC_EMP_Employee_WST_WorkStatus">
             <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee" Association="Self.FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+            <End Role="HRS_EMC_EmpContract" EntitySet="HRS_EMC_EmpContract" />
           </AssociationSet>
           <AssociationSet Name="FK_HRS_SAL_Salaries_ACC_EMP_Employee" Association="Self.FK_HRS_SAL_Salaries_ACC_EMP_Employee">
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
@@ -165,6 +200,11 @@
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
             <End Role="HRS_SAL_Salaries" EntitySet="HRS_SAL_Salaries" />
           </AssociationSet>
+          <EntitySet Name="HRS_EMC_EmpContract" EntityType="verbModel.HRS_EMC_EmpContract" />
+          <AssociationSet Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee" Association="verbModel.FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
+            <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
+            <End Role="HRS_EMC_EmpContract" EntitySet="HRS_EMC_EmpContract" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="WST_WorkStatus">
           <Key>
@@ -205,6 +245,7 @@
           <NavigationProperty Name="JOB_JOBS" Relationship="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" FromRole="ACC_EMP_Employee" ToRole="JOB_JOBS" />
           <NavigationProperty Name="WST_WorkStatus" Relationship="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" FromRole="ACC_EMP_Employee" ToRole="WST_WorkStatus" />
           <NavigationProperty Name="HRS_SAL_Salaries" Relationship="verbModel.FK_HRS_SAL_Salaries_ACC_EMP_Employee" FromRole="ACC_EMP_Employee" ToRole="HRS_SAL_Salaries" />
+          <NavigationProperty Name="HRS_EMC_EmpContract" Relationship="verbModel.FK_HRS_EMC_EmpContract_ACC_EMP_Employee" FromRole="ACC_EMP_Employee" ToRole="HRS_EMC_EmpContract" />
         </EntityType>
         <Association Name="FK_ACC_EMP_Employee_JOB_JOBS">
           <End Type="verbModel.JOB_JOBS" Role="JOB_JOBS" Multiplicity="0..1" />
@@ -254,6 +295,37 @@
             </Principal>
             <Dependent Role="HRS_SAL_Salaries">
               <PropertyRef Name="HRS_SAL_EMPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HRS_EMC_EmpContract">
+          <Key>
+            <PropertyRef Name="HRS_EMC__ID" />
+          </Key>
+          <Property Name="HRS_EMC__ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HRS_EMC_Number" Type="Int32" Nullable="false" />
+          <Property Name="HRS_EMC_Startdate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_EMC_Enddate" Type="DateTime" Precision="7" />
+          <Property Name="HRS_EMC_EmpID" Type="Int32" Nullable="false" />
+          <Property Name="HRS_EMC_Action" Type="Int32" Nullable="false" />
+          <Property Name="HRS_EMC_IssueNum" Type="Int32" />
+          <Property Name="HRS_EMC_Issuedate" Type="DateTime" Precision="7" />
+          <Property Name="HRS_EMC_Desc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HRS_EMC_Entrydate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HRS_EMC_Updatedate" Type="DateTime" Precision="7" />
+          <Property Name="HRS_EMC_DeleteDate" Type="DateTime" Precision="7" />
+          <Property Name="HRS_EMC_IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ACC_EMP_Employee" Relationship="verbModel.FK_HRS_EMC_EmpContract_ACC_EMP_Employee" FromRole="HRS_EMC_EmpContract" ToRole="ACC_EMP_Employee" />
+        </EntityType>
+        <Association Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
+          <End Type="verbModel.ACC_EMP_Employee" Role="ACC_EMP_Employee" Multiplicity="1" />
+          <End Type="verbModel.HRS_EMC_EmpContract" Role="HRS_EMC_EmpContract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC_EMP_Employee">
+              <PropertyRef Name="ACC_EMP_ID" />
+            </Principal>
+            <Dependent Role="HRS_EMC_EmpContract">
+              <PropertyRef Name="HRS_EMC_EmpID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -331,6 +403,25 @@
                 <ScalarProperty Name="HRS_SAL_SalaryAmount" ColumnName="HRS_SAL_SalaryAmount" />
                 <ScalarProperty Name="HRS_SAL_EMPID" ColumnName="HRS_SAL_EMPID" />
                 <ScalarProperty Name="HRS_SAL_ID" ColumnName="HRS_SAL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HRS_EMC_EmpContract">
+            <EntityTypeMapping TypeName="verbModel.HRS_EMC_EmpContract">
+              <MappingFragment StoreEntitySet="HRS_EMC_EmpContract">
+                <ScalarProperty Name="HRS_EMC_IsDeleted" ColumnName="HRS_EMC_IsDeleted" />
+                <ScalarProperty Name="HRS_EMC_DeleteDate" ColumnName="HRS_EMC_DeleteDate" />
+                <ScalarProperty Name="HRS_EMC_Updatedate" ColumnName="HRS_EMC_Updatedate" />
+                <ScalarProperty Name="HRS_EMC_Entrydate" ColumnName="HRS_EMC_Entrydate" />
+                <ScalarProperty Name="HRS_EMC_Desc" ColumnName="HRS_EMC_Desc" />
+                <ScalarProperty Name="HRS_EMC_Issuedate" ColumnName="HRS_EMC_Issuedate" />
+                <ScalarProperty Name="HRS_EMC_IssueNum" ColumnName="HRS_EMC_IssueNum" />
+                <ScalarProperty Name="HRS_EMC_Action" ColumnName="HRS_EMC_Action" />
+                <ScalarProperty Name="HRS_EMC_EmpID" ColumnName="HRS_EMC_EmpID" />
+                <ScalarProperty Name="HRS_EMC_Enddate" ColumnName="HRS_EMC_Enddate" />
+                <ScalarProperty Name="HRS_EMC_Startdate" ColumnName="HRS_EMC_Startdate" />
+                <ScalarProperty Name="HRS_EMC_Number" ColumnName="HRS_EMC_Number" />
+                <ScalarProperty Name="HRS_EMC__ID" ColumnName="HRS_EMC__ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

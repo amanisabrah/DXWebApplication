@@ -5,13 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bb7cc2b834714b8d93556df252221743" Name="Diagram1">
-        <EntityTypeShape EntityType="verbModel.JOB_JOBS" Width="1.5" PointX="3.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="verbModel.JOB_JOBS" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="verbModel.WST_WorkStatus" Width="1.5" PointX="11.25" PointY="0.5" />
-        <EntityTypeShape EntityType="verbModel.ACC_EMP_Employee" Width="1.5" PointX="7.375" PointY="0.875" />
+        <EntityTypeShape EntityType="verbModel.ACC_EMP_Employee" Width="1.5" PointX="7" PointY="0.5" />
         <AssociationConnector Association="verbModel.FK_ACC_EMP_Employee_JOB_JOBS" />
         <AssociationConnector Association="verbModel.FK_ACC_EMP_Employee_WST_WorkStatus" />
         <EntityTypeShape EntityType="verbModel.HRS_SAL_Salaries" Width="1.5" PointX="13" PointY="3.25" />
         <AssociationConnector Association="verbModel.FK_HRS_SAL_Salaries_ACC_EMP_Employee" />
+        <EntityTypeShape EntityType="verbModel.HRS_EMC_EmpContract" Width="1.5" PointX="2.75" PointY="2.875" />
+        <AssociationConnector Association="verbModel.FK_HRS_EMC_EmpContract_ACC_EMP_Employee" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
