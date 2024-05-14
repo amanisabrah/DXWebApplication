@@ -71,10 +71,10 @@
 
      function OnToolbarItemClick(s, e) {
 
-         if (e.item.name == "reportButton")
+         if (e.item.name == "employeeReport")
              window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
 
-         if (e.item.name == "reportSalButton")
+         if (e.item.name == "salaryReport")
              window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
  }

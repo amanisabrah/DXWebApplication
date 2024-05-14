@@ -45,23 +45,24 @@
             });
             tb.Items.Add(i =>
             {
+                i.Text = "Reports";
+                i.Name = "reportsMenu";
+                i.BeginGroup = true;
+                i.AdaptivePriority = 5;
 
-                i.Text = "Report";
-                i.Name = "reportButton";
-                i.Command = GridViewToolbarCommand.Custom;
+                i.Items.Add(item =>
+                {
+                    item.Text = "Employee Report";
+                    item.Name = "employeeReport";
+                    item.Command = GridViewToolbarCommand.Custom;
+                });
 
-
-                i.AdaptivePriority = 3;
-
-            });
-            tb.Items.Add(i =>
-            {
-
-                i.Text = "Report";
-                i.Name = "reportSalButton";
-                i.Command = GridViewToolbarCommand.Custom;
-                i.AdaptivePriority = 4;
-
+                i.Items.Add(item =>
+                {
+                    item.Text = "Salary Report";
+                    item.Name = "salaryReport";
+                    item.Command = GridViewToolbarCommand.Custom;
+                });
             });
         });
 
