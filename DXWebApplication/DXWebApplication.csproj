@@ -267,6 +267,7 @@
     <Content Include="Views\Home\ViewEmpReport.cshtml" />
     <Content Include="Views\Home\_PartialSalGridView.cshtml" />
     <Content Include="Views\Home\ViewSalReport.cshtml" />
+    <Content Include="Views\Home\_PartialEmpcontractEditForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -312,6 +313,9 @@
     <Compile Include="Models\Enums\KindOfWorkStatus.cs" />
     <Compile Include="Models\Enums\MartialStatus.cs" />
     <Compile Include="Models\Filter\Job_Filter.cs" />
+    <Compile Include="Models\HRS_EMC_EmpContract.cs">
+      <DependentUpon>AccountingDbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HRS_SAL_Salaries.cs">
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>

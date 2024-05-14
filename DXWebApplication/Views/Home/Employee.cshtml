@@ -77,8 +77,24 @@
          if (e.item.name == "salaryReport")
              window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
-         if (e.item.name === "showPopupButton")
-             popupControl.Show();
+         if (e.item.name === "showPopupButton") {
+             //popupControl.Show();
+             $.ajax({
+                 type: "Get",
+                 url: "/Home/PartialEmpcontractEditForm/",
+                 data: { empid:1 },
+                 success: function (jsReturnArgs) {
+
+                     if (jsReturnArgs.Status === 300) { //300 is an arbitrary value I just made up right now
+                         showPopup("You do not have access to that.");
+                     }
+
+                     $("#someDiv").html(jsReturnArgs.ViewString); //the HTML I returned from the controller
+                 },
+                 error: function (errorData) { onError(errorData); }
+             });
+
+         }
 
 
  }

@@ -413,7 +413,7 @@ namespace DXWebApplication.Controllers
 
         ////////////////////////////////////////////////////////////////////////////
 
-
+        #region salary
         public ActionResult PartialSalGridView(int empid)
         {
             
@@ -544,6 +544,17 @@ namespace DXWebApplication.Controllers
             return View(new XtraReport4());
         }
 
+        #endregion
 
+
+        /// //////////////////////////////////////////////////////////////
+       
+        
+        [HttpGet]
+        public ActionResult PartialEmpcontractEditForm() {
+
+            return PartialView("_PartialEmpcontractEditForm");
+        
+        }
     }
 }
