@@ -314,6 +314,7 @@ namespace DXWebApplication.Controllers
                     var emp = new ACC_EMP_Employee();
                     Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     ViewBag.emp = emp;
+
                     break;
                 case "STARTEDIT":
                     emp = emps.Where(x => x.ACC_EMP_ID == ACC_EMP_ID).FirstOrDefault();

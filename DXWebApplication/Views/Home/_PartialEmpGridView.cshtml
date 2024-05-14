@@ -64,8 +64,15 @@
                     item.Command = GridViewToolbarCommand.Custom;
                 });
             });
-        });
+            tb.Items.Add(i =>
+            {
+                i.Text = "Popup";
+                i.Name = "showPopupButton";
+                i.Command = GridViewToolbarCommand.Custom;
 
+            });
+
+        });
 
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
@@ -232,7 +239,4 @@
 
     grid.Bind(Model).GetHtml();
 }
-
-
-
 

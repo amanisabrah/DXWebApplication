@@ -77,6 +77,10 @@
          if (e.item.name == "salaryReport")
              window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
+         if (e.item.name === "showPopupButton")
+             popupControl.Show();
+
+
  }
 
 
@@ -90,3 +94,19 @@
         @Html.Action("PartialEmpGridView")
     </form>
 </main>
+
+@Html.DevExpress().PopupControl(settings =>
+{
+    settings.Name = "popupControl";
+    settings.PopupElementID = "button";
+    settings.PopupAction = PopupAction.MouseOver;
+    settings.ShowOnPageLoad = false;
+    settings.Width = 260;
+    settings.ShowFooter = true;
+    settings.FooterText = "Footer text";
+    settings.HeaderText = "Header";
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("<div>Window content</div>");
+    });
+}).GetHtml()
