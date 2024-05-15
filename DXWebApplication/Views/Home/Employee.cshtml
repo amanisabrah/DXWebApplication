@@ -77,6 +77,7 @@
          if (e.item.name == "salaryReport")
              window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
+         
          if (e.item.name === "showPopupButton") {
              $.ajax({
                  type: "Get",
@@ -113,12 +114,46 @@
     settings.PopupElementID = "button";
     settings.PopupAction = PopupAction.MouseOver;
     settings.ShowOnPageLoad = false;
-    settings.Width = 900;
+    settings.Width = 950;
     settings.HeaderText = "Employee Contract";
+    settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
     settings.SetContent(() =>
     {
         ViewContext.Writer.Write("<div id = 'results'>Window content</div>");
-        
+        @Html.DevExpress().FormLayout(s =>
+        {
+            s.Name = "ModalModeFormLayout";
+            s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+            s.Width = Unit.Percentage(100);
+            s.Height = Unit.Percentage(100);
+            s.NestedExtensionWidth = Unit.Percentage(100);
+            s.Items.Add(i =>
+            {
+                i.ShowCaption = DefaultBoolean.False;
+                i.SetNestedContent(() =>
+                {
+                    ViewContext.Writer.Write("<div style='float:right'> ");
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnUpdate";
+                        btnSettings.Text = "Save";
+                        btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit();}";
+                    }).Render();
+
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnCancel";
+                        btnSettings.Text = "Cancel";
+                        btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                        btnSettings.ClientSideEvents.Click = "function(s, e){ ContractBatch.CancelEdit(); }";
+                    }).Render();
+                    ViewContext.Writer.Write("</div>");
+                });
+            });
+        }).Render();
+
+
     });
 
 

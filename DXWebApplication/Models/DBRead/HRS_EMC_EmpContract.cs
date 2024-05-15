@@ -15,5 +15,9 @@ namespace DXWebApplication.Models
             }
             return _dbContext.HRS_EMC_EmpContract.Where(j => j.HRS_EMC_ID != 0).ToList();
         }
+
+ 
+
+
     }
 }
