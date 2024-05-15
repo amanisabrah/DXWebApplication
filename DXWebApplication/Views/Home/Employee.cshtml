@@ -118,6 +118,8 @@
     settings.PopupAction = PopupAction.MouseOver;
     settings.ShowOnPageLoad = false;
     settings.Width = 950;
+    settings.Modal = true;
+    settings.CloseAction = CloseAction.CloseButton;
     settings.HeaderText = "Employee Contract";
     settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
     settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
@@ -149,7 +151,7 @@
                         btnSettings.Name = "btnCancel";
                         btnSettings.Text = "Cancel";
                         btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
-                        btnSettings.ClientSideEvents.Click = "function(s, e){ ContractBatch.CancelEdit(); }";
+                        btnSettings.ClientSideEvents.Click = "function(s, e){ popupControl.Hide(); }";
                     }).Render();
                     ViewContext.Writer.Write("</div>");
                 });
@@ -170,12 +172,25 @@
     var rowIndex = 0;
     function ContractBatch_OnBatchEditStartEditing(s, e) {
         rowIndex = e.visibleIndex;
+        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
+        s.batchEditApi.SetCellValue(rowIndex, "HRS_EMC_EmpID", empid);
 
+        if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
+            var num = ContractBatch.batchEditApi.GetCellValue(rowIndex, "HRS_EMC_Number", false);
+            if (num == null || num <= 0) {
+                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
+                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
+                for (var i = 1; i < arr.length; i++) {
+                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
+                    if (number > max) {
+                        max = number;
+                    }
 
-    }
-
-    function ContractBatch_OnBatchEditRowInserting(s, e) {
-
+                }
+                ContractBatch.batchEditApi.SetCellValue(rowIndex, "HRS_EMC_Number", max + 1);
+            }
+            e.cancel = true;
+        }
     }
 
 

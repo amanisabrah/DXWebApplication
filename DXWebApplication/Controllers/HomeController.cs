@@ -553,7 +553,7 @@ namespace DXWebApplication.Controllers
         
         [HttpGet]
         public ActionResult PartialEmpcontractEditForm(int empid) {
-
+            ViewBag.id = empid;
             List<HRS_EMC_EmpContract> contract = HRS_EMC_EmpContract.GetByEmpId(empid, _accountingDbContext);
             return PartialView("_PartialEmpcontractEditForm", contract);
         
@@ -561,23 +561,30 @@ namespace DXWebApplication.Controllers
 
 
         [HttpPost]
-        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues,int empid)
         {
             foreach (var contract in updateValues.Insert)
             {
                 if (updateValues.IsValid(contract))
+                {
+                    contract.HRS_EMC_EmpID = empid; 
                     InsertContract(contract, updateValues);
+                }
             }
             foreach (var contract in updateValues.Update)
             {
                 if (updateValues.IsValid(contract))
+                {
+                    contract.HRS_EMC_EmpID = empid;
                     UpdateContract(contract, updateValues);
+
+                }
             }
             foreach (var contractID in updateValues.DeleteKeys)
             {
                 DeleteContract(contractID, updateValues);
             }
-            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.Get(_accountingDbContext));
+            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.GetByEmpId(empid,_accountingDbContext));
         }
 
 

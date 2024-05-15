@@ -31,7 +31,7 @@
     settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
 
     settings.ClientSideEvents.BatchEditStartEditing = settings.Name + "_OnBatchEditStartEditing";
-    settings.ClientSideEvents.BatchEditRowInserting = settings.Name + "_OnBatchEditRowInserting";
+   // settings.ClientSideEvents.BatchEditRowInserting = settings.Name + "_OnBatchEditRowInserting";
 
     settings.CommandColumn.Visible = true;
     //settings.CommandColumn.ShowCancelButton = false;
@@ -41,7 +41,7 @@
     settings.CommandColumn.ShowRecoverButton = false;
     settings.SettingsBehavior.AllowFocusedRow = true;
     settings.CommandColumn.Width = Unit.Pixel(150);
-
+    settings.Settings.ShowFilterRow = true;
 
 
     settings.Columns.Add(c =>
@@ -51,6 +51,23 @@
         c.ColumnType = MVCxGridViewColumnType.SpinEdit;
 
     });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_EmpID";
+        c.Caption = "Employee";
+        c.ReadOnly = true;
+        c.EditorProperties().ComboBox(cb =>
+        {
+            cb.ClientInstanceName = "EMPID";
+            cb.DataSource = DXWebApplication.Models.ACC_EMP_Employee.Get();
+            cb.ValueField = "ACC_EMP_ID";
+            cb.TextField = "ACC_EMP_Name";
+        });
+    });
+
+
+
 
     settings.Columns.Add(c =>
     {
@@ -69,6 +86,19 @@
         c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
     });
 
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_Action";
+        c.Caption = "Action";
+        c.EditorProperties().ComboBox(p =>
+        {
+            p.TextField = "key";
+            p.ValueField = "value";
+            p.ValueType = typeof(int);
+            p.DataSource = DXWebApplication.Models.ActionType.TypeAction;
+
+        });
+    });
 
 }).Bind(Model).GetHtml()
 
