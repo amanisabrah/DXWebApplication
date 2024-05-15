@@ -14,7 +14,7 @@ namespace DXWebApplication.Models
     
     public partial class HRS_EMC_EmpContract
     {
-        public int HRS_EMC__ID { get; set; }
+        public int HRS_EMC_ID { get; set; }
         public int HRS_EMC_Number { get; set; }
         public System.DateTime HRS_EMC_Startdate { get; set; }
         public Nullable<System.DateTime> HRS_EMC_Enddate { get; set; }

@@ -2,5 +2,75 @@
 
 @using System.Web.UI.WebControls;
 
-<h1>employee</h1>
+
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "ContractBatch";
+    settings.KeyFieldName = "HRS_EMC_ID";
+    settings.Width = Unit.Percentage(100);
+
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpcontractEditForm" };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ContractBatchEditingUpdateModel" };
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+    settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+
+    settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
+    settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+    settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
+    settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
+    settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+    settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
+    settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = false;
+
+
+
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+
+    settings.ClientSideEvents.BatchEditStartEditing = settings.Name + "_OnBatchEditStartEditing";
+    settings.ClientSideEvents.BatchEditRowInserting = settings.Name + "_OnBatchEditRowInserting";
+
+    settings.CommandColumn.Visible = true;
+    //settings.CommandColumn.ShowCancelButton = false;
+    settings.CommandColumn.ShowDeleteButton = true;
+    settings.CommandColumn.ShowNewButtonInHeader = true;
+    settings.CommandColumn.ShowCancelButton = true;
+    settings.CommandColumn.ShowRecoverButton = false;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.CommandColumn.Width = Unit.Pixel(150);
+
+
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_Number";
+        c.Caption = "Number";
+        c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_Startdate";
+        c.Caption = "StartDate";
+        c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_Enddate";
+        c.Caption = "End Date";
+        c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+    });
+
+
+}).Bind(Model).GetHtml()
+
+
 

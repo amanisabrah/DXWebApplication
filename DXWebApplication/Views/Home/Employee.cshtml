@@ -78,11 +78,9 @@
              window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
          if (e.item.name === "showPopupButton") {
-             //popupControl.Show();
              $.ajax({
                  type: "Get",
-                 //url: "/Home/PartialEmpcontractEditForm/",
-                 url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
+                  url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
                  data: { empid:1 },
                  success: function (jsReturnArgs) {
                      $("#results").html(jsReturnArgs);
@@ -115,12 +113,13 @@
     settings.PopupElementID = "button";
     settings.PopupAction = PopupAction.MouseOver;
     settings.ShowOnPageLoad = false;
-    settings.Width = 260;
-    settings.ShowFooter = true;
-    settings.FooterText = "Footer text";
-    settings.HeaderText = "Header";
+    settings.Width = 900;
+    settings.HeaderText = "Employee Contract";
     settings.SetContent(() =>
     {
         ViewContext.Writer.Write("<div id = 'results'>Window content</div>");
+        
     });
+
+
 }).GetHtml()

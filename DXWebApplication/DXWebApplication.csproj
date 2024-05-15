@@ -302,13 +302,16 @@
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBRead\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBRead\HRS_EMC_EmpContract.cs" />
     <Compile Include="Models\DBRead\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBRead\JOB_JOBS.cs" />
     <Compile Include="Models\DBRead\WST_WorkStatus.cs" />
     <Compile Include="Models\DBWrite\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBWrite\HRS_EMC_EmpContract.cs" />
     <Compile Include="Models\DBWrite\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBWrite\JOB_JOBS.cs" />
     <Compile Include="Models\DBWrite\WST_WorkStatus.cs" />
+    <Compile Include="Models\Enums\ActionType.cs" />
     <Compile Include="Models\Enums\GenderCollection.cs" />
     <Compile Include="Models\Enums\KindOfWorkStatus.cs" />
     <Compile Include="Models\Enums\MartialStatus.cs" />

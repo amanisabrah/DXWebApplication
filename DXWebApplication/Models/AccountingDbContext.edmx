@@ -29,9 +29,9 @@
         </EntityType>
         <EntityType Name="HRS_EMC_EmpContract">
           <Key>
-            <PropertyRef Name="HRS_EMC__ID" />
+            <PropertyRef Name="HRS_EMC_ID" />
           </Key>
-          <Property Name="HRS_EMC__ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HRS_EMC_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HRS_EMC_Number" Type="int" Nullable="false" />
           <Property Name="HRS_EMC_Startdate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="HRS_EMC_Enddate" Type="datetime2" Precision="7" />
@@ -300,9 +300,9 @@
         </Association>
         <EntityType Name="HRS_EMC_EmpContract">
           <Key>
-            <PropertyRef Name="HRS_EMC__ID" />
+            <PropertyRef Name="HRS_EMC_ID" />
           </Key>
-          <Property Name="HRS_EMC__ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HRS_EMC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="HRS_EMC_Number" Type="Int32" Nullable="false" />
           <Property Name="HRS_EMC_Startdate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="HRS_EMC_Enddate" Type="DateTime" Precision="7" />
@@ -421,7 +421,7 @@
                 <ScalarProperty Name="HRS_EMC_Enddate" ColumnName="HRS_EMC_Enddate" />
                 <ScalarProperty Name="HRS_EMC_Startdate" ColumnName="HRS_EMC_Startdate" />
                 <ScalarProperty Name="HRS_EMC_Number" ColumnName="HRS_EMC_Number" />
-                <ScalarProperty Name="HRS_EMC__ID" ColumnName="HRS_EMC__ID" />
+                <ScalarProperty Name="HRS_EMC_ID" ColumnName="HRS_EMC_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

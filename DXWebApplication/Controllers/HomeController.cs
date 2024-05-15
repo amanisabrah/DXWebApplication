@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
@@ -551,11 +552,81 @@ namespace DXWebApplication.Controllers
        
         
         [HttpGet]
-        public ActionResult PartialEmpcontractEditForm() {
-            var model = new List<DXWebApplication.Models.HRS_EMC_EmpContract>();
+        public ActionResult PartialEmpcontractEditForm(int empid) {
 
-            return PartialView("_PartialEmpcontractEditForm",model);
+            List<HRS_EMC_EmpContract> contract = HRS_EMC_EmpContract.Get(_accountingDbContext);
+            return PartialView("_PartialEmpcontractEditForm", contract);
         
+        }
+
+
+        [HttpPost]
+        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            foreach (var contract in updateValues.Insert)
+            {
+                if (updateValues.IsValid(contract))
+                    InsertWorkStatus(contract, updateValues);
+            }
+            foreach (var contract in updateValues.Update)
+            {
+                if (updateValues.IsValid(contract))
+                    UpdateWorkStatus(contract, updateValues);
+            }
+            foreach (var contractID in updateValues.DeleteKeys)
+            {
+                DeleteWorkStatus(contractID, updateValues);
+            }
+            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.Get(_accountingDbContext));
+        }
+
+
+        protected void InsertWorkStatus(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.AddNew(contract, _accountingDbContext);
+
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(contract, e.Message);
+            }
+        }
+
+        protected void UpdateWorkStatus(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.Edit(contract, _accountingDbContext);
+                }
+
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(contract, e.Message);
+            }
+        }
+
+        protected void DeleteWorkStatus(int contractID, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.Delete(contractID, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(contractID, e.Message);
+
+            }
         }
     }
 }

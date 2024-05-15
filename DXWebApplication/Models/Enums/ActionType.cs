@@ -12,9 +12,9 @@ namespace DXWebApplication.Models
             get
             {
                 var FontSize = new Dictionary<string, int>();
-                foreach (var text in Enum.GetNames(typeof(Gender)))
+                foreach (var text in Enum.GetNames(typeof(TypeAction)))
                 {
-                    FontSize.Add(text, (int)Enum.Parse(typeof(Gender), text));
+                    FontSize.Add(text, (int)Enum.Parse(typeof(TypeAction), text));
                 }
                 return FontSize;
             }
