@@ -552,9 +552,9 @@ namespace DXWebApplication.Controllers
        
         
         [HttpGet]
-        public ActionResult PartialEmpcontractEditForm() {
+        public ActionResult PartialEmpcontractEditForm(int empid) {
 
-            List<HRS_EMC_EmpContract> contract = HRS_EMC_EmpContract.Get(_accountingDbContext);
+            List<HRS_EMC_EmpContract> contract = HRS_EMC_EmpContract.GetByEmpId(empid, _accountingDbContext);
             return PartialView("_PartialEmpcontractEditForm", contract);
         
         }

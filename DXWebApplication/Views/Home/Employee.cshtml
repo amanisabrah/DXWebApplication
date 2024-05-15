@@ -81,10 +81,11 @@
 
          
          if (e.item.name === "showPopupButton") {
+             var key = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
              $.ajax({
                  type: "Get",
                   url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
-                 data: { empid:1 },
+                 data: { empid: key },
                  success: function (jsReturnArgs) {
                      $("#results").html(jsReturnArgs);
                      popupControl.Show();
