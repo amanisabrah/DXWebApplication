@@ -38,6 +38,8 @@
             e.cancel = true;
     }
 
+
+
     function HRS_SAL_SalaryAmount_OnValueChange(s, e) {
 
         var salaryamount = s.GetValue();
@@ -158,3 +160,25 @@
 
 
 }).GetHtml()
+
+<script>
+
+
+
+
+    var rowIndex = 0;
+    function ContractBatch_OnBatchEditStartEditing(s, e) {
+        rowIndex = e.visibleIndex;
+
+
+    }
+
+    function ContractBatch_OnBatchEditRowInserting(s, e) {
+
+    }
+
+
+
+
+     
+</script>

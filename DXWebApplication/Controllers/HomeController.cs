@@ -566,22 +566,22 @@ namespace DXWebApplication.Controllers
             foreach (var contract in updateValues.Insert)
             {
                 if (updateValues.IsValid(contract))
-                    InsertWorkStatus(contract, updateValues);
+                    InsertContract(contract, updateValues);
             }
             foreach (var contract in updateValues.Update)
             {
                 if (updateValues.IsValid(contract))
-                    UpdateWorkStatus(contract, updateValues);
+                    UpdateContract(contract, updateValues);
             }
             foreach (var contractID in updateValues.DeleteKeys)
             {
-                DeleteWorkStatus(contractID, updateValues);
+                DeleteContract(contractID, updateValues);
             }
             return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.Get(_accountingDbContext));
         }
 
 
-        protected void InsertWorkStatus(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
             {
@@ -597,7 +597,7 @@ namespace DXWebApplication.Controllers
             }
         }
 
-        protected void UpdateWorkStatus(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        protected void UpdateContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
             {
@@ -613,7 +613,7 @@ namespace DXWebApplication.Controllers
             }
         }
 
-        protected void DeleteWorkStatus(int contractID, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        protected void DeleteContract(int contractID, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
             {
