@@ -552,8 +552,9 @@ namespace DXWebApplication.Controllers
         
         [HttpGet]
         public ActionResult PartialEmpcontractEditForm() {
+            var model = new List<DXWebApplication.Models.HRS_EMC_EmpContract>();
 
-            return PartialView("_PartialEmpcontractEditForm");
+            return PartialView("_PartialEmpcontractEditForm",model);
         
         }
     }

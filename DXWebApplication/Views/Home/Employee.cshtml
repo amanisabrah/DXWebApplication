@@ -81,15 +81,13 @@
              //popupControl.Show();
              $.ajax({
                  type: "Get",
-                 url: "/Home/PartialEmpcontractEditForm/",
+                 //url: "/Home/PartialEmpcontractEditForm/",
+                 url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
                  data: { empid:1 },
                  success: function (jsReturnArgs) {
+                     $("#results").html(jsReturnArgs);
+                     popupControl.Show();
 
-                     if (jsReturnArgs.Status === 300) { //300 is an arbitrary value I just made up right now
-                         showPopup("You do not have access to that.");
-                     }
-
-                     $("#someDiv").html(jsReturnArgs.ViewString); //the HTML I returned from the controller
                  },
                  error: function (errorData) { onError(errorData); }
              });
@@ -123,6 +121,6 @@
     settings.HeaderText = "Header";
     settings.SetContent(() =>
     {
-        ViewContext.Writer.Write("<div>Window content</div>");
+        ViewContext.Writer.Write("<div id = 'results'>Window content</div>");
     });
 }).GetHtml()
