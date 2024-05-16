@@ -336,7 +336,7 @@ namespace DXWebApplication.Controllers
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList,contractList))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
                 ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList, contractList);
             }
@@ -362,7 +362,7 @@ namespace DXWebApplication.Controllers
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
 
 
-            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList, contractList))
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList, contractList);
             }
@@ -401,8 +401,7 @@ namespace DXWebApplication.Controllers
 
         #region salary
         public ActionResult PartialSalGridView(int empid)
-        {
-            
+        {    
             ViewBag.id = empid;
             List<HRS_SAL_Salaries> salary;
             if (Session["SalaryList"] == null)
@@ -547,12 +546,13 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialEmpcontractEditForm", contract);
         }
 
-        public List<HRS_SAL_Salaries> Contracts { get; set; }
+
         [HttpPost]
-        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues,int empid)
+        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues,int id, bool saveToolBar=false )
         {
-            var ContID = 10000000;
+            var ContID = 1000000;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
+
             foreach (var contract in contractList)
             {
                 if (contract.HRS_EMC_ID >= ContID)
@@ -560,14 +560,25 @@ namespace DXWebApplication.Controllers
                     ContID = contract.HRS_EMC_ID + 1;
                 }
             }
+
             foreach (var contract in updateValues.Insert)
             {
                 if (updateValues.IsValid(contract))
                 {
-                    contract.HRS_EMC_EmpID = ContID++; 
+                    contract.HRS_EMC_ID = ContID++;
                     contractList.Add(contract);
+                    if (saveToolBar)
+                    {
+                        InsertContract(contract, updateValues, id);
+                    }
+                }
+                else
+                {
+                    updateValues.SetErrorText(contract, "add ");
                 }
             }
+
+
             foreach (var contract in updateValues.Update)
             {
                 if (updateValues.IsValid(contract))
@@ -584,15 +595,21 @@ namespace DXWebApplication.Controllers
                         existingContract.HRS_EMC_Issuedate = contract.HRS_EMC_Issuedate;
                         existingContract.HRS_EMC_IssueNum = contract.HRS_EMC_IssueNum;
                     }
+                    existingContract.HRS_EMC_IssueNum = contract.HRS_EMC_IssueNum;
+                    if (saveToolBar)
+                    {
+                        UpdateContract(existingContract, updateValues, id);
+                    }
+
                 }
             }
             foreach (var contractID in updateValues.DeleteKeys)
             {
                 DeleteContract(contractID, updateValues);
             }
-            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.GetByEmpId(empid,_accountingDbContext));
+            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.GetByEmpId(id,_accountingDbContext));
         }
-        protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
         {
             try
             {
@@ -607,7 +624,7 @@ namespace DXWebApplication.Controllers
                 updateValues.SetErrorText(contract, e.Message);
             }
         }
-        protected void UpdateContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        protected void UpdateContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
         {
             try
             {
@@ -639,5 +656,6 @@ namespace DXWebApplication.Controllers
         }
     }
     #endregion
+
 
 }

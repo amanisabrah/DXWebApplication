@@ -11,6 +11,8 @@
         settings.SettingsExport.EnableClientSideExportAPI = true;
         settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
         settings.SettingsBehavior.ConfirmDelete = true;
         settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
         settings.SettingsPopup.EditForm.Width = 600;
@@ -53,6 +55,12 @@
                 i.Items.Add(GridViewToolbarCommand.ExportToRtf);
                 i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
             });
+            tb.Items.Add(item =>
+            {
+                item.Text = "Contract";
+                item.Name = "showPopupButton";
+                item.Command = GridViewToolbarCommand.Custom;
+            });
             tb.Items.Add(i =>
             {
                 i.Text = "Reports";
@@ -72,6 +80,7 @@
                     item.Name = "salaryReport";
                     item.Command = GridViewToolbarCommand.Custom;
                 });
+
             });
         });
         //columns

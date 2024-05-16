@@ -24,6 +24,12 @@ namespace DXWebApplication.Models
             contractList?.ForEach(contract =>
             {
                 contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
+                if (contract.HRS_EMC_ID >= 10000000)
+                {
+                    DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                }
+                else
+                    DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
             });
         }
         public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null, List<HRS_EMC_EmpContract> contractList = null)
@@ -60,6 +66,12 @@ namespace DXWebApplication.Models
             contractList?.ForEach(contract =>
             {
                 contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
+                if (contract.HRS_EMC_ID >= 1000000)
+                {
+                    DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                }
+                else
+                    DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
             });
         }
         public static void Delete(ACC_EMP_Employee delete, AccountingDbContext db)

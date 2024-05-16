@@ -17,7 +17,7 @@ namespace DXWebApplication.Models
             }
             return _dbContext.ACC_EMP_Employee.Where(j => j.ACC_EMP_IsDelete == false).ToList();
         }
-        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList,List<HRS_EMC_EmpContract> contractList)
+        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList)
         {
             #region validation for empeditform
             ModelState.Clear();
@@ -100,14 +100,13 @@ namespace DXWebApplication.Models
                 {
                     if (salary.HRS_SAL_ID != salaryList[i].HRS_SAL_ID && salary.HRS_SAL_StartDate >= salaryList[i].HRS_SAL_StartDate)
                     {
-                            ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than all previous start dates.");
-                           
+                        ModelState.AddModelError("HRS_SAL_StartDate", "Start date must be greater than all previous start dates.");
                     }
-              
                 }
                 break;
-
             }
+
+
             #endregion 
 
             return ModelState.IsValid;

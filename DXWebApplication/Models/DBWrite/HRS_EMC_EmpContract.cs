@@ -28,6 +28,7 @@ namespace DXWebApplication.Models
                 existingEntity.HRS_EMC_Desc = edit.HRS_EMC_Desc;
                 existingEntity.HRS_EMC_Issuedate = edit.HRS_EMC_Issuedate;
                 existingEntity.HRS_EMC_IssueNum = edit.HRS_EMC_IssueNum;
+                existingEntity.HRS_EMC_EmpID = edit.HRS_EMC_EmpID;
 
                 db.SaveChanges();
             }

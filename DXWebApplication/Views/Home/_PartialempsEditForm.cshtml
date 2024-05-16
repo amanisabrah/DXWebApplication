@@ -206,7 +206,7 @@
             {
                 btnSettings.Name = "btnUpdate";
                 btnSettings.Text = "Save";
-                btnSettings.ClientSideEvents.Click = "function(s,e){SalaryAmountGridView.UpdateEdit(); employeeGridView.UpdateEdit(); }";
+                btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit(); c.UpdateEdit(); employeeGridView.UpdateEdit(); }";
             }).Render();
             Html.DevExpress().Button(btnSettings =>
             {

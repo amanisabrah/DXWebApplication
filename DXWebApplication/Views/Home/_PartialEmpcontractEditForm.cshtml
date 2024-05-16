@@ -1,12 +1,13 @@
 ﻿@model List<DXWebApplication.Models.HRS_EMC_EmpContract>
 @using System.Web.UI.WebControls;
+
 @Html.DevExpress().GridView(settings =>
 {
     settings.Name = "ContractBatch";
     settings.KeyFieldName = "HRS_EMC_ID";
     settings.Width = Unit.Percentage(100);
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpcontractEditForm" };
-    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ContractBatchEditingUpdateModel", empid = ViewBag.empid };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ContractBatchEditingUpdateModel", id = ViewBag.id };
     settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
     settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
     settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
@@ -18,7 +19,7 @@
     settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = false;
     settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
-    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle; 
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
     settings.ClientSideEvents.BatchEditStartEditing = settings.Name + "_OnBatchEditStartEditing";
     settings.CommandColumn.Visible = true;
     settings.CommandColumn.ShowDeleteButton = true;
@@ -27,7 +28,6 @@
     settings.CommandColumn.ShowRecoverButton = false;
     settings.SettingsBehavior.AllowFocusedRow = true;
     settings.CommandColumn.Width = Unit.Pixel(150);
-    settings.Settings.ShowFilterRow = true;
     //columns
     settings.Columns.Add(c =>
     {
