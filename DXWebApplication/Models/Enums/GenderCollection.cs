@@ -7,14 +7,14 @@ namespace DXWebApplication.Models
 {
     public class GenderCollection
     {
-        public static Dictionary<string, int> Gender //{ { "Female", 1}, { "Male",2 } } to binding enum values to controls (comboBox)
+        public static Dictionary<string, int> Gender 
         {
             get
             {
                 var FontSize = new Dictionary<string, int>();
-                foreach (var text in Enum.GetNames(typeof(Gender)))//to get an array of string names of the Gender enum values (["Female", "Male"])
+                foreach (var text in Enum.GetNames(typeof(Gender)))
                 {
-                    FontSize.Add(text, (int)Enum.Parse(typeof(Gender), text));//to convert each name back to its corresponding Gender enum value (0 or 1).
+                    FontSize.Add(text, (int)Enum.Parse(typeof(Gender), text));
                 }
                 return FontSize;
             }

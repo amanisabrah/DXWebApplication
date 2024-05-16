@@ -7,16 +7,13 @@ namespace DXWebApplication.Models
 {
     public class EmployeeReport
     {
-
         public int ACC_EMR_EMPID { get; set; }
         public string ACC_EMR_EmpName { get; set; }
         public string ACC_EMR_JOBName { get; set; }
         public string ACC_EMR_WSTName { get; set; }
         public Nullable<int> ACC_EMP_documentNum { get; set; }
-
         public static List<EmployeeReport> Get()
         {
-
             var model = new List<EmployeeReport>();
             List<ACC_EMP_Employee> emp = ACC_EMP_Employee.Get();
             foreach (var item in emp)
@@ -33,8 +30,5 @@ namespace DXWebApplication.Models
             }
             return model;
         }
-
-
-
     }
 }

@@ -13,11 +13,8 @@ namespace DXWebApplication.Models
         public Nullable<System.DateTime> HRS_SAL_EndDate { get; set; }
         public string HRS_SAL_EmpName { get; set; }
         public Nullable<System.DateTime> HRS_SAL_JoinDate { get; set; }
-
-
         public static List<SalaryReport> Get()
         {
-
             var model = new List<SalaryReport>();
             List<HRS_SAL_Salaries> sal = HRS_SAL_Salaries.Get();
             foreach (var item in sal)
@@ -36,6 +33,4 @@ namespace DXWebApplication.Models
             return model;
         }
     }
-
-
 }

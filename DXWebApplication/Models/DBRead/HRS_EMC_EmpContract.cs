@@ -19,11 +19,8 @@ namespace DXWebApplication.Models
         public static List<HRS_EMC_EmpContract> GetByEmpId(int empid, AccountingDbContext _dbContext = null)
         {
             if (empid >= 0)
-
                 return Get(_dbContext).Where(x => x.HRS_EMC_EmpID == empid).ToList();
-
             else
-
                 return new List<HRS_EMC_EmpContract>();
         }
 

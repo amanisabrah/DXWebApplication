@@ -7,15 +7,12 @@ namespace DXWebApplication.Models
 {
     public partial class HRS_SAL_Salaries
     {
-
         public static void AddNew(HRS_SAL_Salaries add, AccountingDbContext db)
         {
             add.HRS_SAL_EntryDate = DateTime.Now;
             db.HRS_SAL_Salaries.Add(add);
             db.SaveChanges();
-
         }
-
         public static void Edit(HRS_SAL_Salaries edit, AccountingDbContext db)
         {
             edit.HRS_SAL_UpdateDate = DateTime.Now;
@@ -31,7 +28,6 @@ namespace DXWebApplication.Models
                 db.SaveChanges();
             }
         }
-
         public static void Delete(int salaryID, AccountingDbContext dbContext)
         {
             var salary = dbContext.HRS_SAL_Salaries.Find(salaryID);
@@ -41,7 +37,5 @@ namespace DXWebApplication.Models
                 dbContext.SaveChanges();
             }
         }
-
-
     }
 }

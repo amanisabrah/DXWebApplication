@@ -1,16 +1,12 @@
-﻿
-
-@using System.Web.UI.WebControls;
+﻿@using System.Web.UI.WebControls;
 @{
     var emp = (DXWebApplication.Models.ACC_EMP_Employee)ViewBag.emp;
-
 }
 @Html.DevExpress().FormLayout(flSettings =>
 {
 
     flSettings.Name = "PopupEditFormLayout";
     flSettings.ColCount = 2;
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Number";
@@ -21,11 +17,8 @@
             s.Properties.ValidationSettings.Display = Display.Dynamic;
             s.ShowModelErrors = true;
             s.Width = Unit.Percentage(100);
-
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_documentNum";
@@ -36,11 +29,8 @@
             s.Properties.ValidationSettings.Display = Display.Dynamic;
             s.ShowModelErrors = true;
             s.Width = Unit.Percentage(100);
-
-
         });
     });
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Name";
@@ -53,23 +43,18 @@
             s.ShowModelErrors = true;
         });
     });
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Name2";
         i.Caption = "Name(another Languge)";
         i.NestedExtension().TextBox(s =>
         {
-
             s.Properties.ValidationSettings.RequiredField.IsRequired = true;
             s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
             s.Properties.ValidationSettings.Display = Display.Dynamic;
             s.ShowModelErrors = true;
-
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_JOBID";
@@ -86,8 +71,6 @@
             combobox.ShowModelErrors = true;
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Gender";
@@ -104,8 +87,6 @@
             combobox.ShowModelErrors = true;
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Address";
@@ -118,8 +99,6 @@
             s.ShowModelErrors = true;
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_MartialStatus";
@@ -136,8 +115,6 @@
             combobox.ShowModelErrors = true;
         });
     });
-
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_WSTID";
@@ -154,8 +131,6 @@
             combobox.ShowModelErrors = true;
         });
     });
-
-
     flSettings.Items.Add(c =>
     {
         c.FieldName = "ACC_EMP_DateofBirth";
@@ -168,7 +143,6 @@
             s.ShowModelErrors = true;
         });
     });
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_PlaceofBirth";
@@ -181,7 +155,6 @@
             s.ShowModelErrors = true;
         });
     });
-
     flSettings.Items.Add(c =>
     {
         c.FieldName = "ACC_EMP_JoinDate";
@@ -194,24 +167,29 @@
             s.ShowModelErrors = true;
         });
     });
-
-
-
+    //batchSalary
     flSettings.Items.Add(i =>
     {
         i.ColSpan = 2;
         i.ShowCaption = DefaultBoolean.False;
         i.SetNestedContent(() =>
         {
-            ViewContext.Writer.Write("<div>");
-            Html.RenderAction("PartialSalGridView", new { empid = emp.ACC_EMP_ID });
-            ViewContext.Writer.Write("</div>");
+            @Html.DevExpress().PageControl(settings =>
+            {
+                settings.Name = "pageControl";
+                settings.Width = 300;
+                settings.Height = 100;
+                settings.ClientSideEvents.TabClick = "function(s, e) { onTabClick(s, e); }";
+                settings.TabPages.Add("Salary", "salary").SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<div id='salaryContent' style='display:none;'>");
+                    Html.RenderAction("PartialSalGridView","Home",new { empid = emp.ACC_EMP_ID });
+                    ViewContext.Writer.Write("</div>");
+                });
+            }).GetHtml();
         });
     });
-
-
-
-
+    //buttons
     flSettings.Items.Add(i =>
     {
         i.ShowCaption = DefaultBoolean.False;
@@ -224,7 +202,6 @@
                 btnSettings.Text = "Save";
                 btnSettings.ClientSideEvents.Click = "function(s,e){SalaryAmountGridView.UpdateEdit(); employeeGridView.UpdateEdit(); }";
             }).Render();
-
             Html.DevExpress().Button(btnSettings =>
             {
                 btnSettings.Name = "btnCancel";
@@ -235,8 +212,6 @@
             ViewContext.Writer.Write("</div>");
         });
     });
-
-
 
 }).Bind(emp).GetHtml()
 

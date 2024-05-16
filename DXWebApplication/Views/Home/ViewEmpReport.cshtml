@@ -1,10 +1,7 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ViewEmpReport";
 }
-
 @Html.DevExpress().ReportDesigner(settings =>
 {
     settings.Name = "ReportDesigner";
-
 }).Bind(Model).GetHtml()

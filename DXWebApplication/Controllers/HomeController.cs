@@ -17,7 +17,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
-
 namespace DXWebApplication.Controllers
 {
     public class HomeController : Controller
@@ -28,12 +27,12 @@ namespace DXWebApplication.Controllers
         {
             _accountingDbContext = new AccountingDbContext();
         }
-        #region everything else
         public ActionResult Index()
         {
             return View();
         }
 
+        #region Job
         [HttpGet]
         public ActionResult Jobs()
         {
@@ -182,9 +181,9 @@ namespace DXWebApplication.Controllers
          
             return View(new XtraReport1());
         }
+        #endregion
 
-        ///////////////////////////////////////////////////////////////////////////////////////////
-
+        #region workstatus
         [HttpGet]
         public ActionResult WorkStatus()
         {
@@ -204,8 +203,6 @@ namespace DXWebApplication.Controllers
             List<WST_WorkStatus> workStatus = WST_WorkStatus.Get(_accountingDbContext);
             return PartialView("_PartialWorkStatusGridView", workStatus);
         }
-
-
 
         [HttpPost]
         public ActionResult BatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
@@ -231,7 +228,6 @@ namespace DXWebApplication.Controllers
             }
             return PartialView("_PartialWorkStatusGridView", WST_WorkStatus.Get(_accountingDbContext));
         }
-
 
         protected void InsertWorkStatus(WST_WorkStatus workStatus, MVCxGridViewBatchUpdateValues<WST_WorkStatus, int> updateValues)
         {
@@ -287,8 +283,8 @@ namespace DXWebApplication.Controllers
 
             return View(new XtraReport2());
         }
+
         #endregion
-        ///////////////////////////////////////////////////////////////////////////
 
         #region Employee
         #region EmployeeGridView
@@ -410,9 +406,6 @@ namespace DXWebApplication.Controllers
         }
         #endregion
         #endregion
-
-
-        ////////////////////////////////////////////////////////////////////////////
 
         #region salary
         public ActionResult PartialSalGridView(int empid)
@@ -547,10 +540,7 @@ namespace DXWebApplication.Controllers
 
         #endregion
 
-
-        /// //////////////////////////////////////////////////////////////
-       
-        
+        #region contract
         [HttpGet]
         public ActionResult PartialEmpcontractEditForm(int empid) {
             ViewBag.id = empid;
@@ -558,7 +548,6 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialEmpcontractEditForm", contract);
         
         }
-
 
         [HttpPost]
         public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues,int empid)
@@ -586,8 +575,6 @@ namespace DXWebApplication.Controllers
             }
             return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.GetByEmpId(empid,_accountingDbContext));
         }
-
-
         protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
@@ -603,7 +590,6 @@ namespace DXWebApplication.Controllers
                 updateValues.SetErrorText(contract, e.Message);
             }
         }
-
         protected void UpdateContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
@@ -619,7 +605,6 @@ namespace DXWebApplication.Controllers
                 updateValues.SetErrorText(contract, e.Message);
             }
         }
-
         protected void DeleteContract(int contractID, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
         {
             try
@@ -636,4 +621,6 @@ namespace DXWebApplication.Controllers
             }
         }
     }
+    #endregion
+
 }

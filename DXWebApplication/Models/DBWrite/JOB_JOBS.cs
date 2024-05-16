@@ -8,14 +8,12 @@ namespace DXWebApplication.Models
 {
     public partial class JOB_JOBS
     {
-
         public static void AddNew(JOB_JOBS add, AccountingDbContext db)
         {
             add.JOB_EntryDate = DateTime.Now;
             db.JOB_JOBS.Add(add);
             db.SaveChanges();
         }
-
         public static void Edit(JOB_JOBS edit, AccountingDbContext db)
         {
             edit.JOB_UpdateDate = DateTime.Now;
@@ -31,8 +29,7 @@ namespace DXWebApplication.Models
                 existingEntity.JOB_UpdateDate = edit.JOB_UpdateDate;
                 existingEntity.JOB_File = edit.JOB_File;
                 existingEntity.JOB_FileName = edit.JOB_FileName;
-            
-
+           
                 db.SaveChanges();
             }
         }
@@ -46,8 +43,6 @@ namespace DXWebApplication.Models
                 db.Entry(existingEntity).State = EntityState.Modified;
                 db.SaveChanges();
             }
-        }
-
-        
+        }      
     }
 }

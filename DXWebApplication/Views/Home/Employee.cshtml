@@ -1,20 +1,15 @@
 ﻿@{
     ViewBag.Title = "Employee";
 }
-
 <script>
 
-
     function OnBeginCallback(s, e) {
-
         if (e.command === "STARTEDIT") {
             var key = s.GetRowKey(s.GetFocusedRowIndex());
             e.customArgs['ACC_EMP_ID'] = key;
         }
         e.customArgs['Command'] = e.command;
     }
-
-
 
     var rowIndex = 0;
     function SalaryAmountGridView_OnBatchEditStartEditing(s, e) {
@@ -29,7 +24,6 @@
             if (salaryamount == null || startDate == null)
                 e.cancel = true;
         }
-
     }
 
     function SalaryAmountGridView_OnBatchEditRowInserting(s, e) {
@@ -38,20 +32,15 @@
             e.cancel = true;
     }
 
-
-
     function HRS_SAL_SalaryAmount_OnValueChange(s, e) {
-
         var salaryamount = s.GetValue();
         var startDate = s.GetValue();
-
         if (startDate == null || startDate == "") {
             SalaryAmountGridView.batchEditApi.SetCellValue(rowIndex, "HRS_SAL_StartDate", salaryamount);
         }
     }
 
     function OnEndCallback (s,e) {
-
             if (s.cpViewError != null && s.cpViewError.length > 0) {
                 var errorMessage = "Validation errors:\n";
                 s.cpViewError.forEach(function (error) {
@@ -59,27 +48,16 @@
                 });
                 alert(errorMessage);
             }
-
     }
 
-//    function employeeEditForm_SavebtnClick(s, e) {
-////validation
-//        else {
-//            employeeGridView.UpdateEdit();
-//        }
-//    }
-
-
-
-     function OnToolbarItemClick(s, e) {
+    function OnToolbarItemClick(s, e) {
 
          if (e.item.name == "employeeReport")
              window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
 
          if (e.item.name == "salaryReport")
-             window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
+            window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
 
-         
          if (e.item.name === "showPopupButton") {
              var key = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
              $.ajax({
@@ -95,18 +73,48 @@
              });
 
          }
+    }
 
 
- }
 
+    function onTabClick(s, e) {
+        if (e.tab.name === "salary") {
+            $("#salaryContent").show();
+            $("#batchGridViewContainer").show();
+        }
+    }
+</script>
+
+<script>
+
+    var contarctRowIndex = 0;
+    function ContractBatch_OnBatchEditStartEditing(s, e) {
+        contarctRowIndex = e.visibleIndex;
+        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
+        s.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_EmpID", empid);
+
+        if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
+            var num = ContractBatch.batchEditApi.GetCellValue(contarctRowIndex, "HRS_EMC_Number", false);
+            if (num == null || num <= 0) {
+                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
+                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
+                for (var i = 1; i < arr.length; i++) {
+                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
+                    if (number > max) {
+                        max = number;
+                    }
+                }
+                ContractBatch.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_Number", max + 1);
+            }
+            e.cancel = true;
+        }
+    }
 
 </script>
 
 <main>
     <form class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Employee</h1>
-
-
         @Html.Action("PartialEmpGridView")
     </form>
 </main>
@@ -145,7 +153,6 @@
                         btnSettings.Text = "Save";
                         btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit();}";
                     }).Render();
-
                     Html.DevExpress().Button(btnSettings =>
                     {
                         btnSettings.Name = "btnCancel";
@@ -163,38 +170,3 @@
 
 
 }).GetHtml()
-
-<script>
-
-
-
-
-    var rowIndex = 0;
-    function ContractBatch_OnBatchEditStartEditing(s, e) {
-        rowIndex = e.visibleIndex;
-        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
-        s.batchEditApi.SetCellValue(rowIndex, "HRS_EMC_EmpID", empid);
-
-        if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
-            var num = ContractBatch.batchEditApi.GetCellValue(rowIndex, "HRS_EMC_Number", false);
-            if (num == null || num <= 0) {
-                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
-                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
-                for (var i = 1; i < arr.length; i++) {
-                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
-                    if (number > max) {
-                        max = number;
-                    }
-
-                }
-                ContractBatch.batchEditApi.SetCellValue(rowIndex, "HRS_EMC_Number", max + 1);
-            }
-            e.cancel = true;
-        }
-    }
-
-
-
-
-     
-</script>

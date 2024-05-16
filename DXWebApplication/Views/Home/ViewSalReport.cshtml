@@ -1,40 +1,29 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ViewSalReport";
 }
 
 <script>
 
-
     function init(s, e) {
         s.ShowPreview();
     }
-
 
     function PreviewCustomizeMenuActions(s, e) {
         debugger;
         let idToRemove = 'dxxrp-design';
         let indexToRemove = e.Actions.findIndex(x => x.id === idToRemove);
-
         if (indexToRemove !== -1) {
             e.Actions.splice(indexToRemove, 1);
         }
     }
 
-
-
 </script>
-
-
-
 
 @Html.DevExpress().ReportDesigner(settings =>
 {
     settings.Name = "ReportDesigner";
     settings.ClientSideEvents.Init = "init";
     settings.ClientSideEvents.PreviewCustomizeMenuActions = "PreviewCustomizeMenuActions";
-
-
 
 }).Bind(Model).GetHtml()
 

@@ -16,16 +16,11 @@ namespace DXWebApplication.Models
             }
             return _dbContext.HRS_SAL_Salaries.Where(j => j.HRS_SAL_ID != 0).ToList();
         }
-
-
         public static List<HRS_SAL_Salaries> GetByEmpId(int empid, AccountingDbContext _dbContext = null)
         {
             if (empid >= 0)
-
-                return Get(_dbContext).Where(x => x.HRS_SAL_EMPID == empid).ToList();
-
+               return Get(_dbContext).Where(x => x.HRS_SAL_EMPID == empid).ToList();
             else
-
                 return new List<HRS_SAL_Salaries>();
         }
     }

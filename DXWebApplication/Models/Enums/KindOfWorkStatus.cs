@@ -7,7 +7,7 @@ namespace DXWebApplication.Models
 {
     public class KindOfWorkStatus
     {
-        public static Dictionary<string, int> WorkStatus //{ { "OnWork", 1 }, { "StoppedSalary",2 }, { "ResignedFromWork",3 }} 
+        public static Dictionary<string, int> WorkStatus  
         {
             get
             {
@@ -21,7 +21,6 @@ namespace DXWebApplication.Models
         }
 
     }
-
     public enum WorkStatus
     {
         OnWork = 1,

@@ -17,15 +17,9 @@ namespace DXWebApplication.Models
             }
             return _dbContext.ACC_EMP_Employee.Where(j => j.ACC_EMP_IsDelete == false).ToList();
         }
-        //public static List<ACC_EMP_Employee> GetWithFilter(AccountingDbContext _dbContext, DateTime? entryDate, DateTime? deleteDate, int? Gender)
-        //{
-        //    return Get(_dbContext).Where(x => (x.JOB_EntryDate >= entryDate || entryDate == null) &&
-        //                     (x.JOB_EntryDate < deleteDate || deleteDate == null) &&
-        //                     (x.JOB_Gender == Gender || Gender == null)).ToList();
-        //}
-
         public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList)
         {
+            #region validation for empeditform
             ModelState.Clear();
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get();
 
@@ -95,8 +89,9 @@ namespace DXWebApplication.Models
             {
                 ModelState.AddModelError("ACC_EMP_JoinDate", "Join Year should be the current year or a future year.");
             }
+            #endregion
 
-
+            #region validations for salary
             foreach (var salary in salaryList)
             {
                 var maxId = salaryList.Max(s => s.HRS_SAL_ID);
@@ -113,8 +108,7 @@ namespace DXWebApplication.Models
                 break;
 
             }
-
-
+            #endregion 
 
             return ModelState.IsValid;
         }

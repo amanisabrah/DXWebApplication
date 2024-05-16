@@ -6,24 +6,36 @@
 {
     settings.Name = "jobsGridView";
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialJobsGridView" };
-
     settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewAddNew" };
     settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewEdit" };
     settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialJobsGridViewDelete" };
     settings.SettingsExport.EnableClientSideExportAPI = true;
     settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
+    settings.SettingsPopup.EditForm.Width = 600;
+    settings.Width = Unit.Percentage(100);
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+    settings.Settings.ShowFilterRow = true;
+    settings.KeyFieldName = "JOB_ID";
+    settings.CommandColumn.Visible = true;
+    settings.SettingsBehavior.AllowFocusedRow = true;
     settings.ClientSideEvents.ToolbarItemClick = "OnToolbarItemClick";
+    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
     settings.Toolbars.Add(tb =>
     {
         tb.Enabled = true;
         tb.Position = GridToolbarPosition.Top;
         tb.SettingsAdaptivity.Enabled = true;
         tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
-
         tb.Items.Add(GridViewToolbarCommand.New);
         tb.Items.Add(GridViewToolbarCommand.Edit);
         tb.Items.Add(GridViewToolbarCommand.Delete);
-
         tb.Items.Add(i =>
         {
             i.Command = GridViewToolbarCommand.Refresh;
@@ -40,19 +52,6 @@
             i.Items.Add(GridViewToolbarCommand.ExportToDocx);
             i.Items.Add(GridViewToolbarCommand.ExportToRtf);
             i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
-            //i.Items.Add(exportitem =>
-            //{
-            //    exportitem.Name = "CustomExportToXLS";
-            //    exportitem.Text = "Export to XLS(WYSIWYG)";
-            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxls16x16office2013;
-            //});
-            //i.Items.Add(GridViewToolbarCommand.ExportToXlsx).Text = "Export to XLSX(DataAware)";
-            //i.Items.Add(exportitem =>
-            //{
-            //    exportitem.Name = "CustomExportToXLSX";
-            //    exportitem.Text = "Export to XLSX(WYSIWYG)";
-            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxlsx16x16office2013;
-            //});
         });
         tb.Items.Add(i =>
         {
@@ -60,56 +59,24 @@
             i.Text = "Report";
             i.Name = "reportButton";
             i.Command = GridViewToolbarCommand.Custom;
-
-
             i.AdaptivePriority = 3;
-
         });
     });
-
-
-    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-    settings.SettingsBehavior.ConfirmDelete = true;
-    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
-    settings.SettingsPopup.EditForm.Width = 600;
-    settings.Width = Unit.Percentage(100);
-
-    settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
-    settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
-    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
-    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
-    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
-
-
-    settings.Settings.ShowFilterRow = true;
-
-    settings.KeyFieldName = "JOB_ID";
-    settings.CommandColumn.Visible = true;
-    settings.SettingsBehavior.AllowFocusedRow = true;
-
-    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_Name";
         c.Caption = "Name1";
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_Name2";
         c.Caption = "Name2";
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_Shortcut";
         c.Caption = "Job Shortcut";
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_Number";
@@ -117,7 +84,6 @@
         c.VisibleIndex = 0;
 
     });
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_Gender";
@@ -127,24 +93,18 @@
             p.ValueField = "value";
             p.ValueType = typeof(int);
             p.DataSource = DXWebApplication.Models.GenderCollection.Gender;
-
         });
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_EntryDate";
         c.Caption = "Entry Date";
     });
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_UpdateDate";
         c.Caption = "Update Date";
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "JOB_FileName";
@@ -160,11 +120,9 @@
         });
     });
 
-
     settings.SetEditFormTemplateContent(c =>
     {
         Html.RenderPartial("_PartialjobsEditForm");
-
     });
 
 }).Bind(Model).GetHtml()

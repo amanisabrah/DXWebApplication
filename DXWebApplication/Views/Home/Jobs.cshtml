@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Jobs";
 }
 
@@ -18,8 +17,8 @@
 
     function FilterButtonOnclick(s, e) {
         jobsGridView.PerformCallback();
-
     }
+
     function PopupEditFormLayout_OnSave(s, e) {
         jobsGridView.UpdateEdit();
     }
@@ -37,17 +36,9 @@
     }
 
     function OnToolbarItemClick(s, e) {
-
         if (e.item.name == "reportButton")
-
         window.location.href ="@Url.Action("ViewReport", "Home"/*, new { id = "id" }*/)";
-
     }
-
-
-
-
-
 
 </script>
 

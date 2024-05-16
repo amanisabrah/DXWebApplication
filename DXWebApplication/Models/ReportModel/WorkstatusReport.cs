@@ -11,7 +11,6 @@ namespace DXWebApplication.Models
         public string WSR_Name { get; set; }
         public string WSR_Shorcut { get; set; }
         public string WSR_Status { get; set; }
-
        public static List<WorkstatusReport> Get() //It retrieves a list of WST_WorkStatus objects using Get
         {
             var model = new List<WorkstatusReport>();
@@ -19,7 +18,6 @@ namespace DXWebApplication.Models
             foreach (var item in workStatus)
             {
                 string enumName = Enum.GetName(typeof(WorkStatus), item.WST_KindOfWorkStatus);
-
                 var report = new WorkstatusReport
                 {
                     WSR_Name = item.WST_Name,
@@ -28,7 +26,6 @@ namespace DXWebApplication.Models
                 };
                 model.Add(report);
             }
-
             return model;
         }
     }

@@ -8,15 +8,12 @@ namespace DXWebApplication.Models
 {
     public partial class HRS_EMC_EmpContract
     {
-
         public static void AddNew(HRS_EMC_EmpContract add, AccountingDbContext db)
         {
             add.HRS_EMC_Entrydate = DateTime.Now;
             db.HRS_EMC_EmpContract.Add(add);
             db.SaveChanges();
-
         }
-
         public static void Edit(HRS_EMC_EmpContract edit, AccountingDbContext db)
         {
             edit.HRS_EMC_Updatedate = DateTime.Now;
@@ -35,7 +32,6 @@ namespace DXWebApplication.Models
                 db.SaveChanges();
             }
         }
-
         public static void Delete(int contID, AccountingDbContext db)
         {
             var contract = db.HRS_EMC_EmpContract.Find(contID);

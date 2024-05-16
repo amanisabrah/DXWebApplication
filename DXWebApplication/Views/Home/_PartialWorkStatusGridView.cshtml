@@ -7,20 +7,36 @@
     settings.Name = "WorkStatusGridView";
     settings.KeyFieldName = "WST_ID";
     settings.Width = Unit.Percentage(100);
-
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialWorkStatusGridView" };
     settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "BatchEditingUpdateModel" };
     settings.SettingsExport.EnableClientSideExportAPI = true;
     settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
+    settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+    settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+    settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+    settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
+    settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;//remove row from batch
+    settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+    settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+    settings.ClientSideEvents.BatchEditStartEditing = settings.Name + "_OnBatchEditStartEditing";
     settings.ClientSideEvents.ToolbarItemClick = "OnToolbarItemClick";
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowCancelButton = true;
+    settings.CommandColumn.ShowDeleteButton = true;
+    settings.CommandColumn.ShowNewButtonInHeader = true;
+    settings.CommandColumn.ShowCancelButton = true;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.CommandColumn.Width = Unit.Pixel(150);
+    //toolbar
     settings.Toolbars.Add(tb =>
     {
         tb.Enabled = true;
         tb.Position = GridToolbarPosition.Top;
         tb.SettingsAdaptivity.Enabled = true;
         tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
-
-
         tb.Items.Add(i =>
         {
             i.Command = GridViewToolbarCommand.Refresh;
@@ -37,19 +53,6 @@
             i.Items.Add(GridViewToolbarCommand.ExportToDocx);
             i.Items.Add(GridViewToolbarCommand.ExportToRtf);
             i.Items.Add(GridViewToolbarCommand.ExportToXls).Text = "Export to XLS(DataAware)";
-            //i.Items.Add(exportitem =>
-            //{
-            //    exportitem.Name = "CustomExportToXLS";
-            //    exportitem.Text = "Export to XLS(WYSIWYG)";
-            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxls16x16office2013;
-            //});
-            //i.Items.Add(GridViewToolbarCommand.ExportToXlsx).Text = "Export to XLSX(DataAware)";
-            //i.Items.Add(exportitem =>
-            //{
-            //    exportitem.Name = "CustomExportToXLSX";
-            //    exportitem.Text = "Export to XLSX(WYSIWYG)";
-            //    exportitem.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ExportExporttoxlsx16x16office2013;
-            //});
         });
         tb.Items.Add(i =>
         {
@@ -57,42 +60,10 @@
             i.Text = "Report";
             i.Name = "reportButton";
             i.Command = GridViewToolbarCommand.Custom;
-
-
             i.AdaptivePriority = 3;
-
         });
     });
-
-    settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
-    settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
-
-    settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
-    settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.Click;
-    settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;//remove row from batch
-    settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
-    settings.SettingsEditing.NewItemRowPosition = GridViewNewItemRowPosition.Bottom;
-
-
-
-    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
-    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
-    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
-
-    settings.ClientSideEvents.BatchEditStartEditing = settings.Name+ "_OnBatchEditStartEditing";
-
-    settings.CommandColumn.Visible = true;
-    settings.CommandColumn.ShowCancelButton = true;
-    settings.CommandColumn.ShowDeleteButton = true;
-    settings.CommandColumn.ShowNewButtonInHeader = true;
-    settings.CommandColumn.ShowCancelButton = true;
-    settings.SettingsBehavior.AllowFocusedRow = true;
-    settings.CommandColumn.Width = Unit.Pixel(150);
-
-
-
-
-
+    //colums
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_Name";
@@ -106,8 +77,6 @@
             tb.ValidationSettings.Display = Display.Dynamic;
         });
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_Name2";
@@ -121,24 +90,18 @@
             tb.ValidationSettings.RequiredField.ErrorText = "Name2 field Required.";
             tb.ValidationSettings.Display = Display.Dynamic;
         });
-
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_Number";
         c.Caption = "Number";
         c.VisibleIndex = 0;
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_Shortcut";
         c.Caption = "Shortcut";
     });
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_KindOfWorkStatus";
@@ -149,18 +112,14 @@
             p.ValueField = "value";
             p.ValueType = typeof(int);
             p.DataSource = DXWebApplication.Models.KindOfWorkStatus.WorkStatus;
-
         });
     });
-
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_EntryDate";
         c.Caption = "Entry Date";
         c.ReadOnly = true;
     });
-
     settings.Columns.Add(c =>
     {
         c.FieldName = "WST_UpdateDate";

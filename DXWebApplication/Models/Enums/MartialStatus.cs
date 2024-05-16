@@ -7,7 +7,7 @@ namespace DXWebApplication.Models
 {
     public class MartialStatus
     {
-        public static Dictionary<string, int> Status //{ { "Single", 1 }, { "Married",2 }, { "separated ",3 }} 
+        public static Dictionary<string, int> Status
         {
             get
             {
@@ -21,7 +21,6 @@ namespace DXWebApplication.Models
         }
 
     }
-
     public enum Status
     {
         Single = 1,

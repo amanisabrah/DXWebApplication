@@ -13,20 +13,14 @@
         i.Caption = "Entry Date";
         i.NestedExtension().DateEdit(s =>
         {
-
         });
     });
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "JOB_FilterDeleteDate";
         i.Caption = "Delete Date";
-        i.NestedExtension().DateEdit(s =>
-        {
-
-        });
+        i.NestedExtension().DateEdit(s =>{});
     });
-
     flSettings.Items.Add(i =>
     {
         i.FieldName = "JOB_FilterGender";
@@ -42,11 +36,8 @@
             combobox.Properties.ValidationSettings.Display = Display.Dynamic;
             combobox.ShowModelErrors = true;
             combobox.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
-
         });
     });
-
-
 
     flSettings.Items.Add(i =>
     {
@@ -63,7 +54,6 @@
             ViewContext.Writer.Write("</div>");
         });
     });
-
 
 }).Bind(Model).GetHtml()
 
