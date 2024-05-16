@@ -177,13 +177,19 @@
             @Html.DevExpress().PageControl(settings =>
             {
                 settings.Name = "pageControl";
-                settings.Width = 300;
+                settings.Width = Unit.Percentage(100);
                 settings.Height = 100;
                 settings.ClientSideEvents.TabClick = "function(s, e) { onTabClick(s, e); }";
                 settings.TabPages.Add("Salary", "salary").SetContent(() =>
                 {
-                    ViewContext.Writer.Write("<div id='salaryContent' style='display:none;'>");
+                    ViewContext.Writer.Write("<div id='salarybatch'>");
                     Html.RenderAction("PartialSalGridView","Home",new { empid = emp.ACC_EMP_ID });
+                    ViewContext.Writer.Write("</div>");
+                });
+                settings.TabPages.Add("Contract", "contract").SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<div id='contractbatch'>");
+                    Html.RenderAction("PartialEmpcontractEditForm", "Home",new { empid = emp.ACC_EMP_ID });
                     ViewContext.Writer.Write("</div>");
                 });
             }).GetHtml();

@@ -17,7 +17,7 @@ namespace DXWebApplication.Models
             }
             return _dbContext.ACC_EMP_Employee.Where(j => j.ACC_EMP_IsDelete == false).ToList();
         }
-        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList)
+        public static bool IsValid(ACC_EMP_Employee employee, ModelStateDictionary ModelState, List<HRS_SAL_Salaries> salaryList,List<HRS_EMC_EmpContract> contractList)
         {
             #region validation for empeditform
             ModelState.Clear();

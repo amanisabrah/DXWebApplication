@@ -8,7 +8,7 @@ namespace DXWebApplication.Models
 {
     public partial class ACC_EMP_Employee
     {
-        public static void AddNew(ACC_EMP_Employee add, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null)
+        public static void AddNew(ACC_EMP_Employee add, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null, List<HRS_EMC_EmpContract> contractList=null)
         {
             add.ACC_EMP_EntryDate = DateTime.Now;
             db.ACC_EMP_Employee.Add(add);
@@ -19,10 +19,14 @@ namespace DXWebApplication.Models
                 if (salary.HRS_SAL_ID >= 10000000)
                 {
                     DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
-                }              
+                }        
+            });
+            contractList?.ForEach(contract =>
+            {
+                contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
             });
         }
-        public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null)
+        public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null, List<HRS_EMC_EmpContract> contractList = null)
         {
             edit.ACC_EMP_UpdatedDate = DateTime.Now;
             var existingEntity = db.ACC_EMP_Employee.Find(edit.ACC_EMP_ID);
@@ -52,6 +56,10 @@ namespace DXWebApplication.Models
                 }
                 else
                     DXWebApplication.Models.HRS_SAL_Salaries.Edit(salary, db);
+            });
+            contractList?.ForEach(contract =>
+            {
+                contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
             });
         }
         public static void Delete(ACC_EMP_Employee delete, AccountingDbContext db)
