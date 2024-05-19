@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "ExternalEditForm";
+
+}
+
+
+<script>
+
+    function ContractBatch_OnBeginCallback(s, e) {
+        e.customArgs["isFromToolBar"] = isFromToolBar;
+    }
+
+    var rowIndex = 0;
+    function SalaryAmountGridView_OnBatchEditStartEditing(s, e) {
+        rowIndex = e.visibleIndex;
+        var salaryamount = SalaryAmountGridView.batchEditApi.GetCellValue(rowIndex, "HRS_SAL_SalaryAmount", false);
+        var startDate = SalaryAmountGridView.batchEditApi.GetCellValue(rowIndex, "HRS_SAL_StartDate", false);
+        if (e.focusedColumn.fieldName == "HRS_SAL_StartDate") {
+            if (salaryamount == null)
+                e.cancel = true;
+        }
+        if (e.focusedColumn.fieldName == "HRS_SAL_EndDate") {
+            if (salaryamount == null || startDate == null)
+                e.cancel = true;
+        }
+    }
+
+    function SalaryAmountGridView_OnBatchEditRowInserting(s, e) {
+        var arr = SalaryAmountGridView.batchEditApi.GetInsertedRowIndices();
+        if (arr.length != 0)
+            e.cancel = true;
+    }
+
+    function HRS_SAL_SalaryAmount_OnValueChange(s, e) {
+        var salaryamount = s.GetValue();
+        var startDate = s.GetValue();
+        if (startDate == null || startDate == "") {
+            SalaryAmountGridView.batchEditApi.SetCellValue(rowIndex, "HRS_SAL_StartDate", salaryamount);
+        }
+    }
+
+    function onTabClick(s, e) {
+        $("#salarybatch").show
+        $("#contractbatch").show
+    }
+
+    var contarctRowIndex = 0;
+    function ContractBatch_OnBatchEditStartEditing(s, e) {
+        contarctRowIndex = e.visibleIndex;
+        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
+        s.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_EmpID", empid);
+
+        if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
+            var num = ContractBatch.batchEditApi.GetCellValue(contarctRowIndex, "HRS_EMC_Number", false);
+            if (num == null || num <= 0) {
+                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
+                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
+                for (var i = 1; i < arr.length; i++) {
+                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
+                    if (number > max) {
+                        max = number;
+                    }
+                }
+                ContractBatch.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_Number", max + 1);
+            }
+            e.cancel = true;
+        }
+    }
+
+</script>
+
+<main>
+    <form name="editform" class="row" aria-labelledby="aspnetTitle">
+        <h1 id="title">Employee Edit Form</h1>
+        @Html.Action("PartialExternalEditForm", new { empid = ViewBag.empid,command = ViewBag.command });
+    </form>
+
+</main>

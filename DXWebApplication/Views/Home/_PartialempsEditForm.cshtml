@@ -1,12 +1,12 @@
 ﻿@using System.Web.UI.WebControls;
 @{
-    var emp = (DXWebApplication.Models.ACC_EMP_Employee)ViewBag.emp;
+    var emp = (DXWebApplication.Models.ACC_EMP_Employee)ViewBag.emp ?? new DXWebApplication.Models.ACC_EMP_Employee();
 }
 @Html.DevExpress().FormLayout(flSettings =>
 {
 
     flSettings.Name = "PopupEditFormLayout";
-    flSettings.ColCount = 2;
+    flSettings.ColCount = 4;
     flSettings.Items.Add(i =>
     {
         i.FieldName = "ACC_EMP_Number";
@@ -204,13 +204,13 @@
             ViewContext.Writer.Write("<div style='float:right'> ");
             Html.DevExpress().Button(btnSettings =>
             {
-                btnSettings.Name = "btnUpdate";
+                btnSettings.Name = "EmpUpdate";
                 btnSettings.Text = "Save";
-                btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit(); c.UpdateEdit(); employeeGridView.UpdateEdit(); }";
+                btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit(); SalaryAmountGridView.UpdateEdit(); employeeGridView.UpdateEdit(); }";
             }).Render();
             Html.DevExpress().Button(btnSettings =>
             {
-                btnSettings.Name = "btnCancel";
+                btnSettings.Name = "EmpCancel";
                 btnSettings.Text = "Cancel";
                 btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
                 btnSettings.ClientSideEvents.Click = "function(s, e){ employeeGridView.CancelEdit(); }";

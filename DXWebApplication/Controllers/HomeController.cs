@@ -1,9 +1,11 @@
 ﻿using DevExpress.CodeParser;
+using DevExpress.DataProcessing;
 using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
 using DevExpress.Pdf.Native.BouncyCastle.Ocsp;
 using DevExpress.Web;
 using DevExpress.Web.Internal.XmlProcessor;
 using DevExpress.Web.Mvc;
+using DevExpress.XtraCharts;
 using DXWebApplication.Models;
 using DXWebApplication.Reports;
 using System;
@@ -396,7 +398,45 @@ namespace DXWebApplication.Controllers
 
             return View(new XtraReport3());
         }
+
+        [HttpGet]
+        public ActionResult ExternalEditFormPartial(int? empid = 0, string command="")
+        {
+            ViewBag.empid = empid;
+            ViewBag.command = command;
+            return View("ExternalEditForm");
+        }
+
+        [HttpGet]
+        public ActionResult PartialExternalEditForm(string command, int? empid)
+        {
+
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+            var emp = new ACC_EMP_Employee();
+            switch (command)
+            {
+                case "ADDNEWROW":
+                    
+                    Session["SalaryList"] = new List<HRS_SAL_Salaries>();
+                    Session["ContractList"] = new List<HRS_EMC_EmpContract>();
+                    ViewBag.emp = emp;
+
+                    break;
+                case "STARTEDIT":
+                    emp = emps.Where(x => x.ACC_EMP_ID == empid).FirstOrDefault();
+                    ViewBag.emp = emp;
+                    Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(empid ?? 0, _accountingDbContext);
+                    Session["ContractList"] = HRS_EMC_EmpContract.GetByEmpId(empid ?? 0, _accountingDbContext);
+                    break;
+                case "CANCELEDIT":
+                    Session["SalaryList"] = null;
+                    Session["ContractList"] = null;
+                    break;
+            }
+            return PartialView("_PartialExternalEditForm",emp);
+        }
         
+
         #endregion
 
         #region salary
@@ -467,7 +507,7 @@ namespace DXWebApplication.Controllers
             {
                 DeleteSalary(salaryID, updateValues);
             }
-     
+
             return PartialView("_PartialSalGridView", salaryList);
         }
 
@@ -548,7 +588,7 @@ namespace DXWebApplication.Controllers
 
 
         [HttpPost]
-        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues,int id, bool saveToolBar=false )
+        public ActionResult ContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id, bool? isFromToolBar = false)
         {
             var ContID = 1000000;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
@@ -560,14 +600,13 @@ namespace DXWebApplication.Controllers
                     ContID = contract.HRS_EMC_ID + 1;
                 }
             }
-
             foreach (var contract in updateValues.Insert)
             {
                 if (updateValues.IsValid(contract))
                 {
                     contract.HRS_EMC_ID = ContID++;
                     contractList.Add(contract);
-                    if (saveToolBar)
+                    if (isFromToolBar == true)
                     {
                         InsertContract(contract, updateValues, id);
                     }
@@ -577,8 +616,6 @@ namespace DXWebApplication.Controllers
                     updateValues.SetErrorText(contract, "add ");
                 }
             }
-
-
             foreach (var contract in updateValues.Update)
             {
                 if (updateValues.IsValid(contract))
@@ -594,20 +631,19 @@ namespace DXWebApplication.Controllers
                         existingContract.HRS_EMC_Desc = contract.HRS_EMC_Desc;
                         existingContract.HRS_EMC_Issuedate = contract.HRS_EMC_Issuedate;
                         existingContract.HRS_EMC_IssueNum = contract.HRS_EMC_IssueNum;
+                        if (isFromToolBar == true)
+                        {
+                            UpdateContract(contract, updateValues, id);
+                        }
                     }
-                    existingContract.HRS_EMC_IssueNum = contract.HRS_EMC_IssueNum;
-                    if (saveToolBar)
-                    {
-                        UpdateContract(existingContract, updateValues, id);
-                    }
-
                 }
             }
             foreach (var contractID in updateValues.DeleteKeys)
             {
                 DeleteContract(contractID, updateValues);
             }
-            return PartialView("_PartialEmpcontractEditForm", HRS_EMC_EmpContract.GetByEmpId(id,_accountingDbContext));
+
+            return PartialView("_PartialEmpcontractEditForm", contractList);
         }
         protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
         {
@@ -616,7 +652,6 @@ namespace DXWebApplication.Controllers
                 if (ModelState.IsValid)
                 {
                     HRS_EMC_EmpContract.AddNew(contract, _accountingDbContext);
-
                 }
             }
             catch (Exception e)
@@ -657,5 +692,6 @@ namespace DXWebApplication.Controllers
     }
     #endregion
 
+   
 
 }

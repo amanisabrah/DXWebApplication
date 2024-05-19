@@ -1,0 +1,242 @@
+﻿@model DXWebApplication.Models.ACC_EMP_Employee
+@{ 
+    var empid = Model?.ACC_EMP_ID ?? 0;
+    var updateLink = "PartialEmpGridViewAddNew";
+    if (empid > 0)
+    {
+        updateLink = "PartialEmpGridViewEdit";
+    }
+}
+
+@using (Html.BeginForm(updateLink, "Home", FormMethod.Post))
+{
+    @Html.DevExpress().FormLayout(flSettings =>
+    {
+
+        flSettings.Name = "PopupEditFormLayout";
+        flSettings.ColCount = 4;
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_Number";
+            i.Caption = "Number";
+            i.NestedExtension().SpinEdit(s =>
+            {
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_documentNum";
+            i.Caption = "Document Number";
+            i.NestedExtension().SpinEdit(s =>
+            {
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_Name";
+            i.Caption = "Name";
+            i.NestedExtension().TextBox(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_Name2";
+            i.Caption = "Name(another Languge)";
+            i.NestedExtension().TextBox(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_JOBID";
+            i.Caption = "Job";
+            i.NestedExtension().ComboBox(combobox =>
+            {
+                combobox.Properties.TextField = "JOB_Name";
+                combobox.Properties.ValueField = "JOB_ID";
+                combobox.Properties.ValueType = typeof(int);
+                combobox.Properties.DataSource = DXWebApplication.Models.JOB_JOBS.Get();
+                combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                combobox.Properties.ValidationSettings.Display = Display.Dynamic;
+                combobox.ShowModelErrors = true;
+                combobox.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_Gender";
+            i.Caption = "Gender";
+            i.NestedExtension().ComboBox(combobox =>
+            {
+                combobox.Properties.TextField = "key";
+                combobox.Properties.ValueField = "value";
+                combobox.Properties.ValueType = typeof(int);
+                combobox.Properties.DataSource = DXWebApplication.Models.GenderCollection.Gender;
+                combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                combobox.Properties.ValidationSettings.Display = Display.Dynamic;
+                combobox.ShowModelErrors = true;
+                combobox.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_Address";
+            i.Caption = "Address";
+            i.NestedExtension().TextBox(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_MartialStatus";
+            i.Caption = "Martial Status";
+            i.NestedExtension().ComboBox(combobox =>
+            {
+                combobox.Properties.TextField = "key";
+                combobox.Properties.ValueField = "value";
+                combobox.Properties.ValueType = typeof(int);
+                combobox.Properties.DataSource = DXWebApplication.Models.MartialStatus.Status;
+                combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                combobox.Properties.ValidationSettings.Display = Display.Dynamic;
+                combobox.ShowModelErrors = true;
+                combobox.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_WSTID";
+            i.Caption = "Work Status";
+            i.NestedExtension().ComboBox(combobox =>
+            {
+                combobox.Properties.TextField = "WST_Name";
+                combobox.Properties.ValueField = "WST_ID";
+                combobox.Properties.ValueType = typeof(int);
+                combobox.Properties.DataSource = DXWebApplication.Models.WST_WorkStatus.Get();
+                combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                combobox.Properties.ValidationSettings.Display = Display.Dynamic;
+                combobox.ShowModelErrors = true;
+                combobox.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_DateofBirth";
+            c.Caption = "Birthday Date";
+            c.NestedExtension().DateEdit(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(i =>
+        {
+            i.FieldName = "ACC_EMP_PlaceofBirth";
+            i.Caption = "place of birth";
+            i.NestedExtension().TextBox(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        flSettings.Items.Add(c =>
+        {
+            c.FieldName = "ACC_EMP_JoinDate";
+            c.Caption = "Join Date";
+            c.NestedExtension().DateEdit(s =>
+            {
+                s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+                s.Properties.ValidationSettings.Display = Display.Dynamic;
+                s.ShowModelErrors = true;
+                s.Width = Unit.Percentage(100);
+            });
+        });
+        //batchSalary
+        flSettings.Items.Add(i =>
+        {
+            i.ColSpan = 4;
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(() =>
+            {
+                @Html.DevExpress().PageControl(settings =>
+                {
+                    settings.Name = "pageControl";
+                    settings.Width = Unit.Percentage(100);
+                    settings.Height = 100;
+                    settings.ClientSideEvents.TabClick = "function(s, e) { onTabClick(s, e); }";
+                    settings.TabPages.Add("Salary", "salary").SetContent(() =>
+                    {
+                        ViewContext.Writer.Write("<div id='salarybatch'>");
+                        Html.RenderAction("PartialSalGridView","Home",new { empid = empid });
+                        ViewContext.Writer.Write("</div>");
+                    });
+                    settings.TabPages.Add("Contract", "contract").SetContent(() =>
+                    {
+                        ViewContext.Writer.Write("<div id='contractbatch'>");
+                        Html.RenderAction("PartialEmpcontractEditForm", "Home",new { empid = empid });
+                        ViewContext.Writer.Write("</div>");
+                    });
+                }).GetHtml();
+            });
+        });
+        //buttons
+        flSettings.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div style='float:right'> ");
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "EmpUpdate";
+                    btnSettings.Text = "Save";
+                    btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit(); SalaryAmountGridView.UpdateEdit(); employeeGridView.UpdateEdit(); }";
+                }).Render();
+                Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "EmpCancel";
+                    btnSettings.Text = "Cancel";
+                    btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                    btnSettings.ClientSideEvents.Click = "function(s, e){ employeeGridView.CancelEdit(); }";
+                }).Render();
+                ViewContext.Writer.Write("</div>");
+            });
+        });
+
+    }).GetHtml()
+}

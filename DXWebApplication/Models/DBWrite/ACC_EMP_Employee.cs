@@ -14,23 +14,33 @@ namespace DXWebApplication.Models
             db.ACC_EMP_Employee.Add(add);
             db.SaveChanges();
             var existingEntity = db.ACC_EMP_Employee.Find(add.ACC_EMP_ID);
-            salaryList?.ForEach(salary => {
-                salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
-                if (salary.HRS_SAL_ID >= 10000000)
-                {
-                    DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
-                }        
-            });
-            contractList?.ForEach(contract =>
+            if (salaryList != null)
             {
-                contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
-                if (contract.HRS_EMC_ID >= 10000000)
+                foreach (var salary in salaryList)
                 {
-                    DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                    salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
+                    if (salary.HRS_SAL_ID >= 10000000)
+                    {
+                        DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
+                    }
                 }
-                else
-                    DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
-            });
+            }
+
+            if (contractList != null)
+            {
+                foreach (var contract in contractList)
+                {
+                    contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
+                    if (contract.HRS_EMC_ID >= 10000000)
+                    {
+                        DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                    }
+                    else
+                    {
+                        DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
+                    }
+                }
+            }
         }
         public static void Edit(ACC_EMP_Employee edit, AccountingDbContext db, List<HRS_SAL_Salaries> salaryList = null, List<HRS_EMC_EmpContract> contractList = null)
         {
@@ -55,24 +65,37 @@ namespace DXWebApplication.Models
 
                 db.SaveChanges();
             }
-            salaryList?.ForEach(salary => {
-                salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
-                if (salary.HRS_SAL_ID >= 10000000) {
-                    DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
-                }
-                else
-                    DXWebApplication.Models.HRS_SAL_Salaries.Edit(salary, db);
-            });
-            contractList?.ForEach(contract =>
+            if (salaryList != null)
             {
-                contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
-                if (contract.HRS_EMC_ID >= 1000000)
+                foreach (var salary in salaryList)
                 {
-                    DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                    salary.HRS_SAL_EMPID = existingEntity.ACC_EMP_ID;
+                    if (salary.HRS_SAL_ID >= 10000000)
+                    {
+                        DXWebApplication.Models.HRS_SAL_Salaries.AddNew(salary, db);
+                    }
+                    else
+                    {
+                        DXWebApplication.Models.HRS_SAL_Salaries.Edit(salary, db);
+                    }
                 }
-                else
-                    DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
-            });
+            }
+
+            if (contractList != null)
+            {
+                foreach (var contract in contractList)
+                {
+                    contract.HRS_EMC_EmpID = existingEntity.ACC_EMP_ID;
+                    if (contract.HRS_EMC_ID >= 1000000)
+                    {
+                        DXWebApplication.Models.HRS_EMC_EmpContract.AddNew(contract, db);
+                    }
+                    else
+                    {
+                        DXWebApplication.Models.HRS_EMC_EmpContract.Edit(contract, db);
+                    }
+                }
+            }
         }
         public static void Delete(ACC_EMP_Employee delete, AccountingDbContext db)
         {

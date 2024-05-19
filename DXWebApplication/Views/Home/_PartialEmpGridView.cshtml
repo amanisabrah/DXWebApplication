@@ -5,9 +5,7 @@
     {
         settings.Name = "employeeGridView";
         settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpGridView" };
-        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewAddNew" };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewEdit" };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "PartialEmpGridViewDelete" };
+
         settings.SettingsExport.EnableClientSideExportAPI = true;
         settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.DataAware;
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
@@ -185,10 +183,10 @@
             c.Caption = "Update Date";
         });
         //render
-        settings.SetEditFormTemplateContent(c =>
-        {
-            Html.RenderPartial("_PartialempsEditForm");
-        });
+        //settings.SetEditFormTemplateContent(c =>
+        //{
+        //    Html.RenderAction("ExternalEditFormPartial");
+        //});
     });
     grid.SetEditErrorText((string)ViewBag.ValidationErrors);
     grid.Bind(Model).GetHtml();

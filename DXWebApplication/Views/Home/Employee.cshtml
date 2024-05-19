@@ -2,6 +2,7 @@
     ViewBag.Title = "Employee";
 }
 <script>
+    var isFromToolBar = false;
 
     function OnBeginCallback(s, e) {
         if (e.command === "STARTEDIT") {
@@ -9,6 +10,7 @@
             e.customArgs['ACC_EMP_ID'] = key;
         }
         e.customArgs['Command'] = e.command;
+
     }
 
     var rowIndex = 0;
@@ -47,27 +49,35 @@
                     errorMessage += error + "\n";
                 });
                 alert(errorMessage);
-            }
+        }
     }
 
     function OnToolbarItemClick(s, e) {
-
-         if (e.item.name == "employeeReport")
-             window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
-
-         if (e.item.name == "salaryReport")
+        isFromToolBar = false;
+        var key = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
+        if (e.item.name == "New") {
+            window.location.href = "@Url.Action("ExternalEditFormPartial", "Home",new { command = "ADDNEWROW", empid = "_empid"  })".replace("_empid", 0);
+        }
+        if (e.item.name == "Edit") {
+           window.location.href = '@Html.Raw(Url.Action("ExternalEditFormPartial", "Home", new { empid = "_empid", command = "STARTEDIT" }))'.replace("_empid", key);
+        }
+        if (e.item.name == "employeeReport") {
+            window.location.href = "@Url.Action("ViewEmpReport", "Home"/*, new { id = "id" }*/)";
+        }
+        if (e.item.name == "salaryReport") {
             window.location.href = "@Url.Action("ViewSalReport", "Home"/*, new { id = "id" }*/)";
-
-         if (e.item.name === "showPopupButton") {
+        }
+        if (e.item.name === "showPopupButton") {
              var key = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
              $.ajax({
                  type: "Get",
-                  url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
+                 url: '@Url.Action("PartialEmpcontractEditForm", "Home")',
+                  async:false,
                  data: { empid: key },
                  success: function (jsReturnArgs) {
                      $("#results").html(jsReturnArgs);
                      popupControl.Show();
-
+                     isFromToolBar = true;
                  },
                  error: function (errorData) { onError(errorData); }
              });
@@ -77,38 +87,12 @@
 
 
 
-    function onTabClick(s, e) { 
+    function onTabClick(s, e) {
         $("#salarybatch").show
         $("#contractbatch").show
     }
 </script>
 
-<script>
-
-    var contarctRowIndex = 0;
-    function ContractBatch_OnBatchEditStartEditing(s, e) {
-        contarctRowIndex = e.visibleIndex;
-        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
-        s.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_EmpID", empid);
-
-        if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
-            var num = ContractBatch.batchEditApi.GetCellValue(contarctRowIndex, "HRS_EMC_Number", false);
-            if (num == null || num <= 0) {
-                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
-                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
-                for (var i = 1; i < arr.length; i++) {
-                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
-                    if (number > max) {
-                        max = number;
-                    }
-                }
-                ContractBatch.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_Number", max + 1);
-            }
-            e.cancel = true;
-        }
-    }
-
-</script>
 
 <main>
     <form class="row" aria-labelledby="aspnetTitle">
@@ -147,13 +131,13 @@
                     ViewContext.Writer.Write("<div style='float:right'> ");
                     Html.DevExpress().Button(btnSettings =>
                     {
-                        btnSettings.Name = "btnUpdate";
+                        btnSettings.Name = "contractUpdate";
                         btnSettings.Text = "Save";
                         btnSettings.ClientSideEvents.Click = "function(s,e){ContractBatch.UpdateEdit();}";
                     }).Render();
                     Html.DevExpress().Button(btnSettings =>
                     {
-                        btnSettings.Name = "btnCancel";
+                        btnSettings.Name = "contractCancel";
                         btnSettings.Text = "Cancel";
                         btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
                         btnSettings.ClientSideEvents.Click = "function(s, e){ popupControl.Hide(); }";
