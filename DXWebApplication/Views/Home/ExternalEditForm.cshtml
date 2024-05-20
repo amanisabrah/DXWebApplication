@@ -7,8 +7,87 @@
 
 <script>
 
-    function ContractBatch_OnBeginCallback(s, e) {
-        e.customArgs["isFromToolBar"] = isFromToolBar;
+    var empid = parseInt('@ViewBag.empid');
+    function _OnClick(s, e) {
+
+        if (ExternalContractBatch.batchEditApi.HasChanges()) {
+            ExternalContractBatch.UpdateEdit();
+        }
+        else if (SalaryAmountGridView.batchEditApi.HasChanges()) {
+            SalaryAmountGridView.UpdateEdit();
+        }
+        else {
+            submitForm();
+        }
+    }
+
+    function ExternalContractBatch_OnEndCallback(s, e) {
+        if (e.command == 'UPDATEEDIT') {
+            if (SalaryAmountGridView.batchEditApi.HasChanges()) {
+                SalaryAmountGridView.UpdateEdit();
+            }
+            else {
+                submitForm();
+            }
+        }
+       
+    }
+    function SalaryAmountGridView_OnEndCallback(s, e) {
+        if (e.command == 'UPDATEEDIT') {
+            if (ExternalContractBatch.batchEditApi.HasChanges()) {
+                ExternalContractBatch.UpdateEdit();
+            }
+            else {
+                submitForm();
+            }
+        }
+        
+    }
+
+    function submitForm() {
+       var formData = $("#externalEdit").serialize();
+
+       if (empid > 0) {
+           $.ajax({
+               type: "POST",
+               url: '@Url.Action("PartialExternalEditFormUpdate", "Home")',
+               async: false,
+               data: formData,
+               success: function (jsReturnArgs) {
+                   if (jsReturnArgs.IsSuccess) {
+                       window.location.href = '@Html.Raw(@Url.Action("Employee", "Home"))';
+                   }
+                   else {
+                       $("#errorContainer").html(jsReturnArgs.errorMessage);
+                       $("#errorContainer").css("display", "block");
+                   }
+               },
+               error: function (errorData) { onError(errorData); }
+           });
+       }
+       else {
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("PartialExternalEditFormAddNew", "Home")',
+                  async:false,
+                 data: formData,
+                 success: function (jsReturnArgs) {
+                     if (jsReturnArgs.IsSuccess) {
+                         window.location.href = '@Html.Raw(@Url.Action("Employee", "Home"))';
+                     }
+                     else {
+                         $("#errorContainer").html(jsReturnArgs.errorMessage);
+                         $("#errorContainer").css("display", "block");
+                     }
+                 },
+                 error: function (errorData) { onError(errorData); }
+             });
+       }
+    }
+
+    function onTabClick(s, e) {
+        $("#salarybatch").show
+        $("#excontractbatch").show
     }
 
     var rowIndex = 0;
@@ -40,40 +119,51 @@
         }
     }
 
-    function onTabClick(s, e) {
-        $("#salarybatch").show
-        $("#contractbatch").show
+
+    function ExternalContractBatch_OnBeginCallback(s, e) {
+        if (e.command === "STARTEDIT") {
+            var key = s.GetRowKey(s.GetFocusedRowIndex());
+            e.customArgs['ACC_EMP_ID'] = key;
+        }
+        e.customArgs['Command'] = e.command;
+
     }
 
+
     var contarctRowIndex = 0;
-    function ContractBatch_OnBatchEditStartEditing(s, e) {
+    function ExternalContractBatch_OnBatchEditStartEditing(s, e) {
         contarctRowIndex = e.visibleIndex;
-        var empid = employeeGridView.GetRowKey(employeeGridView.GetFocusedRowIndex());
         s.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_EmpID", empid);
 
         if (e.focusedColumn.fieldName == "HRS_EMC_Number") {
-            var num = ContractBatch.batchEditApi.GetCellValue(contarctRowIndex, "HRS_EMC_Number", false);
+            var num = ExternalContractBatch.batchEditApi.GetCellValue(contarctRowIndex, "HRS_EMC_Number", false);
             if (num == null || num <= 0) {
-                var arr = ContractBatch.batchEditApi.GetRowVisibleIndices();
-                var max = ContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
+                var arr = ExternalContractBatch.batchEditApi.GetRowVisibleIndices();
+                var max = ExternalContractBatch.batchEditApi.GetCellValue(arr[0], "HRS_EMC_Number", false);
                 for (var i = 1; i < arr.length; i++) {
-                    var number = ContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
+                    var number = ExternalContractBatch.batchEditApi.GetCellValue(arr[i], "HRS_EMC_Number", false);
                     if (number > max) {
                         max = number;
                     }
                 }
-                ContractBatch.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_Number", max + 1);
+                ExternalContractBatch.batchEditApi.SetCellValue(contarctRowIndex, "HRS_EMC_Number", max + 1);
             }
             e.cancel = true;
         }
     }
 
+
+
 </script>
 
 <main>
-    <form name="editform" class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Employee Edit Form</h1>
-        @Html.Action("PartialExternalEditForm", new { empid = ViewBag.empid,command = ViewBag.command });
-    </form>
+    @*<form name="editform" class="row" aria-labelledby="aspnetTitle">*@
+    <div class="alert alert-danger" id="errorContainer" style="display:none">
+        
+    </div>
+    <h1 id="title">Employee Edit Form</h1>
+    @Html.Action("PartialExternalEditForm", new { empid = ViewBag.empid, command = ViewBag.command });
+
+    @*</form>*@
 
 </main>

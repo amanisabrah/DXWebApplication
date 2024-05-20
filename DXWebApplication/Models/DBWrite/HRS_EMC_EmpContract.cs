@@ -40,7 +40,7 @@ namespace DXWebApplication.Models
             {
                 contract.HRS_EMC_DeleteDate = DateTime.Now;
                 contract.HRS_EMC_IsDeleted = true;
-                db.Entry(contract).State = EntityState.Modified;
+                db.Entry(contract).State = EntityState.Deleted;
                 db.SaveChanges();
 
             }

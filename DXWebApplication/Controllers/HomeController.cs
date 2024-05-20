@@ -28,6 +28,7 @@ namespace DXWebApplication.Controllers
         private readonly AccountingDbContext _accountingDbContext;
 
         public HomeController()
+
         {
             _accountingDbContext = new AccountingDbContext();
         }
@@ -120,6 +121,9 @@ namespace DXWebApplication.Controllers
                 JOB_JOBS.AddNew(add, _accountingDbContext);
 
             }
+
+
+
 
             return PartialView("_PartialJobsGridView", jobs);
         }
@@ -314,6 +318,7 @@ namespace DXWebApplication.Controllers
                     var emp = new ACC_EMP_Employee();
                     Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     Session["ContractList"] = new List<HRS_EMC_EmpContract>();
+                    Session["ExternalContractList"] =new List<HRS_EMC_EmpContract>();
                     ViewBag.emp = emp;
 
                     break;
@@ -322,10 +327,12 @@ namespace DXWebApplication.Controllers
                     ViewBag.emp = emp;
                     Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(ACC_EMP_ID??0, _accountingDbContext);
                     Session["ContractList"] = HRS_EMC_EmpContract.GetByEmpId(ACC_EMP_ID??0, _accountingDbContext);
+                    Session["ExternalContractList"] = HRS_EMC_EmpContract.GetByEmpId(ACC_EMP_ID??0, _accountingDbContext);
                     break;
                 case "CANCELEDIT":
                     Session["SalaryList"] = null;
                     Session["ContractList"] = null;
+                    Session["ExternalContractList"] = null;
                     break;
             }
 
@@ -333,10 +340,11 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee, string Command)
+        public ActionResult PartialEmpGridViewAddNew(ACC_EMP_Employee employee)
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
+            List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
@@ -353,15 +361,16 @@ namespace DXWebApplication.Controllers
             }
 
             List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
-            return PartialView("_PartialEmpGridView", emps);
+            return PartialView("_PartialEmpGridView", emps);            
         }
 
         [HttpPost]
 
-        public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee, string Command)
+        public ActionResult PartialEmpGridViewEdit(ACC_EMP_Employee employee)
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
+            List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
 
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
@@ -386,12 +395,14 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialEmpGridViewDelete(ACC_EMP_Employee delete)
         {
+            List<ACC_EMP_Employee> emps = ACC_EMP_Employee.Get(_accountingDbContext);
+
             if (ModelState.IsValid)
             {
                 ACC_EMP_Employee.Delete(delete, _accountingDbContext);
             }
 
-            return PartialView("_PartialEmpGridView", ACC_EMP_Employee.Get(_accountingDbContext));
+            return PartialView("_PartialEmpGridView", emps);
         }
         public ActionResult ViewEmpReport()
         {
@@ -419,6 +430,7 @@ namespace DXWebApplication.Controllers
                     
                     Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     Session["ContractList"] = new List<HRS_EMC_EmpContract>();
+                    Session["ExternalContractList"] = new List<HRS_EMC_EmpContract>();
                     ViewBag.emp = emp;
 
                     break;
@@ -427,22 +439,66 @@ namespace DXWebApplication.Controllers
                     ViewBag.emp = emp;
                     Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(empid ?? 0, _accountingDbContext);
                     Session["ContractList"] = HRS_EMC_EmpContract.GetByEmpId(empid ?? 0, _accountingDbContext);
+                    Session["ExternalContractList"] = HRS_EMC_EmpContract.GetByEmpId(empid ?? 0, _accountingDbContext);
                     break;
                 case "CANCELEDIT":
                     Session["SalaryList"] = null;
                     Session["ContractList"] = null;
+                    Session["ExternalContractList"] = null;
                     break;
             }
             return PartialView("_PartialExternalEditForm",emp);
         }
-        
+
+
+        [HttpPost]
+        public ActionResult PartialExternalEditFormAddNew(ACC_EMP_Employee employee)
+        {
+            List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
+            //List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
+            List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
+            {
+                ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList, ecternalcontract);
+            }
+            var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+               .SelectMany(E => E.Errors)
+               .Select(E => E.ErrorMessage)
+               .ToList();
+            ViewBag.ValidationErrors = string.Join(", ", validationErrors);
+            return new JsonResult() { Data = new { IsSuccess = ModelState.IsValid, errorMessage = ViewBag.ValidationErrors } };
+
+        }
+
+        [HttpPost]
+
+        public ActionResult PartialExternalEditFormUpdate(ACC_EMP_Employee employee)
+        {
+            List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
+            //List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
+            List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+
+            if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
+            {
+                ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList, ecternalcontract);
+            }
+            var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                .SelectMany(E => E.Errors)
+                .Select(E => E.ErrorMessage)
+                .ToList();
+            ViewBag.ValidationErrors = string.Join(", ", validationErrors);
+            return new JsonResult() { Data = new { IsSuccess = ModelState.IsValid, errorMessage = ViewBag.ValidationErrors } };
+        }
+
+
 
         #endregion
 
         #region salary
         public ActionResult PartialSalGridView(int empid)
         {    
-            ViewBag.id = empid;
+            ViewBag.empid = empid;
             List<HRS_SAL_Salaries> salary;
             if (Session["SalaryList"] == null)
             {
@@ -460,7 +516,7 @@ namespace DXWebApplication.Controllers
         public List<HRS_SAL_Salaries> Salaries { get; set; }
 
         [HttpPost]
-        public ActionResult SalaryBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues, int id)
+        public ActionResult SalaryBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues)
         {
             var SALID = 10000000;
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;// retrieves the list of salaries from the session
@@ -511,41 +567,6 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialSalGridView", salaryList);
         }
 
-        protected void InsertSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
-        {
-            try
-            {
-
-                if (ModelState.IsValid)
-                {
-                    salary.HRS_SAL_EMPID=id;
-                    HRS_SAL_Salaries.AddNew(salary, _accountingDbContext);
-                }
-            }
-            catch (Exception e)
-            {
-                updateValues.SetErrorText(salary, e.Message);
-            }
-        }
-
-        protected void UpdateSalary(HRS_SAL_Salaries salary, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues,int id)
-        {
-            try
-            {
-
-                if (ModelState.IsValid)
-                {
-                    salary.HRS_SAL_EMPID = id;
-                    HRS_SAL_Salaries.Edit(salary, _accountingDbContext);
-                }
-
-            }
-            catch (Exception e)
-            {
-                updateValues.SetErrorText(salary, e.Message);
-            }
-        }
-
         protected void DeleteSalary(int salaryID, MVCxGridViewBatchUpdateValues<HRS_SAL_Salaries, int> updateValues)
         {
             try
@@ -570,9 +591,9 @@ namespace DXWebApplication.Controllers
 
         #endregion
 
-        #region contract
+        #region ToolBarContract
         public ActionResult PartialEmpcontractEditForm(int empid) {
-            ViewBag.id = empid;
+            ViewBag.empid = empid;
             List<HRS_EMC_EmpContract> contract;
             if (Session["ContractList"] == null)
             {
@@ -641,8 +662,12 @@ namespace DXWebApplication.Controllers
             foreach (var contractID in updateValues.DeleteKeys)
             {
                 DeleteContract(contractID, updateValues);
+                var contractToRemove = contractList.FirstOrDefault(x => x.HRS_EMC_ID == contractID);
+                if (contractToRemove != null)
+                {
+                    contractList.Remove(contractToRemove);
+                }
             }
-
             return PartialView("_PartialEmpcontractEditForm", contractList);
         }
         protected void InsertContract(HRS_EMC_EmpContract contract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
@@ -689,9 +714,131 @@ namespace DXWebApplication.Controllers
 
             }
         }
-    }
-    #endregion
+        #endregion
 
-   
+        #region Externalcontract
+        public ActionResult PartialContractExternalEditForm(int empid)
+        {
+            ViewBag.empid = empid;
+            List<HRS_EMC_EmpContract> ecternalcontract;
+            if (Session["ExternalContractList"] == null)
+            {
+                ecternalcontract = HRS_EMC_EmpContract.GetByEmpId(empid, _accountingDbContext);
+                Session["ExternalContractList"] = ecternalcontract;
+            }
+            else
+            {
+                ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+            }
+            return PartialView("_PartialContractExternalEditForm", ecternalcontract);
+        }
+
+
+        [HttpPost]
+        public ActionResult ExternalContractBatchEditingUpdateModel(MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            var ContID = 1000000;
+            List<HRS_EMC_EmpContract> externalcontractList = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+
+            foreach (var ecternalcontract in externalcontractList)
+            {
+                if (ecternalcontract.HRS_EMC_ID >= ContID)
+                {
+                    ContID = ecternalcontract.HRS_EMC_ID + 1;
+                }
+            }
+            foreach (var ecternalcontract in updateValues.Insert)
+            {
+                if (updateValues.IsValid(ecternalcontract))
+                {
+                    ecternalcontract.HRS_EMC_ID = ContID++;
+                    externalcontractList.Add(ecternalcontract);
+                    //InsertExternalContract(ecternalcontract, updateValues, empid);
+
+                }
+                else
+                {
+                    updateValues.SetErrorText(ecternalcontract, "add ");
+                }
+            }
+            foreach (var ecternalcontract in updateValues.Update)
+            {
+                if (updateValues.IsValid(ecternalcontract))
+                {
+                    var existingContract = externalcontractList.FirstOrDefault(x => x.HRS_EMC_ID == ecternalcontract.HRS_EMC_ID);
+                    if (existingContract != null)
+                    {
+                        existingContract.HRS_EMC_Number = ecternalcontract.HRS_EMC_Number;
+                        existingContract.HRS_EMC_Startdate = ecternalcontract.HRS_EMC_Startdate;
+                        existingContract.HRS_EMC_Enddate = ecternalcontract.HRS_EMC_Enddate;
+                        existingContract.HRS_EMC_Action = ecternalcontract.HRS_EMC_Action;
+                        existingContract.HRS_EMC_Updatedate = ecternalcontract.HRS_EMC_Updatedate;
+                        existingContract.HRS_EMC_Desc = ecternalcontract.HRS_EMC_Desc;
+                        existingContract.HRS_EMC_Issuedate = ecternalcontract.HRS_EMC_Issuedate;
+                        existingContract.HRS_EMC_IssueNum = ecternalcontract.HRS_EMC_IssueNum;
+                        //UpdateExternalContract(existingContract, updateValues, id);
+
+                    }
+
+                }
+            }
+            foreach (var contractID in updateValues.DeleteKeys)
+            {
+                //ExternalDeleteContract(contractID, updateValues);
+            }
+
+            return PartialView("_PartialContractExternalEditForm", externalcontractList);
+        }
+        protected void InsertExternalContract(HRS_EMC_EmpContract ecternalcontract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.AddNew(ecternalcontract, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(ecternalcontract, e.Message);
+            }
+        }
+        protected void UpdateExternalContract(HRS_EMC_EmpContract ecternalcontract, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues, int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.Edit(ecternalcontract, _accountingDbContext);
+                }
+
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(ecternalcontract, e.Message);
+            }
+        }
+        protected void ExternalDeleteContract(int contractID, MVCxGridViewBatchUpdateValues<HRS_EMC_EmpContract, int> updateValues)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HRS_EMC_EmpContract.Delete(contractID, _accountingDbContext);
+                }
+            }
+            catch (Exception e)
+            {
+                updateValues.SetErrorText(contractID, e.Message);
+
+            }
+        }
+        #endregion
+
+
+    }
+
+
+
 
 }

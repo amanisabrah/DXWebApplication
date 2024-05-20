@@ -17,8 +17,8 @@ namespace DXWebApplication.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ACC_EMP_Employee()
         {
-            this.HRS_SAL_Salaries = new HashSet<HRS_SAL_Salaries>();
             this.HRS_EMC_EmpContract = new HashSet<HRS_EMC_EmpContract>();
+            this.HRS_SAL_Salaries = new HashSet<HRS_SAL_Salaries>();
         }
     
         public int ACC_EMP_ID { get; set; }
@@ -42,8 +42,8 @@ namespace DXWebApplication.Models
         public virtual JOB_JOBS JOB_JOBS { get; set; }
         public virtual WST_WorkStatus WST_WorkStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HRS_SAL_Salaries> HRS_SAL_Salaries { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HRS_EMC_EmpContract> HRS_EMC_EmpContract { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HRS_SAL_Salaries> HRS_SAL_Salaries { get; set; }
     }
 }

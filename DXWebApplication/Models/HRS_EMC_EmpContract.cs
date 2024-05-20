@@ -11,7 +11,7 @@ namespace DXWebApplication.Models
 {
     using System;
     using System.Collections.Generic;
- 
+    
     public partial class HRS_EMC_EmpContract
     {
         public int HRS_EMC_ID { get; set; }

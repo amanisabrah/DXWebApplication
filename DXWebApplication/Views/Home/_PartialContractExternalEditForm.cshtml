@@ -1,14 +1,14 @@
-﻿@model List<DXWebApplication.Models.HRS_SAL_Salaries>
-
+﻿
+@model List<DXWebApplication.Models.HRS_EMC_EmpContract>
 @using System.Web.UI.WebControls;
 
 @Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "SalaryAmountGridView";
-    settings.KeyFieldName = "HRS_SAL_ID";
+    settings.Name = "ExternalContractBatch";
+    settings.KeyFieldName = "HRS_EMC_ID";
     settings.Width = Unit.Percentage(100);
-    settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialSalGridView" };
-    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "SalaryBatchEditingUpdateModel", id = ViewBag.id  };
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialContractExternalEditForm" };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ExternalContractBatchEditingUpdateModel", empid = ViewBag.empid };
     settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
     settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
     settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
@@ -22,7 +22,7 @@
     settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
     settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
     settings.ClientSideEvents.BatchEditStartEditing = settings.Name + "_OnBatchEditStartEditing";
-    settings.ClientSideEvents.BatchEditRowInserting = settings.Name + "_OnBatchEditRowInserting";
+    settings.ClientSideEvents.BeginCallback = settings.Name + "_OnBeginCallback";
     settings.ClientSideEvents.EndCallback = settings.Name + "_OnEndCallback";
     settings.CommandColumn.Visible = true;
     settings.CommandColumn.ShowDeleteButton = true;
@@ -34,33 +34,52 @@
     //columns
     settings.Columns.Add(c =>
     {
-        c.FieldName = "HRS_SAL_SalaryAmount";
-        c.Caption = "Salary Amount";
+        c.FieldName = "HRS_EMC_Number";
+        c.Caption = "Number";
         c.ColumnType = MVCxGridViewColumnType.SpinEdit;
-        c.EditorProperties().SpinEdit(tb =>
+
+    });
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_EmpID";
+        c.Caption = "Employee";
+        c.ReadOnly = true;
+        c.EditorProperties().ComboBox(cb =>
         {
-            tb.ValidationSettings.RequiredField.IsRequired = true;
-            tb.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
-            tb.ValidationSettings.Display = Display.Dynamic;
-            tb.DisplayFormatString = "{0:G29}";
+            cb.ClientInstanceName = "EMPID";
+            cb.DataSource = DXWebApplication.Models.ACC_EMP_Employee.Get();
+            cb.ValueField = "ACC_EMP_ID";
+            cb.TextField = "ACC_EMP_Name";
         });
     });
     settings.Columns.Add(c =>
     {
-        c.FieldName = "HRS_SAL_StartDate";
+        c.FieldName = "HRS_EMC_Startdate";
         c.Caption = "StartDate";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
         c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
-
     });
     settings.Columns.Add(c =>
     {
-        c.FieldName = "HRS_SAL_EndDate";
+        c.FieldName = "HRS_EMC_Enddate";
         c.Caption = "End Date";
         c.ColumnType = MVCxGridViewColumnType.DateEdit;
         c.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
     });
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "HRS_EMC_Action";
+        c.Caption = "Action";
+        c.EditorProperties().ComboBox(p =>
+        {
+            p.TextField = "key";
+            p.ValueField = "value";
+            p.ValueType = typeof(int);
+            p.DataSource = DXWebApplication.Models.ActionType.TypeAction;
 
+        });
+    });
 }).Bind(Model).GetHtml()
+
 
 

@@ -7,7 +7,7 @@
     settings.KeyFieldName = "HRS_EMC_ID";
     settings.Width = Unit.Percentage(100);
     settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialEmpcontractEditForm" };
-    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ContractBatchEditingUpdateModel", id = ViewBag.id };
+    settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Home", Action = "ContractBatchEditingUpdateModel", empid = ViewBag.empid };
     settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
     settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
     settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
