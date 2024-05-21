@@ -7,6 +7,7 @@ namespace DXWebApplication.Models
 {
     public partial class DEP_Departments
     {
+
         public static List<DEP_Departments> Get(AccountingDbContext _dbContext = null)
         {
             if (_dbContext == null)

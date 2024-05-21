@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -20,7 +21,7 @@ namespace DXWebApplication.Models
             var existingEntity = db.DEP_Departments.Find(edit.DEP_ID);
             if (existingEntity != null)
             {
-                existingEntity.DEP_Name= edit.DEP_Name;
+                existingEntity.DEP_Name = edit.DEP_Name;
                 existingEntity.DEP_Name2 = edit.DEP_Name2;
                 existingEntity.DEP_Number = edit.DEP_Number;
                 existingEntity.DEP_Shortcut = edit.DEP_Shortcut;
@@ -30,20 +31,27 @@ namespace DXWebApplication.Models
             }
         }
 
-        //public static void MovePost(int deptID, int? newParentID, AccountingDbContext db)
-        //{
-
-        //}
-
-        public static void Delete(int departmentID, AccountingDbContext dbContext)
+        public static void Move(int deptID, int? newParentID, AccountingDbContext db)
         {
-            var department = dbContext.DEP_Departments.Find(departmentID);
+            var department = db.DEP_Departments.Find(deptID);
             if (department != null)
             {
-                dbContext.DEP_Departments.Remove(department);
-                dbContext.SaveChanges();
+                department.DEP_ParentID = newParentID;
+                db.SaveChanges();
             }
         }
 
+        public static void Delete(DEP_Departments delete, AccountingDbContext db)
+        {
+            var existingEntity = db.DEP_Departments.Find(delete.DEP_ID);
+            if (existingEntity != null)
+            {
+                existingEntity.DEP_DeleteDate = DateTime.Now;
+                existingEntity.DEP_IsDelete = true;
+                db.Entry(existingEntity).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+        }
     }
 }

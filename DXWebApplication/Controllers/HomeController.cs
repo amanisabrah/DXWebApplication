@@ -910,32 +910,33 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialDepartmentGridView", departments);
         }
 
-        //[HttpPost]
-        //public ActionResult PartialDepartmentMove(int depttID, int parentID)
-        //{
-        //    try
-        //    {
-        //        DEP_Departments.MovePost(depttID, parentID, _accountingDbContext);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ViewData["EditNodeError"] = e.Message;
-        //    }
-        //    return PartialView("_PartialDepartmentMovePost");
-        //}
-
         [HttpPost]
-        public ActionResult PartialDepartmentDelete(int deptID)
+        public ActionResult PartialDepartmentMove(int depttID, int parentID)
         {
             try
             {
-                DEP_Departments.Delete(deptID, _accountingDbContext);
+                DEP_Departments.Move(depttID, parentID, _accountingDbContext);
+            }
+            catch (Exception e)
+            {
+                ViewData["EditNodeError"] = e.Message;
+            }
+            return PartialView("_PartialDepartmentMovePost");
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentDelete(DEP_Departments delete)
+        {
+            try
+            {
+                DEP_Departments.Delete(delete, _accountingDbContext);
             }
             catch (Exception e)
             {
                 ViewData["EditNodeError"] = e.Message;
             }
             List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
+
             return PartialView("_PartialDepartmentGridView", departments);
         }
 
