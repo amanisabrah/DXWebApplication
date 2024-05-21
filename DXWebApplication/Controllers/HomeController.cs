@@ -857,7 +857,6 @@ namespace DXWebApplication.Controllers
                     ViewBag.dep = dep;
                     break;
                 case "STARTEDIT":
-                   // dep = departments.Where(x => x.DEP_ID == DEP_ID).FirstOrDefault();
                     ViewBag.dep = dep;
                     break;
                 case "CANCELEDIT":
@@ -885,11 +884,12 @@ namespace DXWebApplication.Controllers
             {
                 ViewData["EditNodeError"] = "Please, correct all errors.";
             }
-            return PartialView("_PartialDepartmentAddNew");
+            List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
+            return PartialView("_PartialDepartmentGridView", departments);
         }
 
         [HttpPost]
-        public ActionResult PartialDepartmentUpdatePost(DEP_Departments edit)
+        public ActionResult PartialDepartmentUpdate(DEP_Departments edit)
         {
             if (ModelState.IsValid)
             {
@@ -906,25 +906,26 @@ namespace DXWebApplication.Controllers
             {
                 ViewData["EditNodeError"] = "Please, correct all errors.";
             }
-            return PartialView("_PartialDepartmentUpdatePost");
+            List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
+            return PartialView("_PartialDepartmentGridView", departments);
         }
 
-        [HttpPost]
-        public ActionResult PartialDepartmentMovePost(int depttID, int parentID)
-        {
-            try
-            {
-                DEP_Departments.MovePost(depttID, parentID, _accountingDbContext);
-            }
-            catch (Exception e)
-            {
-                ViewData["EditNodeError"] = e.Message;
-            }
-            return PartialView("_PartialDepartmentMovePost");
-        }
+        //[HttpPost]
+        //public ActionResult PartialDepartmentMove(int depttID, int parentID)
+        //{
+        //    try
+        //    {
+        //        DEP_Departments.MovePost(depttID, parentID, _accountingDbContext);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ViewData["EditNodeError"] = e.Message;
+        //    }
+        //    return PartialView("_PartialDepartmentMovePost");
+        //}
 
         [HttpPost]
-        public ActionResult PartialDepartmentDeletePost(int deptID)
+        public ActionResult PartialDepartmentDelete(int deptID)
         {
             try
             {
@@ -934,7 +935,8 @@ namespace DXWebApplication.Controllers
             {
                 ViewData["EditNodeError"] = e.Message;
             }
-            return PartialView("_PartialDepartmentDeletePost");
+            List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
+            return PartialView("_PartialDepartmentGridView", departments);
         }
 
         #endregion

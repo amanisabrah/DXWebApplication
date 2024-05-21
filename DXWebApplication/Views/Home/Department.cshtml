@@ -5,8 +5,8 @@
 
 <main>
 
-    <form class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Department</h1>
+    @using (Html.BeginForm())
+    {
         @Html.Action("PartialDepartmentGridView")
-    </form>
+    }
 </main>
