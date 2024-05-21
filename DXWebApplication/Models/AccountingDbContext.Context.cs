@@ -30,5 +30,6 @@ namespace DXWebApplication.Models
         public virtual DbSet<HRS_SAL_Salaries> HRS_SAL_Salaries { get; set; }
         public virtual DbSet<JOB_JOBS> JOB_JOBS { get; set; }
         public virtual DbSet<WST_WorkStatus> WST_WorkStatus { get; set; }
+        public virtual DbSet<DEP_Departments> DEP_Departments { get; set; }
     }
 }

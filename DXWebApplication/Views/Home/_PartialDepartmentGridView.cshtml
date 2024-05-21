@@ -1,0 +1,58 @@
+﻿@model List<DXWebApplication.Models.DEP_Departments>
+
+@using System.Web.UI.WebControls
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.ASPxTreeList
+
+@{
+    var treeList = Html.DevExpress().TreeList(settings =>
+    {
+        settings.Name = "DepartmentTreeList";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "PartialDepartmentGridView" };
+        settings.SettingsEditing.AddNewNodeRouteValues = new { Controller = "Home", Action = "PartialDepartmentAddNew" };
+        settings.SettingsEditing.UpdateNodeRouteValues = new { Controller = "Home", Action = "PartialDepartmentUpdatePost" };
+        settings.SettingsEditing.NodeDragDropRouteValues = new { Controller = "Home", Action = "PartialDepartmentMovePost" };
+        settings.SettingsEditing.DeleteNodeRouteValues = new { Controller = "Home", Action = "PartialDepartmentDeletePost" };
+        settings.SettingsEditing.ConfirmDelete = true;
+        settings.Settings.GridLines = GridLines.Both;
+        settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
+        settings.AutoGenerateColumns = false;
+        settings.Width = Unit.Percentage(100);
+        settings.KeyFieldName = "DEP_ID";
+        settings.ParentFieldName = "DEP_ParentID";
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.NewButton.Visible = true;
+        settings.CommandColumn.DeleteButton.Visible = true;
+        settings.CommandColumn.EditButton.Visible = true;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_Name";
+            c.Caption = "Name";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_Name2";
+            c.Caption = "Name2";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_Shortcut";
+            c.Caption = "Shortcut";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_Email";
+            c.Caption = "Email";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_Phone";
+            c.Caption = "Phone";
+        });
+
+    });
+}
+
+@treeList.Bind(Model).GetHtml()

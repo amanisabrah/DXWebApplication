@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACC_EMP_Employee">
           <Key>
             <PropertyRef Name="ACC_EMP_ID" />
@@ -26,6 +26,23 @@
           <Property Name="ACC_EMP_UpdatedDate" Type="datetime2" Precision="7" />
           <Property Name="ACC_EMP_DeleteDate" Type="datetime2" Precision="7" />
           <Property Name="ACC_EMP_IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEP_Departments">
+          <Key>
+            <PropertyRef Name="DEP_ID" />
+          </Key>
+          <Property Name="DEP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DEP_ParentID" Type="int" />
+          <Property Name="DEP_Number" Type="int" Nullable="false" />
+          <Property Name="DEP_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DEP_Name2" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DEP_Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="DEP_Phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="DEP_Shortcut" Type="nvarchar" MaxLength="100" />
+          <Property Name="DEP_EntryDate" Type="datetime2" Precision="7" />
+          <Property Name="DEP_UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="DEP_DeleteDate" Type="datetime2" Precision="7" />
+          <Property Name="DEP_IsDelete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="HRS_EMC_EmpContract">
           <Key>
@@ -114,6 +131,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DEP_Departments_DEP_Departments">
+          <End Role="DEP_Departments" Type="Self.DEP_Departments" Multiplicity="0..1" />
+          <End Role="DEP_Departments1" Type="Self.DEP_Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEP_Departments">
+              <PropertyRef Name="DEP_ID" />
+            </Principal>
+            <Dependent Role="DEP_Departments1">
+              <PropertyRef Name="DEP_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
           <End Role="ACC_EMP_Employee" Type="Self.ACC_EMP_Employee" Multiplicity="1" />
           <End Role="HRS_EMC_EmpContract" Type="Self.HRS_EMC_EmpContract" Multiplicity="*" />
@@ -140,6 +169,7 @@
         </Association>
         <EntityContainer Name="ModelsStoreContainer">
           <EntitySet Name="ACC_EMP_Employee" EntityType="Self.ACC_EMP_Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DEP_Departments" EntityType="Self.DEP_Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HRS_EMC_EmpContract" EntityType="Self.HRS_EMC_EmpContract" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HRS_SAL_Salaries" EntityType="Self.HRS_SAL_Salaries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JOB_JOBS" EntityType="Self.JOB_JOBS" Schema="dbo" store:Type="Tables" />
@@ -152,6 +182,10 @@
             <End Role="WST_WorkStatus" EntitySet="WST_WorkStatus" />
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
           </AssociationSet>
+          <AssociationSet Name="FK_DEP_Departments_DEP_Departments" Association="Self.FK_DEP_Departments_DEP_Departments">
+            <End Role="DEP_Departments" EntitySet="DEP_Departments" />
+            <End Role="DEP_Departments1" EntitySet="DEP_Departments" />
+          </AssociationSet>
           <AssociationSet Name="FK_HRS_EMC_EmpContract_ACC_EMP_Employee" Association="Self.FK_HRS_EMC_EmpContract_ACC_EMP_Employee">
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
             <End Role="HRS_EMC_EmpContract" EntitySet="HRS_EMC_EmpContract" />
@@ -161,8 +195,7 @@
             <End Role="HRS_SAL_Salaries" EntitySet="HRS_SAL_Salaries" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -329,7 +362,43 @@
             <End Role="ACC_EMP_Employee" EntitySet="ACC_EMP_Employee" />
             <End Role="HRS_SAL_Salaries" EntitySet="HRS_SAL_Salaries" />
           </AssociationSet>
+          <EntitySet Name="DEP_Departments" EntityType="Models.DEP_Departments" />
+          <AssociationSet Name="FK_DEP_Departments_DEP_Departments" Association="Models.FK_DEP_Departments_DEP_Departments">
+            <End Role="DEP_Departments" EntitySet="DEP_Departments" />
+            <End Role="DEP_Departments1" EntitySet="DEP_Departments" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DEP_Departments">
+          <Key>
+            <PropertyRef Name="DEP_ID" />
+          </Key>
+          <Property Name="DEP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DEP_ParentID" Type="Int32" />
+          <Property Name="DEP_Number" Type="Int32" Nullable="false" />
+          <Property Name="DEP_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEP_Name2" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEP_Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEP_Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEP_Shortcut" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEP_EntryDate" Type="DateTime" Precision="7" />
+          <Property Name="DEP_UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="DEP_DeleteDate" Type="DateTime" Precision="7" />
+          <Property Name="DEP_IsDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DEP_Departments1" Relationship="Models.FK_DEP_Departments_DEP_Departments" FromRole="DEP_Departments" ToRole="DEP_Departments1" />
+          <NavigationProperty Name="DEP_Departments2" Relationship="Models.FK_DEP_Departments_DEP_Departments" FromRole="DEP_Departments1" ToRole="DEP_Departments" />
+        </EntityType>
+        <Association Name="FK_DEP_Departments_DEP_Departments">
+          <End Type="Models.DEP_Departments" Role="DEP_Departments" Multiplicity="0..1" />
+          <End Type="Models.DEP_Departments" Role="DEP_Departments1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEP_Departments">
+              <PropertyRef Name="DEP_ID" />
+            </Principal>
+            <Dependent Role="DEP_Departments1">
+              <PropertyRef Name="DEP_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -423,6 +492,24 @@
                 <ScalarProperty Name="WST_EntryDate" ColumnName="WST_EntryDate" />
                 <ScalarProperty Name="WST_UpdateDate" ColumnName="WST_UpdateDate" />
                 <ScalarProperty Name="WST_DeleteDate" ColumnName="WST_DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEP_Departments">
+            <EntityTypeMapping TypeName="Models.DEP_Departments">
+              <MappingFragment StoreEntitySet="DEP_Departments">
+                <ScalarProperty Name="DEP_IsDelete" ColumnName="DEP_IsDelete" />
+                <ScalarProperty Name="DEP_DeleteDate" ColumnName="DEP_DeleteDate" />
+                <ScalarProperty Name="DEP_UpdateDate" ColumnName="DEP_UpdateDate" />
+                <ScalarProperty Name="DEP_EntryDate" ColumnName="DEP_EntryDate" />
+                <ScalarProperty Name="DEP_Shortcut" ColumnName="DEP_Shortcut" />
+                <ScalarProperty Name="DEP_Phone" ColumnName="DEP_Phone" />
+                <ScalarProperty Name="DEP_Email" ColumnName="DEP_Email" />
+                <ScalarProperty Name="DEP_Name2" ColumnName="DEP_Name2" />
+                <ScalarProperty Name="DEP_Name" ColumnName="DEP_Name" />
+                <ScalarProperty Name="DEP_Number" ColumnName="DEP_Number" />
+                <ScalarProperty Name="DEP_ParentID" ColumnName="DEP_ParentID" />
+                <ScalarProperty Name="DEP_ID" ColumnName="DEP_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

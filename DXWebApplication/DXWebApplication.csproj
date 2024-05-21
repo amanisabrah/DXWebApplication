@@ -271,6 +271,8 @@
     <Content Include="Views\Home\ExternalEditForm.cshtml" />
     <Content Include="Views\Home\_PartialExternalEditForm.cshtml" />
     <Content Include="Views\Home\_PartialContractExternalEditForm.cshtml" />
+    <Content Include="Views\Home\Department.cshtml" />
+    <Content Include="Views\Home\_PartialDepartmentGridView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -305,15 +307,20 @@
       <DependentUpon>AccountingDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBRead\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBRead\DEP_Departments.cs" />
     <Compile Include="Models\DBRead\HRS_EMC_EmpContract.cs" />
     <Compile Include="Models\DBRead\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBRead\JOB_JOBS.cs" />
     <Compile Include="Models\DBRead\WST_WorkStatus.cs" />
     <Compile Include="Models\DBWrite\ACC_EMP_Employee.cs" />
+    <Compile Include="Models\DBWrite\DEP_Departments.cs" />
     <Compile Include="Models\DBWrite\HRS_EMC_EmpContract.cs" />
     <Compile Include="Models\DBWrite\HRS_SAL_Salaries.cs" />
     <Compile Include="Models\DBWrite\JOB_JOBS.cs" />
     <Compile Include="Models\DBWrite\WST_WorkStatus.cs" />
+    <Compile Include="Models\DEP_Departments.cs">
+      <DependentUpon>AccountingDbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Enums\ActionType.cs" />
     <Compile Include="Models\Enums\GenderCollection.cs" />
     <Compile Include="Models\Enums\KindOfWorkStatus.cs" />

@@ -1,5 +1,6 @@
 ﻿using DevExpress.CodeParser;
 using DevExpress.DataProcessing;
+using DevExpress.DocumentServices.ServiceModel.DataContracts;
 using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
 using DevExpress.Pdf.Native.BouncyCastle.Ocsp;
 using DevExpress.Web;
@@ -148,11 +149,13 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialJobsGridViewDelete(JOB_JOBS delete, DateTime? FilterStartDate = null, DateTime? FilterEndDate = null, int? FilterGender = null)
         {
+            List<JOB_JOBS> jobs = JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender);
+
             if (ModelState.IsValid)
             {
                 JOB_JOBS.Delete(delete, _accountingDbContext);
             }
-            return PartialView("_PartialJobsGridView", JOB_JOBS.GetWithFilter(_accountingDbContext, FilterStartDate, FilterEndDate, FilterGender));
+            return PartialView("_PartialJobsGridView", jobs);
         }
 
         public ActionResult MultiSelectionImageUpload()
@@ -757,7 +760,6 @@ namespace DXWebApplication.Controllers
             set
             {
                 Session["ExternalContractList"] = value;
-
             }
         }
 
@@ -828,7 +830,114 @@ namespace DXWebApplication.Controllers
         }
         #endregion
 
+        #region dEPARTMENT TreeList
 
+        [HttpGet]
+        public ActionResult Department()
+        {
+            return View("Department");
+        }
+
+        [HttpGet]
+        public ActionResult PartialDepartmentGridView()
+        {
+            var departments = DEP_Departments.Get(_accountingDbContext);
+            return PartialView("_PartialDepartmentGridView", departments);
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentGridView(string Command)
+        {
+            List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
+            DEP_Departments dep = null;
+            switch (Command)
+            {
+                case "ADDNEWROW":
+                    dep = new DEP_Departments();
+                    ViewBag.dep = dep;
+                    break;
+                case "STARTEDIT":
+                   // dep = departments.Where(x => x.DEP_ID == DEP_ID).FirstOrDefault();
+                    ViewBag.dep = dep;
+                    break;
+                case "CANCELEDIT":
+                    break;
+            }
+
+            return PartialView("_PartialDepartmentGridView", departments);
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentAddNew(DEP_Departments add)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DEP_Departments.AddNew(add, _accountingDbContext);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditNodeError"] = e.Message;
+                }
+            }
+            else
+            {
+                ViewData["EditNodeError"] = "Please, correct all errors.";
+            }
+            return PartialView("_PartialDepartmentAddNew");
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentUpdatePost(DEP_Departments edit)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DEP_Departments.Edit(edit, _accountingDbContext);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditNodeError"] = e.Message;
+                }
+            }
+            else
+            {
+                ViewData["EditNodeError"] = "Please, correct all errors.";
+            }
+            return PartialView("_PartialDepartmentUpdatePost");
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentMovePost(int depttID, int parentID)
+        {
+            try
+            {
+                DEP_Departments.MovePost(depttID, parentID, _accountingDbContext);
+            }
+            catch (Exception e)
+            {
+                ViewData["EditNodeError"] = e.Message;
+            }
+            return PartialView("_PartialDepartmentMovePost");
+        }
+
+        [HttpPost]
+        public ActionResult PartialDepartmentDeletePost(int deptID)
+        {
+            try
+            {
+                DEP_Departments.Delete(deptID, _accountingDbContext);
+            }
+            catch (Exception e)
+            {
+                ViewData["EditNodeError"] = e.Message;
+            }
+            return PartialView("_PartialDepartmentDeletePost");
+        }
+
+        #endregion
     }
 
 
