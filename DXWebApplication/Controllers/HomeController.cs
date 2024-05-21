@@ -869,7 +869,7 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialDepartmentAddNew(DEP_Departments add)
         {
-            if (ModelState.IsValid)
+            if (DEP_Departments.IsValid(add, ModelState))
             {
                 try
                 {
@@ -882,7 +882,11 @@ namespace DXWebApplication.Controllers
             }
             else
             {
-                ViewData["EditNodeError"] = "Please, correct all errors.";
+                var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                .SelectMany(E => E.Errors)
+                .Select(E => E.ErrorMessage)
+                .ToList();
+                ViewBag.ValidationErrors = string.Join(", ", validationErrors);
             }
             List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
             return PartialView("_PartialDepartmentGridView", departments);
@@ -891,7 +895,7 @@ namespace DXWebApplication.Controllers
         [HttpPost]
         public ActionResult PartialDepartmentUpdate(DEP_Departments edit)
         {
-            if (ModelState.IsValid)
+            if (DEP_Departments.IsValid(edit, ModelState))
             {
                 try
                 {
@@ -904,7 +908,11 @@ namespace DXWebApplication.Controllers
             }
             else
             {
-                ViewData["EditNodeError"] = "Please, correct all errors.";
+                var validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                .SelectMany(E => E.Errors)
+                .Select(E => E.ErrorMessage)
+                .ToList();
+                ViewBag.ValidationErrors = string.Join(", ", validationErrors);
             }
             List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
             return PartialView("_PartialDepartmentGridView", departments);

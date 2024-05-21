@@ -1,8 +1,11 @@
 ﻿@model List<DXWebApplication.Models.DEP_Departments>
-
 @using System.Web.UI.WebControls
 @using DevExpress.Web.Mvc
 @using DevExpress.Web.ASPxTreeList
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
 
 @{
     var treeList = Html.DevExpress().TreeList(settings =>
@@ -65,6 +68,7 @@
         };
 
     });
+    treeList.SetEditErrorText((string)ViewBag.ValidationErrors);
 
 }
 
