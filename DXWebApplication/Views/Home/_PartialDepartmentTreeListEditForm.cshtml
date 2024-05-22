@@ -1,0 +1,61 @@
+﻿
+@using System.Web.UI.WebControls;
+@{
+    var department = (DXWebApplication.Models.DEP_Departments)ViewBag.department;
+}
+@Html.DevExpress().FormLayout(flSettings =>
+{
+
+    flSettings.Name = "DepartmentPopupEdit";
+    flSettings.ColCount = 2;
+
+    flSettings.Items.Add(c =>
+    {
+        c.FieldName = "DEP_Name";
+        c.Caption = "Name";
+    });
+    flSettings.Items.Add(c =>
+    {
+        c.FieldName = "DEP_Name2";
+        c.Caption = "Name2";
+    });
+    flSettings.Items.Add(c =>
+    {
+        c.FieldName = "DEP_Shortcut";
+        c.Caption = "Shortcut";
+    });
+    flSettings.Items.Add(c =>
+    {
+        c.FieldName = "DEP_Email";
+        c.Caption = "Email";
+    });
+    flSettings.Items.Add(c =>
+    {
+        c.FieldName = "DEP_Phone";
+        c.Caption = "Phone";
+    });
+    flSettings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+        i.SetNestedContent(() =>
+        {
+            ViewContext.Writer.Write("<div style='float:right'> ");
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "depUpdate";
+                btnSettings.Text = "Save";
+                btnSettings.ClientSideEvents.Click = "function(s,e){ DepartmentTreeList.UpdateEdit(); }";
+            }).Render();
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "depCancel";
+                btnSettings.Text = "Cancel";
+                btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                btnSettings.ClientSideEvents.Click = "function(s, e){ DepartmentTreeList.CancelEdit(); }";
+            }).Render();
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+
+
+}).Bind(department).GetHtml()

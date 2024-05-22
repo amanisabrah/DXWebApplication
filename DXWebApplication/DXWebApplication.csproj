@@ -273,6 +273,7 @@
     <Content Include="Views\Home\_PartialContractExternalEditForm.cshtml" />
     <Content Include="Views\Home\Department.cshtml" />
     <Content Include="Views\Home\_PartialDepartmentGridView.cshtml" />
+    <Content Include="Views\Home\_PartialDepartmentTreeListEditForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -2,6 +2,7 @@
 @using System.Web.UI.WebControls
 @using DevExpress.Web.Mvc
 @using DevExpress.Web.ASPxTreeList
+
 @{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
@@ -17,6 +18,12 @@
         settings.SettingsEditing.NodeDragDropRouteValues = new { Controller = "Home", Action = "PartialDepartmentMove" };
         settings.SettingsEditing.DeleteNodeRouteValues = new { Controller = "Home", Action = "PartialDepartmentDelete" };
         settings.SettingsEditing.ConfirmDelete = true;
+        settings.SettingsEditing.Mode = TreeListEditMode.PopupEditForm;
+        settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
+        settings.SettingsPopup.EditForm.Width = 600;
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
         settings.Settings.GridLines = GridLines.Both;
         settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
         settings.AutoGenerateColumns = false;
@@ -24,11 +31,16 @@
         settings.KeyFieldName = "DEP_ID";
         settings.ParentFieldName = "DEP_ParentID";
         settings.CommandColumn.Visible = true;
-        settings.CommandColumn.ShowNewButtonInHeader = true;
-        settings.CommandColumn.NewButton.Visible = true;
-        settings.CommandColumn.DeleteButton.Visible = true;
-        settings.CommandColumn.EditButton.Visible = true;
-
+        settings.SettingsBehavior.AllowFocusedNode = true;
+        settings.SettingsBehavior.FocusNodeOnExpandButtonClick = true;
+        settings.CommandColumn.Visible = true;
+        settings.Toolbars.Add(tb =>
+        {
+            tb.Enabled = true;
+            tb.Items.Add(DevExpress.Web.ASPxTreeList.TreeListToolbarCommand.New);
+            tb.Items.Add(DevExpress.Web.ASPxTreeList.TreeListToolbarCommand.Edit);
+            tb.Items.Add(DevExpress.Web.ASPxTreeList.TreeListToolbarCommand.Delete);
+        });
         settings.Columns.Add(c =>
         {
             c.FieldName = "DEP_Name";
@@ -51,10 +63,9 @@
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "DEP_PhoneNum";
+            c.FieldName = "DEP_Phone";
             c.Caption = "Phone";
         });
-
         settings.PreRender = (sender, e) =>
         {
             MVCxTreeList treeListControl = (MVCxTreeList)sender;
@@ -66,7 +77,10 @@
             var editor = e.Editor as ASPxEdit;
             editor.ValidationSettings.Display = Display.Dynamic;
         };
-
+        settings.SetEditFormTemplateContent(c =>
+        {
+            Html.RenderPartial("_PartialDepartmentTreeListEditForm");
+        });
     });
     treeList.SetEditErrorText((string)ViewBag.ValidationErrors);
 
