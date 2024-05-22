@@ -21,9 +21,12 @@
         settings.SettingsEditing.Mode = TreeListEditMode.PopupEditForm;
         settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
         settings.SettingsPopup.EditForm.Width = 600;
+        settings.SettingsPopup.EditForm.ShowShadow=true;
+        settings.SettingsPopup.EditForm.ShowFooter=true;
         settings.Width = Unit.Percentage(100);
+        settings.CommandColumn.Width = Unit.Pixel(150);
         settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
-        settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 700;
         settings.Settings.GridLines = GridLines.Both;
         settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
         settings.AutoGenerateColumns = false;
@@ -46,7 +49,7 @@
         {
             c.FieldName = "DEP_ParentID";
             c.Caption = "Parent ID";
-        }); 
+        });
         settings.Columns.Add(c =>
         {
             c.FieldName = "DEP_Name";
