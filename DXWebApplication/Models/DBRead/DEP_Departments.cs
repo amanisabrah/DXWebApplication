@@ -11,6 +11,25 @@ namespace DXWebApplication.Models
     public partial class DEP_Departments
     {
 
+        public string DEP_PhoneNum
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(DEP_Phone) && DEP_Phone.Contains("#")) 
+                {
+
+                    var ss = DEP_Phone.Split('#');
+                    return $"(+{ss[0]}) {ss[1]}";
+                }
+                return DEP_Phone;
+            }
+            set
+            {
+                string phoneNumAfter = string.Concat(value.Where(char.IsDigit));
+                phoneNumAfter = phoneNumAfter.Insert(3, "#");
+                DEP_Phone = phoneNumAfter;
+            }
+        }
         public static List<DEP_Departments> Get(AccountingDbContext _dbContext = null)
         {
             if (_dbContext == null)

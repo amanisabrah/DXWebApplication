@@ -866,6 +866,8 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialDepartmentGridView", departments);
         }
 
+        
+
         [HttpPost]
         public ActionResult PartialDepartmentAddNew(DEP_Departments add)
         {
