@@ -18,6 +18,7 @@ namespace DXWebApplication.Models
         public DEP_Departments()
         {
             this.DEP_Departments1 = new HashSet<DEP_Departments>();
+            this.ACC_EMP_Employee = new HashSet<ACC_EMP_Employee>();
         }
     
         public int DEP_ID { get; set; }
@@ -36,5 +37,7 @@ namespace DXWebApplication.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DEP_Departments> DEP_Departments1 { get; set; }
         public virtual DEP_Departments DEP_Departments2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ACC_EMP_Employee> ACC_EMP_Employee { get; set; }
     }
 }

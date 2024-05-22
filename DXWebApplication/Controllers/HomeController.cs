@@ -347,6 +347,7 @@ namespace DXWebApplication.Controllers
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
             List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+            List<DEP_Departments> departmentList = Session["DepartmentList"] as List<DEP_Departments>;
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
@@ -373,6 +374,8 @@ namespace DXWebApplication.Controllers
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> contractList = Session["ContractList"] as List<HRS_EMC_EmpContract>;
             List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+            List<DEP_Departments> departmentList = Session["DepartmentList"] as List<DEP_Departments>;
+
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList, contractList);
@@ -429,6 +432,7 @@ namespace DXWebApplication.Controllers
                 case "ADDNEWROW":
                     Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     Session["ExternalContractList"] = new List<HRS_EMC_EmpContract>();
+                    Session["DepartmentList"] = new List<DEP_Departments>();
                     ViewBag.emp = emp;
                     break;
                 case "STARTEDIT":
@@ -436,6 +440,7 @@ namespace DXWebApplication.Controllers
                     ViewBag.emp = emp;
                     Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(empid ?? 0, _accountingDbContext);
                     Session["ExternalContractList"] = HRS_EMC_EmpContract.GetByEmpId(empid ?? 0, _accountingDbContext);
+                    Session["DepartmentList"] = new List<DEP_Departments>();
                     break;
                 case "CANCELEDIT":
                     Session["SalaryList"] = null;
@@ -450,6 +455,7 @@ namespace DXWebApplication.Controllers
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+            List<DEP_Departments> departmentList = Session["DepartmentList"] as List<DEP_Departments>;
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
                 ACC_EMP_Employee.AddNew(employee, _accountingDbContext, salaryList, ecternalcontract);
@@ -468,6 +474,7 @@ namespace DXWebApplication.Controllers
         {
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
+            List<DEP_Departments> departmentList = Session["DepartmentList"] as List<DEP_Departments>;
 
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
@@ -867,10 +874,24 @@ namespace DXWebApplication.Controllers
             return PartialView("_PartialDepartmentGridView", departments);
          }
 
-        
 
+        public List<DEP_Departments> departmentList
+        {
+            get
+            {
+                if (Session["DepartmentList"] != null)
+                    return Session["DepartmentList"] as List<DEP_Departments>;
+                else
+                    return new List<DEP_Departments>();
+            }
+            set
+            {
+                Session["DepartmentList"] = value;
+
+            }
+        }
         [HttpPost]
-        public ActionResult PartialDepartmentAddNew(DEP_Departments add, int? DEP_ID = null)
+        public ActionResult PartialDepartmentAddNew(DEP_Departments add)
         {
             if (DEP_Departments.IsValid(add, ModelState))
             {
@@ -896,7 +917,7 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialDepartmentUpdate(DEP_Departments edit, int? DEP_ID = null)
+        public ActionResult PartialDepartmentUpdate(DEP_Departments edit)
         {
 
             if (DEP_Departments.IsValid(edit, ModelState))

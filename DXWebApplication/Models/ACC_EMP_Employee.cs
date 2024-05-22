@@ -38,7 +38,9 @@ namespace DXWebApplication.Models
         public Nullable<System.DateTime> ACC_EMP_UpdatedDate { get; set; }
         public Nullable<System.DateTime> ACC_EMP_DeleteDate { get; set; }
         public bool ACC_EMP_IsDelete { get; set; }
+        public Nullable<int> ACC_EMP_DEPID { get; set; }
     
+        public virtual DEP_Departments DEP_Departments { get; set; }
         public virtual JOB_JOBS JOB_JOBS { get; set; }
         public virtual WST_WorkStatus WST_WorkStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
