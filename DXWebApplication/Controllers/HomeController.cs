@@ -846,30 +846,31 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialDepartmentGridView(string Command)
+        public ActionResult PartialDepartmentGridView(string Command,int? DEP_ID =null)
         {
             List<DEP_Departments> departments = DEP_Departments.Get(_accountingDbContext);
-            DEP_Departments dep = null;
+            DEP_Departments department = null;
             switch (Command)
             {
-                case "ADDNEWROW":
-                    dep = new DEP_Departments();
-                    ViewBag.dep = dep;
+                case "StartEditNewNode":
+                    department = new DEP_Departments();
+                    ViewBag.department = department;
                     break;
-                case "STARTEDIT":
-                    ViewBag.dep = dep;
+                case "StartEdit":
+                    department = departments.Where(x => x.DEP_ID == DEP_ID).FirstOrDefault();
+                    ViewBag.department = department;
                     break;
                 case "CANCELEDIT":
                     break;
             }
 
             return PartialView("_PartialDepartmentGridView", departments);
-        }
+         }
 
         
 
         [HttpPost]
-        public ActionResult PartialDepartmentAddNew(DEP_Departments add)
+        public ActionResult PartialDepartmentAddNew(DEP_Departments add, int? DEP_ID = null)
         {
             if (DEP_Departments.IsValid(add, ModelState))
             {
@@ -895,7 +896,7 @@ namespace DXWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialDepartmentUpdate(DEP_Departments edit)
+        public ActionResult PartialDepartmentUpdate(DEP_Departments edit, int? DEP_ID = null)
         {
 
             if (DEP_Departments.IsValid(edit, ModelState))

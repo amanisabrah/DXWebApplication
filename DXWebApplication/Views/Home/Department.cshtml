@@ -4,9 +4,21 @@
 }
 
 <script>
+    function OnBeginCallback(s, e) {
+        e.customArgs['Command'] = e.command;
+        if (e.command === "StartEdit") {
+            var focusedNodeIndex = s.GetFocusedNodeKey();
+            if (focusedNodeIndex !== null) {
+                e.customArgs['DEP_ID'] = focusedNodeIndex;
+            }
+        }
+    }
+
+    function DepartmentPopupEdit_OnSave(s, e) {
+        DepartmentTreeList.UpdateEdit();
+    }
 
 </script>
-
 
 <main>
 

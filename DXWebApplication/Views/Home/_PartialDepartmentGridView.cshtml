@@ -34,6 +34,7 @@
         settings.SettingsBehavior.AllowFocusedNode = true;
         settings.SettingsBehavior.FocusNodeOnExpandButtonClick = true;
         settings.CommandColumn.Visible = true;
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
         settings.Toolbars.Add(tb =>
         {
             tb.Enabled = true;
@@ -41,6 +42,11 @@
             tb.Items.Add(DevExpress.Web.ASPxTreeList.TreeListToolbarCommand.Edit);
             tb.Items.Add(DevExpress.Web.ASPxTreeList.TreeListToolbarCommand.Delete);
         });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DEP_ParentID";
+            c.Caption = "Parent ID";
+        }); 
         settings.Columns.Add(c =>
         {
             c.FieldName = "DEP_Name";
