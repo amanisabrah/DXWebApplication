@@ -22,10 +22,8 @@
         settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.Center;
         settings.SettingsPopup.EditForm.Width = 600;
         settings.SettingsPopup.EditForm.ShowShadow=true;
-        settings.SettingsPopup.EditForm.ShowFooter=true;
         settings.Width = Unit.Percentage(100);
         settings.CommandColumn.Width = Unit.Pixel(150);
-        settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
         settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 700;
         settings.Settings.GridLines = GridLines.Both;
         settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
@@ -38,6 +36,15 @@
         settings.SettingsBehavior.FocusNodeOnExpandButtonClick = true;
         settings.CommandColumn.Visible = true;
         settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+        settings.SetFooterCellTemplateContent((c) =>
+        {
+            ViewContext.Writer.WriteLine("<h1>SetFooterCellTemplateContent</h1>");
+        });
+        settings.SetGroupFooterCellTemplateContent((c) =>
+        {
+            ViewContext.Writer.WriteLine("<h1>SetGroupFooterCellTemplateContent</h1>");
+        });
+
         settings.Toolbars.Add(tb =>
         {
             tb.Enabled = true;
@@ -89,6 +96,7 @@
         settings.SetEditFormTemplateContent(c =>
         {
             Html.RenderPartial("_PartialDepartmentTreeListEditForm");
+
         });
     });
     treeList.SetEditErrorText((string)ViewBag.ValidationErrors);

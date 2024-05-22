@@ -35,6 +35,27 @@
         c.Caption = "Phone";
     });
 
+    flSettings.Items.AddEmptyItem();
+
+
 
 
 }).Bind(department).GetHtml()
+
+<div style='float:right;padding:5px;'>
+    @{
+        Html.DevExpress().Button(btnSettings =>
+        {
+            btnSettings.Name = "depUpdate";
+            btnSettings.Text = "Save";
+            btnSettings.ClientSideEvents.Click = "function(s,e){ DepartmentTreeList.UpdateEdit(); }";
+        }).Render();
+        Html.DevExpress().Button(btnSettings =>
+        {
+            btnSettings.Name = "depCancel";
+            btnSettings.Text = "Cancel";
+            btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ DepartmentTreeList.CancelEdit(); }";
+        }).Render();
+    }
+</div>
