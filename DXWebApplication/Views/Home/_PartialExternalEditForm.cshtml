@@ -87,14 +87,14 @@
     });
     flSettings.Items.Add(i =>
     {
-        i.FieldName = "DEP_Departments";
+        i.FieldName = "ACC_EMP_DEPID";
         i.Caption = "Department";
         i.NestedExtension().ComboBox(combobox =>
         {
             combobox.Properties.TextField = "DEP_Name";
             combobox.Properties.ValueField = "DEP_ID";
             combobox.Properties.ValueType = typeof(int);
-            combobox.Properties.DataSource = DXWebApplication.Models.DEP_Departments.Get();
+            combobox.Properties.DataSource = DXWebApplication.Models.DEP_Departments.GetForEmployee();
             combobox.Properties.ValidationSettings.RequiredField.IsRequired = true;
             combobox.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
             combobox.Properties.ValidationSettings.Display = Display.Dynamic;

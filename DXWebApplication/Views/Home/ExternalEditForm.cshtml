@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ExternalEditForm";
-
 }
-
 
 <script>
 
@@ -118,7 +115,6 @@
         }
     }
 
-
     function ExternalContractBatch_OnBeginCallback(s, e) {
         if (e.command === "STARTEDIT") {
             var key = s.GetRowKey(s.GetFocusedRowIndex());
@@ -151,18 +147,13 @@
         }
     }
 
-
-
 </script>
 
 <main>
-    @*<form name="editform" class="row" aria-labelledby="aspnetTitle">*@
-    <div class="alert alert-danger" id="errorContainer" style="display:none">
-        
+    <div class="alert alert-danger" id="errorContainer" style="display:none">        
     </div>
     <h1 id="title">Employee Edit Form</h1>
     @Html.Action("PartialExternalEditForm", new { empid = ViewBag.empid, command = ViewBag.command });
 
-    @*</form>*@
 
 </main>

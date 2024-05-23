@@ -62,6 +62,7 @@ namespace DXWebApplication.Models
                 existingEntity.ACC_EMP_UpdatedDate = edit.ACC_EMP_UpdatedDate;
                 existingEntity.ACC_EMP_JOBID = edit.ACC_EMP_JOBID;
                 existingEntity.ACC_EMP_WSTID = edit.ACC_EMP_WSTID;
+                existingEntity.ACC_EMP_DEPID = edit.ACC_EMP_DEPID;
 
                 db.SaveChanges();
             }

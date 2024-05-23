@@ -432,7 +432,7 @@ namespace DXWebApplication.Controllers
                 case "ADDNEWROW":
                     Session["SalaryList"] = new List<HRS_SAL_Salaries>();
                     Session["ExternalContractList"] = new List<HRS_EMC_EmpContract>();
-                    Session["DepartmentList"] = new List<DEP_Departments>();
+                    Session["DepartmentList"] = DEP_Departments.GetForEmployee(_accountingDbContext); 
                     ViewBag.emp = emp;
                     break;
                 case "STARTEDIT":
@@ -440,7 +440,7 @@ namespace DXWebApplication.Controllers
                     ViewBag.emp = emp;
                     Session["SalaryList"] = HRS_SAL_Salaries.GetByEmpId(empid ?? 0, _accountingDbContext);
                     Session["ExternalContractList"] = HRS_EMC_EmpContract.GetByEmpId(empid ?? 0, _accountingDbContext);
-                    Session["DepartmentList"] = new List<DEP_Departments>();
+                    Session["DepartmentList"] = DEP_Departments.GetForEmployee(_accountingDbContext);
                     break;
                 case "CANCELEDIT":
                     Session["SalaryList"] = null;
@@ -475,7 +475,6 @@ namespace DXWebApplication.Controllers
             List<HRS_SAL_Salaries> salaryList = Session["SalaryList"] as List<HRS_SAL_Salaries>;
             List<HRS_EMC_EmpContract> ecternalcontract = Session["ExternalContractList"] as List<HRS_EMC_EmpContract>;
             List<DEP_Departments> departmentList = Session["DepartmentList"] as List<DEP_Departments>;
-
             if (ACC_EMP_Employee.IsValid(employee, ModelState, salaryList))
             {
                 ACC_EMP_Employee.Edit(employee, _accountingDbContext, salaryList, ecternalcontract);

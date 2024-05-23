@@ -38,8 +38,6 @@ namespace DXWebApplication.Models
             }
             return _dbContext.DEP_Departments.Where(j => j.DEP_IsDelete == false).ToList();
         }
-
-
         public static bool IsValid(DEP_Departments department, ModelStateDictionary ModelState)
         {
             var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
@@ -62,5 +60,21 @@ namespace DXWebApplication.Models
             return ModelState.IsValid;
         }
 
+        public static List<DEP_Departments> GetForEmployee(AccountingDbContext _dbContext= null)
+        {
+            var result = Get(_dbContext);
+            var notParentDep = new List<DEP_Departments>();
+
+            foreach (var table in result)
+            {
+                if (result.Any(x => x.DEP_ParentID == table.DEP_ID))
+                {
+                    notParentDep.Add(table);
+                }
+            }
+            return notParentDep;
+        }
+
     }
+
 }
